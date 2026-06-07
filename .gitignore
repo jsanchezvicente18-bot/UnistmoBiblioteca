@@ -1,0 +1,15 @@
+﻿# Angular
+biblioteca/node_modules/
+biblioteca/.angular/
+biblioteca/dist/
+
+# Python
+backend/venv/
+backend/__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+# Variables de entorno
+.env

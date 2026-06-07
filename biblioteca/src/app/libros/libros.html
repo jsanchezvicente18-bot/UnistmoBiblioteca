@@ -1,0 +1,25 @@
+<button>➕ Agregar Libro</button>
+
+<h1>Gestión de Libros</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Título</th>
+      <th>Autor</th>
+      <th>Categoría</th>
+      <th>ISBN</th>
+      <th>Existencias</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let libro of libros">
+      <td>{{ libro.titulo }}</td>
+      <td>{{ libro.autor }}</td>
+      <td>{{ libro.categoria }}</td>
+      <td>{{ libro.isbn }}</td>
+      <td>{{ libro.existencias }}</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,25 @@
+<h1>Gestión de Usuarios</h1>
+
+<button>➕ Agregar Usuario</button>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Apellidos</th>
+      <th>Matrícula</th>
+      <th>Carrera</th>
+      <th>Correo</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let usuario of usuarios">
+      <td>{{ usuario.nombre }}</td>
+      <td>{{ usuario.apellidos }}</td>
+      <td>{{ usuario.matricula }}</td>
+      <td>{{ usuario.carrera }}</td>
+      <td>{{ usuario.correo }}</td>
+    </tr>
+  </tbody>
+</table>

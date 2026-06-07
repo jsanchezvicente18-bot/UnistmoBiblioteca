@@ -1,0 +1,25 @@
+<h1>Gestión de Préstamos</h1>
+
+<button>➕ Nuevo Préstamo</button>
+
+<table>
+  <thead>
+    <tr>
+      <th>Usuario</th>
+      <th>Libro</th>
+      <th>Fecha Préstamo</th>
+      <th>Fecha Devolución</th>
+      <th>Estado</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let prestamo of prestamos">
+      <td>{{ prestamo.usuario }}</td>
+      <td>{{ prestamo.libro }}</td>
+      <td>{{ prestamo.fechaPrestamo }}</td>
+      <td>{{ prestamo.fechaDevolucion }}</td>
+      <td>{{ prestamo.estado }}</td>
+    </tr>
+  </tbody>
+</table>

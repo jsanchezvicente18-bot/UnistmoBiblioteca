@@ -1,0 +1,24 @@
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+}
+
+th, td{
+  border:1px solid #ddd;
+  padding:12px;
+  text-align:left;
+}
+
+th{
+  background:#1e293b;
+  color:white;
+}
+
+button{
+  margin-right:5px;
+  padding:8px 12px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
