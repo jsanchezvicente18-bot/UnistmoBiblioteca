@@ -1,25 +1,113 @@
-<button>➕ Agregar Libro</button>
-
 <h1>Gestión de Libros</h1>
 
+<div class="acciones">
+
+  <button
+  *ngIf="tipoUsuario === 'admin'"
+  (click)="mostrarFormulario = !mostrarFormulario">
+
+  ➕ Agregar Libro
+
+</button>
+
+  <input
+    type="text"
+    placeholder="Buscar libro..."
+    [(ngModel)]="busqueda"
+  >
+
+</div>
+
+<div *ngIf="mostrarFormulario" class="formulario">
+
+  <h3>Nuevo Libro</h3>
+   
+  
+
+  <input
+    type="text"
+    placeholder="Título"
+    [(ngModel)]="nuevoLibro.titulo"
+  >
+
+  <input
+    type="text"
+    placeholder="Autor"
+    [(ngModel)]="nuevoLibro.autor"
+  >
+
+  <input
+    type="text"
+    placeholder="Categoría"
+    [(ngModel)]="nuevoLibro.categoria"
+  >
+
+  <input
+    type="text"
+    placeholder="ISBN"
+    [(ngModel)]="nuevoLibro.isbn"
+  >
+
+  <input
+    type="number"
+    placeholder="Existencias"
+    [(ngModel)]="nuevoLibro.existencias"
+  >
+
+  <button (click)="guardarLibro()">
+    Guardar Libro
+  </button>
+
+</div>
+
 <table>
+
   <thead>
+
     <tr>
       <th>Título</th>
       <th>Autor</th>
       <th>Categoría</th>
       <th>ISBN</th>
       <th>Existencias</th>
+      <th>Acciones</th>
     </tr>
+
   </thead>
 
   <tbody>
+
     <tr *ngFor="let libro of libros">
+      tipoUsuario = localStorage.getItem('tipoUsuario');
+
       <td>{{ libro.titulo }}</td>
+
       <td>{{ libro.autor }}</td>
+
       <td>{{ libro.categoria }}</td>
+
       <td>{{ libro.isbn }}</td>
+
       <td>{{ libro.existencias }}</td>
+
+      <td>
+
+       <td *ngIf="tipoUsuario === 'admin'">
+
+     <button (click)="editarLibro(libro)">
+    ✏️ Editar
+   </button>
+
+      <button (click)="eliminarLibro(libro)">
+     🗑️ Eliminar
+      </button>
+
+       </td>
+
+      </td>
+
     </tr>
+
   </tbody>
+
 </table>

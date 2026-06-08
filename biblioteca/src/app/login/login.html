@@ -1,20 +1,56 @@
 <div class="login-container">
 
-  <h1>Biblioteca Digital</h1>
+  <div class="login-card">
 
-  <div class="login-box">
+    <img
+      src="img/logo.png"
+      alt="Logo UNISTMO"
+      class="logo"
+    >
+
+    <h1>Biblioteca UNISTMO</h1>
+
+    <p class="subtitulo">
+      Sistema de Gestión Bibliotecaria
+    </p>
 
     <input
       type="text"
-      placeholder="Usuario">
+      placeholder="Usuario"
+    >
 
     <input
       type="password"
-      placeholder="Contraseña">
+      placeholder="Contraseña"
+    >
+
+    <select [(ngModel)]="tipoUsuario">
+
+      <option value="admin">
+        Administrador
+      </option>
+
+      <option value="profesor">
+        Profesor
+      </option>
+
+      <option value="estudiante">
+        Estudiante
+      </option>
+
+    </select>
 
     <button (click)="ingresar()">
-      Ingresar
+      Iniciar Sesión
     </button>
+
+    <p class="registro">
+      ¿No tienes cuenta?
+    </p>
+
+    <a routerLink="/registro">
+      Registrarse
+    </a>
 
   </div>
 

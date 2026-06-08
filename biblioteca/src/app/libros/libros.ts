@@ -1,16 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Libros as LibrosService } from '../services/libros';
-
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-libros',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './libros.html',
   styleUrl: './libros.scss'
 })
 export class Libros {
+tipoUsuario = localStorage.getItem('tipoUsuario');
+  busqueda = '';
+
+  mostrarFormulario = false;
+
+  nuevoLibro = {
+    titulo: '',
+    autor: '',
+    categoria: '',
+    isbn: '',
+    existencias: 0
+  };
 
   libros = [
     {
@@ -28,5 +39,33 @@ export class Libros {
       existencias: 3
     }
   ];
+
+  guardarLibro() {
+
+    this.libros.push({
+      ...this.nuevoLibro
+    });
+
+    this.nuevoLibro = {
+      titulo: '',
+      autor: '',
+      categoria: '',
+      isbn: '',
+      existencias: 0
+    };
+
+    this.mostrarFormulario = false;
+  }
+
+  eliminarLibro(libro: any) {
+
+    this.libros = this.libros.filter(
+      l => l !== libro
+    );
+  }
+
+  editarLibro(libro: any) {
+    alert('Editar libro: ' + libro.titulo);
+  }
 
 }
