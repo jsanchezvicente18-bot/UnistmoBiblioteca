@@ -1,5 +1,9 @@
 <h1>Gestión de Libros</h1>
 
+<p>Tipo de usuario: {{ tipoUsuario }}</p>
+<p>Total libros: {{ libros.length }}</p>
+<h1>PRUEBA JAKI 123</h1>
+
 <div class="acciones">
 
   <button
@@ -77,37 +81,34 @@
 
   <tbody>
 
-    <tr *ngFor="let libro of libros">
-      tipoUsuario = localStorage.getItem('tipoUsuario');
+  <tr *ngFor="let libro of libros">
 
-      <td>{{ libro.titulo }}</td>
+    <td>{{ libro.titulo }}</td>
 
-      <td>{{ libro.autor }}</td>
+    <td>{{ libro.autor }}</td>
 
-      <td>{{ libro.categoria }}</td>
+    <td>{{ libro.categoria }}</td>
 
-      <td>{{ libro.isbn }}</td>
+    <td>{{ libro.isbn }}</td>
 
-      <td>{{ libro.existencias }}</td>
+    <td>{{ libro.existencias }}</td>
 
-      <td>
+    <td *ngIf="tipoUsuario === 'admin'">
 
-       <td *ngIf="tipoUsuario === 'admin'">
-
-     <button (click)="editarLibro(libro)">
-    ✏️ Editar
-   </button>
-
-      <button (click)="eliminarLibro(libro)">
-     🗑️ Eliminar
+      <button (click)="editarLibro(libro)">
+        ✏️ Editar
       </button>
 
-       </td>
+      <button (click)="eliminarLibro(libro)">
+        🗑️ Eliminar
+      </button>
 
-      </td>
+    </td>
 
-    </tr>
+  </tr>
 
-  </tbody>
+</tbody>
 
 </table>
+
+

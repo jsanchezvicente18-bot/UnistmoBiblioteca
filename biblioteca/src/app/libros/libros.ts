@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-libros',
@@ -9,8 +10,19 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './libros.html',
   styleUrl: './libros.scss'
 })
-export class Libros {
-tipoUsuario = localStorage.getItem('tipoUsuario');
+export class Libros implements OnInit {
+
+  tipoUsuario = localStorage.getItem('tipoUsuario');
+  
+ngOnInit() {
+  console.log('TIPO USUARIO:', this.tipoUsuario);
+  console.log('ENTRÓ A NGONINIT');
+  this.cargarLibros();
+}
+
+  
+  constructor(private http: HttpClient) {}
+
   busqueda = '';
 
   mostrarFormulario = false;
@@ -23,45 +35,64 @@ tipoUsuario = localStorage.getItem('tipoUsuario');
     existencias: 0
   };
 
-  libros = [
-    {
-      titulo: 'Don Quijote',
-      autor: 'Miguel de Cervantes',
-      categoria: 'Novela',
-      isbn: '978123456',
-      existencias: 5
-    },
-    {
-      titulo: 'Cien años de soledad',
-      autor: 'Gabriel García Márquez',
-      categoria: 'Novela',
-      isbn: '978654321',
-      existencias: 3
-    }
-  ];
+  libros: any[] = [];
+
+ 
+
+cargarLibros() {
+
+  this.http.get<any[]>('http://127.0.0.1:8000/libros')
+    .subscribe({
+      next: (data) => {
+        this.libros = data;
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+
+}
 
   guardarLibro() {
 
-    this.libros.push({
-      ...this.nuevoLibro
+    this.http.post(
+      'http://localhost:8000/libros',
+      this.nuevoLibro
+    ).subscribe({
+      next: () => {
+
+        this.cargarLibros();
+
+        this.nuevoLibro = {
+          titulo: '',
+          autor: '',
+          categoria: '',
+          isbn: '',
+          existencias: 0
+        };
+
+        this.mostrarFormulario = false;
+      },
+      error: (error) => {
+        console.error('Error al guardar libro:', error);
+      }
     });
 
-    this.nuevoLibro = {
-      titulo: '',
-      autor: '',
-      categoria: '',
-      isbn: '',
-      existencias: 0
-    };
-
-    this.mostrarFormulario = false;
   }
 
   eliminarLibro(libro: any) {
 
-    this.libros = this.libros.filter(
-      l => l !== libro
-    );
+    this.http.delete(
+      `http://localhost:8000/libros/${libro.id}`
+    ).subscribe({
+      next: () => {
+        this.cargarLibros();
+      },
+      error: (error) => {
+        console.error('Error al eliminar libro:', error);
+      }
+    });
+
   }
 
   editarLibro(libro: any) {
