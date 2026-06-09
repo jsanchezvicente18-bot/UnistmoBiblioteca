@@ -1,8 +1,43 @@
 <h1>Gestión de Usuarios</h1>
 
-<button>➕ Agregar Usuario</button>
+<div class="acciones">
+
+  <button
+    *ngIf="tipoUsuario === 'admin'"
+    (click)="mostrarFormulario = !mostrarFormulario">
+
+    ➕ Agregar Usuario
+
+  </button>
+
+</div>
+
+<div *ngIf="mostrarFormulario" class="formulario">
+
+  <input
+    type="text"
+    placeholder="Nombre"
+    [(ngModel)]="nuevoUsuario.nombre">
+
+  <input
+    type="email"
+    placeholder="Correo"
+    [(ngModel)]="nuevoUsuario.correo">
+
+  <select [(ngModel)]="nuevoUsuario.tipo">
+    <option value="admin">Administrador</option>
+    <option value="profesor">Profesor</option>
+    <option value="estudiante">Estudiante</option>
+  </select>
+
+  <button (click)="guardarUsuario()">
+    Guardar Usuario
+  </button>
+
+</div>
 
 <table>
+  
   <thead>
     <tr>
       <th>Nombre</th>
@@ -10,16 +45,36 @@
       <th>Matrícula</th>
       <th>Carrera</th>
       <th>Correo</th>
+      <th>Tipo</th>
+      <th>Acciones</th>
     </tr>
   </thead>
 
   <tbody>
+
     <tr *ngFor="let usuario of usuarios">
+
       <td>{{ usuario.nombre }}</td>
       <td>{{ usuario.apellidos }}</td>
       <td>{{ usuario.matricula }}</td>
       <td>{{ usuario.carrera }}</td>
       <td>{{ usuario.correo }}</td>
+      <td>{{ usuario.tipo }}</td>
+
+      <td *ngIf="tipoUsuario === 'admin'">
+
+        <button (click)="editarUsuario(usuario)">
+          ✏️
+        </button>
+
+        <button (click)="eliminarUsuario(usuario)">
+          🗑️
+        </button>
+
+      </td>
+
     </tr>
+
   </tbody>
+
 </table>

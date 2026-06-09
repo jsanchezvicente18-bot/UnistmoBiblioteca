@@ -1,30 +1,63 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './usuarios.html',
   styleUrl: './usuarios.scss'
 })
 export class Usuarios {
 
+  tipoUsuario = localStorage.getItem('tipoUsuario');
+
+  mostrarFormulario = false;
+
+  nuevoUsuario = {
+    nombre: '',
+    correo: '',
+    tipo: 'estudiante'
+  };
+
   usuarios = [
     {
-      nombre: 'Juan',
-      apellidos: 'Pérez López',
-      matricula: '2024001',
-      carrera: 'Ingeniería en Computación',
-      correo: 'juan@unistmo.edu.mx'
+      nombre: 'Jaki',
+      correo: 'jaki@unistmo.com',
+      tipo: 'admin'
     },
     {
-      nombre: 'María',
-      apellidos: 'García Ruiz',
-      matricula: '2024002',
-      carrera: 'Ingeniería en Computación',
-      correo: 'maria@unistmo.edu.mx'
+      nombre: 'Carlos Pérez',
+      correo: 'carlos@unistmo.com',
+      tipo: 'profesor'
     }
   ];
+
+  guardarUsuario() {
+
+    this.usuarios.push({
+      ...this.nuevoUsuario
+    });
+
+    this.nuevoUsuario = {
+      nombre: '',
+      correo: '',
+      tipo: 'estudiante'
+    };
+
+    this.mostrarFormulario = false;
+  }
+
+  eliminarUsuario(usuario: any) {
+
+    this.usuarios = this.usuarios.filter(
+      u => u !== usuario
+    );
+  }
+
+  editarUsuario(usuario: any) {
+    alert('Editar usuario: ' + usuario.nombre);
+  }
 
 }
