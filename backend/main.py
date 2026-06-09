@@ -121,6 +121,37 @@ def obtener_usuarios():
 
     return datos
 
+@app.get("/prestamos-detalle")
+def prestamos_detalle():
+
+    datos = []
+
+    for prestamo in prestamos.find():
+
+        if not prestamo.get("usuario_id") or not prestamo.get("libro_id"):
+            continue
+
+        usuario = usuarios.find_one({
+            "_id": ObjectId(prestamo["usuario_id"])
+        })
+
+        libro = libros.find_one({
+            "_id": ObjectId(prestamo["libro_id"])
+        })
+
+        if not usuario or not libro:
+            continue
+
+        datos.append({
+            "usuario": usuario["nombre"],
+            "tipo": usuario["tipo"],
+            "libro": libro["titulo"],
+            "fecha_prestamo": prestamo["fecha_prestamo"],
+            "fecha_devolucion": prestamo["fecha_devolucion"]
+        })
+
+    return datos
+
 @app.get("/prestamos")
 def obtener_prestamos():
 
@@ -142,7 +173,7 @@ def obtener_prestamos():
 def crear_prestamo(prestamo: Prestamo):
 
     fecha_prestamo = datetime.now()
-    fecha_devolucion = fecha_prestamo + timedelta(days=7)
+    fecha_devolucion = fecha_prestamo + timedelta(days=1)
 
     nuevo_prestamo = {
         "usuario_id": prestamo.usuario_id,

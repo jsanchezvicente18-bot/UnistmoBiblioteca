@@ -1,37 +1,85 @@
-<h1>Panel Principal</h1>
+
+<div class="bienvenida">
+   
+    <h1>Biblioteca Universidad del Istmo</h1>
+     <p>Sistema de Gestión Bibliotecaria</p>
+    
+</div>
+
+<div class="titulo-seccion">
+    <h1>Panel Principal</h1>
+</div>
 
 <div class="cards">
 
-  <div class="card">
-    <h3>📚 Total de Libros</h3>
-    <p>120</p>
-  </div>
+<div class="cards">
 
-  <div class="card">
-    <h3>📖 Préstamos Activos</h3>
-    <p>25</p>
-  </div>
+    <div class="card">
+        <div class="icono">  📚  </div>
+        <h2>120</h2>
+        <p>Total de Libros</p>
+    </div>
 
-  <div class="card">
-    <h3>👥 Usuarios Registrados</h3>
-    <p>80</p>
-  </div>
+    <div class="card">
+        <div class="icono">  👥  </div>
+        <h2>80</h2>
+        <p>Usuarios Registrados</p>
+    </div>
 
-  <div class="card">
-    <h3>📊 Reportes Generados</h3>
-    <p>15</p>
-  </div>
+    <div class="card">
+        <div class="icono">  🔄  </div>
+        <h2>25</h2>
+        <p>Préstamos Activos</p>
+    </div>
+
+    <div class="card">
+        <div class="icono">  ✅  </div>
+        <h2>215</h2>
+        <p>Libros Disponibles</p>
+    </div>
 
 </div>
 
-<h2>Acciones rápidas</h2>
+<div
+  class="card"
+  *ngIf="tipoUsuario === 'admin'">
 
-<div class="acciones">
+  Registrar Libro
 
-  <button>➕ Agregar Libro</button>
+</div>
 
-  <button>📖 Nuevo Préstamo</button>
+<div
+  class="card"
+  *ngIf="tipoUsuario === 'admin'">
 
-  <button>👤 Registrar Usuario</button>
+  Nuevo Usuario
+
+</div>
+
+<div
+  class="card"
+  *ngIf="tipoUsuario === 'admin'">
+
+  Generar Reporte
+
+</div>
+
+<div class="tabla-container">
+
+    <h2>Últimos Préstamos</h2>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Alumno</th>
+                <th>Libro</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+
+
+    </table>
 
 </div>

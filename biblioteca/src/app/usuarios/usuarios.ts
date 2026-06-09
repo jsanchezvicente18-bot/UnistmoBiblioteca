@@ -30,36 +30,44 @@ export class Usuarios implements OnInit {
 
   constructor(private http: HttpClient) {}
 
-  ngOnInit() {
-    this.cargarUsuarios();
-  }
+ ngOnInit() {
+
+  console.log('ENTRÓ A USUARIOS');
+
+  this.cargarUsuarios();
+
+}
 
   cargarUsuarios() {
 
-    this.http.get<any[]>(
-      'http://localhost:8000/usuarios'
-    ).subscribe({
+  console.log('Cargando usuarios...');
 
-      next: (data) => {
+  this.http.get<any[]>(
+    'http://localhost:8000/usuarios'
+  ).subscribe({
 
-        console.log('Usuarios:', data);
+    next: (data) => {
 
-        this.usuarios = data;
+      console.log('Usuarios recibidos:', data);
 
-      },
+      this.usuarios = data;
 
-      error: (error) => {
+      console.log('Total:', this.usuarios.length);
 
-        console.error(
-          'Error al cargar usuarios',
-          error
-        );
+    },
 
-      }
+    error: (error) => {
 
-    });
+      console.error(
+        'Error al cargar usuarios',
+        error
+      );
 
-  }
+    }
+
+  });
+
+}
 
   guardarUsuario() {
 

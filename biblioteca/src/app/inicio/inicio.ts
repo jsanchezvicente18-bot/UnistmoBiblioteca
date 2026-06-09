@@ -8,4 +8,6 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './inicio.html',
   styleUrl: './inicio.scss'
 })
-export class Inicio {}
+export class Inicio {
+  tipoUsuario = localStorage.getItem('tipoUsuario');
+}

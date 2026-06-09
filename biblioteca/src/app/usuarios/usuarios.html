@@ -52,28 +52,17 @@
 
   <tbody>
 
-    <tr *ngFor="let usuario of usuarios">
+  <tr *ngFor="let usuario of usuarios">
 
-      <td>{{ usuario.nombre }}</td>
-      <td>{{ usuario.matricula }}</td>
-      <td>{{ usuario.carrera }}</td>
-      <td>{{ usuario.correo }}</td>
-      <td>{{ usuario.tipo }}</td>
+    <td>{{ usuario.nombre }}</td>
+    <td>{{ usuario.matricula }}</td>
+    <td>{{ usuario.carrera }}</td>
+    <td>{{ usuario.correo }}</td>
+    <td>{{ usuario.tipo }}</td>
+    <td>OK</td>
 
-      <td *ngIf="tipoUsuario === 'admin'">
+  </tr>
 
-        <button (click)="editarUsuario(usuario)">
-          ✏️
-        </button>
-
-        <button (click)="eliminarUsuario(usuario)">
-          🗑️
-        </button>
-
-      </td>
-
-    </tr>
-
-  </tbody>
+</tbody>
 
 </table>
