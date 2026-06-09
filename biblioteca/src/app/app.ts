@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RouterOutlet } from '@angular/router';
 
-
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -10,4 +9,14 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {}
+export class App implements OnInit {
+
+  libros: any[] = [];
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {
+
+  }
+
+}

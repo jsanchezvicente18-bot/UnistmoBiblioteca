@@ -15,6 +15,12 @@ export const routes: Routes = [
   },
 
   {
+    path: 'registro',
+    loadComponent: () =>
+      import('./registro/registro').then(m => m.Registro)
+  },
+
+  {
     path: '',
     loadComponent: () =>
       import('./layout/layout').then(m => m.Layout),
@@ -34,21 +40,27 @@ export const routes: Routes = [
       },
 
       {
-        path: 'prestamos',
-        loadComponent: () =>
-          import('./prestamos/prestamos').then(m => m.Prestamos)
-      },
-
-      {
         path: 'usuarios',
         loadComponent: () =>
           import('./usuarios/usuarios').then(m => m.Usuarios)
       },
 
       {
+        path: 'prestamos',
+        loadComponent: () =>
+          import('./prestamos/prestamos').then(m => m.Prestamos)
+      },
+
+      {
         path: 'reportes',
         loadComponent: () =>
           import('./reportes/reportes').then(m => m.Reportes)
+      },
+
+      {
+        path: 'configuracion',
+        loadComponent: () =>
+          import('./configuracion/configuracion').then(m => m.Configuracion)
       }
 
     ]
