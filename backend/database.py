@@ -1,7 +1,17 @@
 from pymongo import MongoClient
 
 uri= "mongodb+srv://biblioteca_admin:admin2005@bibliotecaweb.bfk1anc.mongodb.net/?appName=BibliotecaWeb"
+
+print("DATABASE.PY CARGADO")
+print(uri)
+
 client = MongoClient(uri)
+
+try:
+    client.admin.command("ping")
+    print("MONGO CONECTADO")
+except Exception as e:
+    print("ERROR MONGO:", e)
 
 db = client["biblioteca"]
 
@@ -11,3 +21,4 @@ libros = db["libros"]
 prestamos = db["prestamos"]
 configuracion = db["configuracion"]
 categorias = db["categorias"]                                       
+

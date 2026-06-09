@@ -3,11 +3,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from bson import ObjectId
 from datetime import datetime, timedelta
 from models.prestamo import Prestamo
-from database import administradores, libros
 from models.usuario import Usuario
 from models.libro import Libro
 
-
+from database import (
+    administradores,
+    libros,
+    usuarios,
+    prestamos
+)
 
 app = FastAPI()
 
@@ -51,7 +55,9 @@ def obtener_libros():
 @app.post("/libros")
 def agregar_libro(libro: Libro):
 
-    resultado = libros.insert_one(libro.model_dump())
+    resultado = libros.insert_one(
+        libro.model_dump()
+    )
 
     return {
         "mensaje": "Libro agregado",
@@ -72,11 +78,11 @@ def eliminar_libro(id: str):
 
 
 @app.put("/libros/{id}")
-def editar_libro(id: str, datos: dict):
+def editar_libro(id: str, libro: Libro):
 
     libros.update_one(
         {"_id": ObjectId(id)},
-        {"$set": datos}
+        {"$set": libro.model_dump()}
     )
 
     return {
@@ -84,17 +90,38 @@ def editar_libro(id: str, datos: dict):
     }
 
 
+@app.post("/usuarios")
+def crear_usuario(usuario: Usuario):
+
+    resultado = usuarios.insert_one(
+        usuario.model_dump()
+    )
+
+    return {
+        "mensaje": "Usuario creado",
+        "id": str(resultado.inserted_id)
+    }
+
 @app.get("/usuarios")
 def obtener_usuarios():
     return []
 
-@app.post("/usuarios")
-def crear_usuario(usuario: Usuario):
-    return usuario
-
 @app.get("/prestamos")
 def obtener_prestamos():
-    return []
+
+    datos = []
+
+    for prestamo in prestamos.find():
+
+        datos.append({
+            "id": str(prestamo["_id"]),
+            "usuario_id": prestamo.get("usuario_id", ""),
+            "libro_id": prestamo.get("libro_id", ""),
+            "fecha_prestamo": prestamo.get("fecha_prestamo", ""),
+            "fecha_devolucion": prestamo.get("fecha_devolucion", "")
+        })
+
+    return datos
 
 @app.post("/prestamos")
 def crear_prestamo(prestamo: Prestamo):
@@ -102,11 +129,20 @@ def crear_prestamo(prestamo: Prestamo):
     fecha_prestamo = datetime.now()
     fecha_devolucion = fecha_prestamo + timedelta(days=7)
 
-    return {
+    nuevo_prestamo = {
         "usuario_id": prestamo.usuario_id,
         "libro_id": prestamo.libro_id,
         "fecha_prestamo": fecha_prestamo.strftime("%Y-%m-%d"),
         "fecha_devolucion": fecha_devolucion.strftime("%Y-%m-%d")
+    }
+
+    resultado = prestamos.insert_one(
+        nuevo_prestamo
+    )
+
+    return {
+        "mensaje": "Préstamo creado",
+        "id": str(resultado.inserted_id)
     }
 
 @app.get("/estadisticas")
@@ -116,4 +152,14 @@ def estadisticas():
         "libros": 0,
         "usuarios": 0,
         "prestamos": 0
+    }
+
+@app.get("/test-mongo")
+def test_mongo():
+
+    total = libros.count_documents({})
+
+    return {
+        "conexion": "ok",
+        "libros": total
     }
