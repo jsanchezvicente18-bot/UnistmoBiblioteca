@@ -104,7 +104,22 @@ def crear_usuario(usuario: Usuario):
 
 @app.get("/usuarios")
 def obtener_usuarios():
-    return []
+
+    datos = []
+
+    for usuario in usuarios.find():
+
+        datos.append({
+            "id": str(usuario["_id"]),
+            "nombre": usuario.get("nombre", ""),
+            "matricula": usuario.get("matricula", ""),
+            "carrera": usuario.get("carrera", ""),
+            "correo": usuario.get("correo", ""),
+            "telefono": usuario.get("telefono", ""),
+            "tipo": usuario.get("tipo", "")
+        })
+
+    return datos
 
 @app.get("/prestamos")
 def obtener_prestamos():
@@ -149,9 +164,9 @@ def crear_prestamo(prestamo: Prestamo):
 def estadisticas():
 
     return {
-        "libros": 0,
-        "usuarios": 0,
-        "prestamos": 0
+        "libros": libros.count_documents({}),
+        "usuarios": usuarios.count_documents({}),
+        "prestamos": prestamos.count_documents({})
     }
 
 @app.get("/test-mongo")

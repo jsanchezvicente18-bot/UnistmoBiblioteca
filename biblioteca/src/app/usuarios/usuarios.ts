@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-usuarios',
@@ -9,44 +10,93 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './usuarios.html',
   styleUrl: './usuarios.scss'
 })
-export class Usuarios {
+export class Usuarios implements OnInit {
 
   tipoUsuario = localStorage.getItem('tipoUsuario');
 
   mostrarFormulario = false;
 
+  usuarios: any[] = [];
+
   nuevoUsuario = {
     nombre: '',
+    matricula: '',
+    carrera: '',
     correo: '',
+    telefono: '',
+    password: '',
     tipo: 'estudiante'
   };
 
-  usuarios = [
-    {
-      nombre: 'Jaki',
-      correo: 'jaki@unistmo.com',
-      tipo: 'admin'
-    },
-    {
-      nombre: 'Carlos Pérez',
-      correo: 'carlos@unistmo.com',
-      tipo: 'profesor'
-    }
-  ];
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {
+    this.cargarUsuarios();
+  }
+
+  cargarUsuarios() {
+
+    this.http.get<any[]>(
+      'http://localhost:8000/usuarios'
+    ).subscribe({
+
+      next: (data) => {
+
+        console.log('Usuarios:', data);
+
+        this.usuarios = data;
+
+      },
+
+      error: (error) => {
+
+        console.error(
+          'Error al cargar usuarios',
+          error
+        );
+
+      }
+
+    });
+
+  }
 
   guardarUsuario() {
 
-    this.usuarios.push({
-      ...this.nuevoUsuario
+    this.http.post(
+      'http://localhost:8000/usuarios',
+      this.nuevoUsuario
+    ).subscribe({
+
+      next: () => {
+
+        this.cargarUsuarios();
+
+        this.nuevoUsuario = {
+          nombre: '',
+          matricula: '',
+          carrera: '',
+          correo: '',
+          telefono: '',
+          password: '',
+          tipo: 'estudiante'
+        };
+
+        this.mostrarFormulario = false;
+
+      },
+
+      error: (error) => {
+
+        console.error(
+          'Error al guardar usuario',
+          error
+        );
+
+      }
+
     });
 
-    this.nuevoUsuario = {
-      nombre: '',
-      correo: '',
-      tipo: 'estudiante'
-    };
-
-    this.mostrarFormulario = false;
   }
 
   eliminarUsuario(usuario: any) {
@@ -54,10 +104,13 @@ export class Usuarios {
     this.usuarios = this.usuarios.filter(
       u => u !== usuario
     );
+
   }
 
   editarUsuario(usuario: any) {
+
     alert('Editar usuario: ' + usuario.nombre);
+
   }
 
 }

@@ -1,32 +1,66 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './registro.html',
   styleUrl: './registro.scss'
 })
 export class Registro {
 
-  telefono = '';
-  correo = '';
+  nuevoUsuario = {
+    nombre: '',
+    matricula: '',
+    correo: '',
+    telefono: '',
+    password: '',
+    tipo: 'estudiante'
+  };
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   registrar() {
 
-    if (this.telefono.length !== 10) {
+    if (!/^[0-9]{10}$/.test(this.nuevoUsuario.telefono)) {
 
-      alert('El teléfono debe tener 10 dígitos');
+      alert('El teléfono debe tener exactamente 10 dígitos');
       return;
 
     }
 
-    alert('Usuario registrado correctamente');
+    if (!/^[0-9]+$/.test(this.nuevoUsuario.matricula)) {
 
-    this.router.navigate(['/login']);
+      alert('La matrícula solo debe contener números');
+      return;
+
+    }
+
+    this.http.post(
+      'http://localhost:8000/usuarios',
+      this.nuevoUsuario
+    ).subscribe({
+      next: () => {
+
+        alert('Usuario registrado correctamente');
+
+        this.router.navigate(['/login']);
+
+      },
+      error: (error) => {
+
+        console.error(error);
+
+        alert('Error al registrar usuario');
+
+      }
+    });
 
   }
 

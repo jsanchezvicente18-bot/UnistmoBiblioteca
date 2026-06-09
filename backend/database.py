@@ -2,6 +2,7 @@ from pymongo import MongoClient
 
 uri= "mongodb+srv://biblioteca_admin:admin2005@bibliotecaweb.bfk1anc.mongodb.net/?appName=BibliotecaWeb"
 
+
 print("DATABASE.PY CARGADO")
 print(uri)
 
