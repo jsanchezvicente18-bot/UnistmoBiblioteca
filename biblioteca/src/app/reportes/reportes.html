@@ -21,34 +21,42 @@
   </div>
 
   <div class="card">
-    <div class="icono">📈</div>
-    <h3>Libros Prestados</h3>
-    <p>{{ librosPrestados }}</p>
+    <div class="icono">✅</div>
+    <h3>Libros Disponibles</h3>
+    <p>{{ librosDisponibles }}</p>
   </div>
-
-</div>
-
-<div class="acciones">
-
-  <button class="pdf">
-    📄 Exportar PDF
-  </button>
-
-  <button class="excel">
-    📊 Exportar Excel
-  </button>
 
 </div>
 
 <div class="reporte-container">
 
-  <h2>📋 Reportes Disponibles</h2>
+  <h2>📋 Resumen General</h2>
 
   <ul>
-    <li>📚 Libros más prestados</li>
-    <li>👥 Usuarios con más préstamos</li>
-    <li>📖 Historial de préstamos</li>
-    <li>📅 Préstamos por fecha</li>
+    <li>
+      📚 Actualmente existen
+      <strong>{{ totalLibros }}</strong>
+      libros registrados.
+    </li>
+
+    <li>
+      👥 Hay
+      <strong>{{ usuariosRegistrados }}</strong>
+      usuarios registrados.
+    </li>
+
+    <li>
+      📖 Existen
+      <strong>{{ prestamosActivos }}</strong>
+      préstamos activos.
+    </li>
+
+    <li>
+      ✅ Hay
+      <strong>{{ librosDisponibles }}</strong>
+      libros disponibles para préstamo.
+    </li>
+
   </ul>
 
 </div>

@@ -2,52 +2,92 @@
 
 <div class="config-grid">
 
+ 
   <div class="config-card">
+
     <h3>🏫 Información de la Biblioteca</h3>
 
-    <label>Nombre de la Biblioteca</label>
-    <input type="text" value="Biblioteca UNISTMO">
+    <div class="dato">
+      <label>Nombre de la Biblioteca</label>
+      <p>Biblioteca Universidad del Istmo</p>
+    </div>
 
-    <label>Correo Institucional</label>
-    <input type="email" value="biblioteca@unistmo.edu.mx">
+    <div class="dato">
+      <label>Correo Institucional</label>
+      <p>biblioteca@unistmo.edu.mx</p>
+    </div>
 
-    <label>Teléfono</label>
-    <input type="text" value="971 000 0000">
+    <div class="dato">
+      <label>Teléfono</label>
+      <p>971 000 0000</p>
+    </div>
 
-    <button>Guardar Cambios</button>
   </div>
 
-  <div class="config-card">
+ 
+  <div
+    class="config-card"
+    *ngIf="tipoUsuario === 'admin'">
+
     <h3>👤 Perfil del Administrador</h3>
 
     <label>Nombre</label>
-    <input type="text" value="Administrador">
+    <input
+      type="text"
+      value="Administrador">
 
     <label>Correo</label>
-    <input type="email" value="admin@unistmo.edu.mx">
+    <input
+      type="email"
+      value="admin@unistmo.edu.mx">
 
     <label>Nueva Contraseña</label>
-    <input type="password">
+    <input
+      type="password">
 
-    <button>Actualizar Perfil</button>
+    <button>
+      Actualizar Perfil
+    </button>
+
   </div>
 
   <div class="config-card">
-    <h3>🎨 Apariencia</h3>
 
-    <p>Tema actual: Rojo Institucional</p>
+  <h3>🔐 Seguridad</h3>
 
-    <button>Cambiar Tema</button>
-  </div>
+  <label>Contraseña Actual</label>
+  <input
+    type="password"
+    [(ngModel)]="passwordActual">
 
-  <div class="config-card">
+  <label>Nueva Contraseña</label>
+  <input
+    type="password"
+    [(ngModel)]="nuevaPassword">
+
+  <button (click)="cambiarPassword()">
+    Actualizar Contraseña
+  </button>
+
+</div>
+
+  
+  <div
+    class="config-card"
+    *ngIf="tipoUsuario === 'admin'">
+
     <h3>💾 Base de Datos</h3>
 
     <p>Estado de conexión:</p>
 
-    <span class="estado">Conectado</span>
+    <span class="estado">
+      Conectado
+    </span>
 
-    <button>Verificar Conexión</button>
+    <button>
+      Verificar Conexión
+    </button>
+
   </div>
 
 </div>

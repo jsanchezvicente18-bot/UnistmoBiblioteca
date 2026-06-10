@@ -9,26 +9,15 @@
 
   <h3>Nuevo Préstamo</h3>
 
-  <select [(ngModel)]="nuevoPrestamo.usuario_id">
+  <div class="usuario-logueado">
+  👤 Usuario:
+  <strong>{{ nombreUsuario }}</strong>
+</div>
 
-    <option value="">
-      Selecciona un usuario
-    </option>
-
-    <option
-      *ngFor="let usuario of usuarios"
-      [value]="usuario.id">
-
-      {{ usuario.nombre }}
-
-    </option>
-
-  </select>
-
+<br>
   <br><br>
 
   <select [(ngModel)]="nuevoPrestamo.libro_id">
-
     <option value="">
       Selecciona un libro
     </option>
@@ -36,11 +25,8 @@
     <option
       *ngFor="let libro of libros"
       [value]="libro.id">
-
       {{ libro.titulo }}
-
     </option>
-
   </select>
 
   <br><br>
@@ -68,13 +54,9 @@
     <tr *ngFor="let prestamo of prestamos">
 
       <td>{{ prestamo.usuario }}</td>
-
       <td>{{ prestamo.libro }}</td>
-
       <td>{{ prestamo.fecha_prestamo }}</td>
-
       <td>{{ prestamo.fecha_devolucion }}</td>
-
       <td>{{ prestamo.tipo }}</td>
 
     </tr>
@@ -109,7 +91,6 @@
         <td>{{ p.alumno }}</td>
         <td>{{ p.libro }}</td>
         <td>{{ p.fecha }}</td>
-
         <td>
           <span [class]="p.estado">
             {{ p.estado }}

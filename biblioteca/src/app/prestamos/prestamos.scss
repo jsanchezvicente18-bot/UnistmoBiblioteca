@@ -173,3 +173,13 @@ tbody tr:hover{
 .card-ultimos-prestamos tbody tr:hover{
   background: #f9fafb;
 }
+
+.usuario-logueado{
+    background: #ffffff;
+    border-left: 5px solid #a50000;
+    padding: 15px;
+    border-radius: 12px;
+    color: #374151;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    margin-bottom: 15px;
+}

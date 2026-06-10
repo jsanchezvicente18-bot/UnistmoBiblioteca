@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-libros',
@@ -21,7 +22,10 @@ ngOnInit() {
 }
 
   
-  constructor(private http: HttpClient) {}
+  constructor(
+  private http: HttpClient,
+  private cdr: ChangeDetectorRef
+) {}
 
   busqueda = '';
 
@@ -44,7 +48,9 @@ cargarLibros() {
   this.http.get<any[]>('http://127.0.0.1:8000/libros')
     .subscribe({
       next: (data) => {
-        this.libros = data;
+        this.libros = [...data];
+        this.cdr.detectChanges();
+        
       },
       error: (error) => {
         console.error(error);

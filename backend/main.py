@@ -144,8 +144,41 @@ def prestamos_detalle():
             continue
 
         datos.append({
+            "usuario": usuario.get("nombre", ""),
+            "tipo": usuario.get("tipo", "Sin tipo"),
+            "libro": libro.get("titulo", ""),
+            "fecha_prestamo": prestamo.get("fecha_prestamo", ""),
+            "fecha_devolucion": prestamo.get("fecha_devolucion", "")
+        })
+
+    return datos
+
+@app.get("/prestamos-usuario/{usuario_id}")
+def prestamos_usuario(usuario_id: str):
+
+    datos = []
+
+    usuario = usuarios.find_one({
+        "_id": ObjectId(usuario_id)
+    })
+
+    if not usuario:
+        return []
+
+    for prestamo in prestamos.find({
+        "usuario_id": usuario_id
+    }):
+
+        libro = libros.find_one({
+            "_id": ObjectId(prestamo["libro_id"])
+        })
+
+        if not libro:
+            continue
+
+        datos.append({
             "usuario": usuario["nombre"],
-            "tipo": usuario["tipo"],
+            "tipo": usuario.get("tipo", ""),
             "libro": libro["titulo"],
             "fecha_prestamo": prestamo["fecha_prestamo"],
             "fecha_devolucion": prestamo["fecha_devolucion"]
@@ -173,8 +206,18 @@ def obtener_prestamos():
 @app.post("/prestamos")
 def crear_prestamo(prestamo: Prestamo):
 
+    prestamo_existente = prestamos.find_one({
+        "libro_id": prestamo.libro_id
+    })
+
+    if prestamo_existente:
+        return {
+            "success": False,
+            "mensaje": "Libro actualmente prestado"
+        }
+
     fecha_prestamo = datetime.now()
-    fecha_devolucion = fecha_prestamo + timedelta(days=1)
+    fecha_devolucion = fecha_prestamo + timedelta(days=7)
 
     nuevo_prestamo = {
         "usuario_id": prestamo.usuario_id,
@@ -188,6 +231,7 @@ def crear_prestamo(prestamo: Prestamo):
     )
 
     return {
+        "success": True,
         "mensaje": "Préstamo creado",
         "id": str(resultado.inserted_id)
     }
@@ -195,10 +239,19 @@ def crear_prestamo(prestamo: Prestamo):
 @app.get("/estadisticas")
 def estadisticas():
 
+    total_libros = libros.count_documents({})
+
+    total_usuarios = usuarios.count_documents({})
+
+    prestamos_activos = prestamos.count_documents({})
+
+    libros_disponibles = total_libros - prestamos_activos
+
     return {
-        "libros": libros.count_documents({}),
-        "usuarios": usuarios.count_documents({}),
-        "prestamos": prestamos.count_documents({})
+        "libros": total_libros,
+        "usuarios": total_usuarios,
+        "prestamos": prestamos_activos,
+        "disponibles": libros_disponibles
     }
 
 @app.get("/test-mongo")

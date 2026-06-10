@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-usuarios',
@@ -28,7 +29,8 @@ export class Usuarios implements OnInit {
     tipo: 'estudiante'
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+  private cdr: ChangeDetectorRef) {}
 
  ngOnInit() {
 
@@ -50,7 +52,8 @@ export class Usuarios implements OnInit {
 
       console.log('Usuarios recibidos:', data);
 
-      this.usuarios = data;
+      this.usuarios = [...data];
+      this.cdr.detectChanges();
 
       console.log('Total:', this.usuarios.length);
 

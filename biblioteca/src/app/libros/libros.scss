@@ -8,13 +8,13 @@
 
 
 .titulo-card{
-  background: linear-gradient(135deg, #0f172a, #1f2937);
+  background: linear-gradient(135deg, #560404,#560404);
   color: white;
   padding: 30px 20px;
   border-radius: 20px;
   text-align: center;
   margin-bottom: 25px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+  box-shadow: 0 12px 30px rgba(110, 7, 7, 0.671);
   position: relative;
   overflow: hidden;
 }
@@ -33,12 +33,12 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 60%);
+  background: radial-gradient(circle, rgba(150, 14, 14, 0.671), transparent 60%);
   transform: rotate(25deg);
 }
 
 p{
-  color: #6b7280;
+  color: #ffffff;
   margin: 3px 0;
 }
 
@@ -65,7 +65,7 @@ input{
 
 input:focus{
   border-color: #a50000;
-  box-shadow: 0 0 0 3px rgba(165,0,0,0.15);
+  box-shadow: 0 0 0 3px rgba(150, 14, 14, 0.671);
 }
 
 
@@ -94,7 +94,7 @@ button:hover{
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  box-shadow: 0 10px 25px rgba(150, 14, 14, 0.671);
 }
 
 .formulario h3{
@@ -108,7 +108,7 @@ button:hover{
   background: white;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  box-shadow: 0 10px 25px rgba(150, 14, 14, 0.671);
 }
 
 table{
@@ -117,7 +117,7 @@ table{
 }
 
 thead{
-  background: #1f2937;
+  background: #420101;
   color: white;
 }
 
@@ -195,7 +195,7 @@ tbody tr:hover{
 .label{
   display: block;
   font-size: 12px;
-  color: #6b7280;
+  color: #ffffff;
   margin-bottom: 5px;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -204,5 +204,5 @@ tbody tr:hover{
 .value{
   font-size: 18px;
   font-weight: 700;
-  color: #111827;
+  color: #460606;
 }

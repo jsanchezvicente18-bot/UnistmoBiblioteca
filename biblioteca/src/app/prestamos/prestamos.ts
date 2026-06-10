@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-prestamos',
@@ -11,6 +12,9 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './prestamos.scss'
 })
 export class Prestamos implements OnInit {
+
+  usuarioLogueado = '';
+  nombreUsuario = '';
 
   tipoUsuario = localStorage.getItem('tipoUsuario');
 
@@ -27,45 +31,69 @@ export class Prestamos implements OnInit {
     libro_id: ''
   };
 
-  constructor(private http: HttpClient) {}
+  constructor( private http: HttpClient,
+  private cdr: ChangeDetectorRef) {}
 
-  ngOnInit() {
-
-    this.cargarPrestamos();
-
-    this.cargarUsuarios();
-
-    this.cargarLibros();
-
-  }
 
 cargarPrestamos() {
 
-  this.http.get<any[]>(
-    'http://localhost:8000/prestamos-detalle'
-  ).subscribe({
+  if (this.tipoUsuario === 'admin') {
 
-    next: (data) => {
+    this.http.get<any[]>(
+      'http://localhost:8000/prestamos-detalle'
+    ).subscribe({
 
-      console.log('Préstamos:', data);
+      next: (data) => {
 
-      this.prestamos = data;
+        console.log('Préstamos:', data);
 
-    },
+        this.prestamos = [...data];
 
-    error: (error) => {
+        this.cdr.detectChanges();
 
-      console.error(
-        'Error al cargar préstamos',
-        error
-      );
+      },
 
-    }
+      error: (error) => {
 
-  });
+        console.error(
+          'Error al cargar préstamos',
+          error
+        );
+
+      }
+
+    });
+
+  } else {
+
+    this.http.get<any[]>(
+      `http://localhost:8000/prestamos-usuario/${this.usuarioLogueado}`
+    ).subscribe({
+
+      next: (data) => {
+
+        console.log('Mis préstamos:', data);
+
+         this.prestamos = [...data];
+
+this.cdr.detectChanges();
+
+      },
+
+      error: (error) => {
+
+        console.error(
+          'Error al cargar préstamos',
+          error
+        );
+
+      }
+
+    });
+
+  }
 
 }
-
   cargarUsuarios() {
 
     this.http.get<any[]>(
@@ -120,7 +148,25 @@ cargarPrestamos() {
 
   }
 
+  ngOnInit() {
+
+  this.usuarioLogueado =
+    localStorage.getItem('usuarioId') || '';
+  this.nombreUsuario =
+    localStorage.getItem('nombreUsuario') || '';
+  setTimeout(() => {
+    this.cargarPrestamos();
+    if(this.tipoUsuario === 'admin'){
+      this.cargarUsuarios();
+    }
+    this.cargarLibros();
+  }, 100);
+
+}
+
   guardarPrestamo() {
+    this.nuevoPrestamo.usuario_id =
+    this.usuarioLogueado;
 
   this.http.post(
     'http://localhost:8000/prestamos',
