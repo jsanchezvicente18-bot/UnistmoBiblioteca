@@ -29,7 +29,17 @@ export class Inicio implements OnInit {
     this.cargarEstadisticas();
 
   }
+nombreUsuario = localStorage.getItem('nombre') || 'Usuario';
 
+fechaActual = new Date().toLocaleDateString(
+  'es-MX',
+  {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }
+);
   cargarEstadisticas() {
 
     this.http.get<any>(
@@ -62,11 +72,8 @@ export class Inicio implements OnInit {
     });
 
   }
-  fechaActual = new Date().toLocaleDateString('es-MX',{
-  weekday:'long',
-  year:'numeric',
-  month:'long',
-  day:'numeric'
-});
+  totalPrestamos = 0;
+ultimoLibro = 'Sin préstamos';
+ 
+};
 
-}

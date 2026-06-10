@@ -7,11 +7,15 @@
     <p>Sistema de Gestión Bibliotecaria</p>
 </div>
 <div class="saludo">
-    <h2>👋 Bienvenida, Jacqueline</h2>
-    <p>Hoy tienes acceso al Sistema de Gestión Bibliotecaria UNISTMO</p>
+
+    <h2>👋 Bienvenido, {{ nombreUsuario }}</h2>
+
+    <p>
+        Nos alegra verte nuevamente en la Biblioteca Digital UNISTMO.
+    </p>
 
     <p class="fecha">
-    📅 {{ fechaActual }}
+        📅 {{ fechaActual }}
     </p>
 
 </div>
@@ -48,13 +52,25 @@
 
 <div class="actividad">
 
-    <h3>📋 Actividad reciente</h3>
+    <h3>📊 Resumen de actividad</h3>
 
-    <ul>
-        <li>Libro agregado: Estructura de Datos</li>
-        <li>Usuario registrado: Jacqueline</li>
-        <li>Préstamo generado correctamente</li>
-    </ul>
+    <div class="resumen">
+
+        <div class="dato">
+            <h4>{{ nombreUsuario }}</h4>
+            <p>Usuario</p>
+        </div>
+
+        <div class="dato">
+            <h4>{{ totalPrestamos }}</h4>
+            <p>Préstamos realizados</p>
+        </div>
+
+        <div class="dato">
+            <h4>{{ ultimoLibro }}</h4>
+            <p>Último libro solicitado</p>
+        </div>
+
+    </div>
 
 </div>
-
