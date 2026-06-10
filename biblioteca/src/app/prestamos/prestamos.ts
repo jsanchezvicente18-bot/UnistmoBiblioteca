@@ -154,13 +154,13 @@ this.cdr.detectChanges();
     localStorage.getItem('usuarioId') || '';
   this.nombreUsuario =
     localStorage.getItem('nombreUsuario') || '';
-  setTimeout(() => {
-    this.cargarPrestamos();
-    if(this.tipoUsuario === 'admin'){
-      this.cargarUsuarios();
-    }
-    this.cargarLibros();
-  }, 100);
+  this.cargarPrestamos();
+
+if(this.tipoUsuario === 'admin'){
+  this.cargarUsuarios();
+}
+
+this.cargarLibros();
 
 }
 

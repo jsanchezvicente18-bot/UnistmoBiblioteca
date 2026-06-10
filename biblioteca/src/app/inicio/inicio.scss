@@ -104,3 +104,64 @@
     }
 
 }
+
+.saludo{
+    background: linear-gradient(135deg,#a50000,#d62828);
+    color:white;
+    padding:20px;
+    border-radius:20px;
+    margin-bottom:20px;
+}
+
+.saludo h2{
+    margin:0;
+    font-size:28px;
+}
+
+.saludo p{
+    margin-top:5px;
+    color:#f8f8f8;
+}
+
+.accesos{
+    margin-top:30px;
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.accesos button{
+    background:#1e3a8a;
+    color:white;
+    border:none;
+    padding:15px 25px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.accesos button:hover{
+    background:#2563eb;
+}
+
+.actividad{
+    margin-top:30px;
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.actividad h3{
+    margin-top:0;
+    color:#a50000;
+}
+
+.actividad li{
+    margin-bottom:10px;
+}
+
+.logo-biblioteca{
+    width:350px;
+    max-width:100%;
+}

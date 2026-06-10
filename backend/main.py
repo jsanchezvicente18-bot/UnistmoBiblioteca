@@ -240,22 +240,28 @@ def crear_prestamo(prestamo: Prestamo):
 def estadisticas():
 
     total_libros = libros.count_documents({})
-
     total_usuarios = usuarios.count_documents({})
+    total_prestamos = prestamos.count_documents({})
 
-    prestamos_activos = prestamos.count_documents({})
-
-    libros_disponibles = total_libros - prestamos_activos
+    disponibles = total_libros - total_prestamos
 
     return {
         "libros": total_libros,
         "usuarios": total_usuarios,
-        "prestamos": prestamos_activos,
-        "disponibles": libros_disponibles
+        "prestamos": total_prestamos,
+        "disponibles": disponibles
     }
+
 
 @app.get("/test-mongo")
 def test_mongo():
+
+    total = libros.count_documents({})
+
+    return {
+        "conexion": "ok",
+        "libros": total
+    }
 
     total = libros.count_documents({})
 
