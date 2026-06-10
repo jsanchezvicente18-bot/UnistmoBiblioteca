@@ -3,11 +3,17 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-inicio',
-  standalone: true,
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './inicio.html',
   styleUrl: './inicio.scss'
 })
 export class Inicio {
-  tipoUsuario = localStorage.getItem('tipoUsuario');
+
+  totalLibros = 0;
+  totalUsuarios = 0;
+  prestamosActivos = 0;
+  librosDisponibles = 0;
+  
+   tipoUsuario = localStorage.getItem('tipoUsuario');
+
 }

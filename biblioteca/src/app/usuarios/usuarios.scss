@@ -92,3 +92,40 @@ tbody tr:hover{
 .eliminar:hover{
   background:#b91c1c;
 }
+/* ===== TITULO PROFESIONAL ===== */
+.titulo-card{
+  background: linear-gradient(135deg, #0f172a, #1f2937);
+  color: white;
+  padding: 28px 20px;
+  border-radius: 20px;
+  text-align: center;
+  margin-bottom: 25px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.titulo-card::before{
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,.08), transparent 60%);
+  transform: rotate(25deg);
+}
+
+.titulo-card h1{
+  margin: 0;
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+}
+.pagina-usuarios{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 25px;
+}

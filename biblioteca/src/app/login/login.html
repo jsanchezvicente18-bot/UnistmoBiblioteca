@@ -2,43 +2,26 @@
 
   <div class="login-card">
 
-    <img
-      src="img/logo.png"
-      alt="Logo UNISTMO"
-      class="logo"
-    >
+    <img src="/img/logo2.png" alt="Logo de la Universidad" class="logo-biblioteca">
 
-    <h1>Biblioteca UNISTMO</h1>
-
+    <h1>Biblioteca Universidad del Istmo</h1>
     <p class="subtitulo">
       Sistema de Gestión Bibliotecaria
     </p>
 
     <input
       type="text"
-      placeholder="Usuario"
+      placeholder="Matrícula"
+      [(ngModel)]="matricula"
+       name="matricula"
     >
 
     <input
-      type="password"
-      placeholder="Contraseña"
+       type="password"
+       placeholder="Contraseña"
+      [(ngModel)]="password"
+       name="password"
     >
-
-    <select [(ngModel)]="tipoUsuario">
-
-      <option value="admin">
-        Administrador
-      </option>
-
-      <option value="profesor">
-        Profesor
-      </option>
-
-      <option value="estudiante">
-        Estudiante
-      </option>
-
-    </select>
 
     <button (click)="ingresar()">
       Iniciar Sesión
@@ -51,6 +34,12 @@
     <a routerLink="/registro">
       Registrarse
     </a>
+
+    <p class="recuperar">
+      <a routerLink="/recuperar-password">
+      ¿Olvidaste tu contraseña?
+      </a>
+    </p>
 
   </div>
 

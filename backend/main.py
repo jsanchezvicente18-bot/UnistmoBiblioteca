@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from models.prestamo import Prestamo
 from models.usuario import Usuario
 from models.libro import Libro
+from models.login import Login
 
 from database import (
     administradores,
@@ -15,7 +16,7 @@ from database import (
 
 app = FastAPI()
 
-# Permitir conexión desde Angular
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -208,4 +209,25 @@ def test_mongo():
     return {
         "conexion": "ok",
         "libros": total
+    }
+
+@app.post("/login")
+def login(datos: Login):
+
+    usuario = usuarios.find_one({
+        "matricula": datos.matricula,
+        "password": datos.password
+    })
+
+    if not usuario:
+        return {
+            "success": False,
+            "mensaje": "Matrícula o contraseña incorrectas"
+        }
+
+    return {
+        "success": True,
+        "id": str(usuario["_id"]),
+        "nombre": usuario["nombre"],
+        "tipo": usuario["tipo"]
     }

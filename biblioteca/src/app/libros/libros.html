@@ -1,113 +1,95 @@
-<h1>Gestión de Libros</h1>
+<div class="pagina-libros">
 
-<p>Tipo de usuario: {{ tipoUsuario }}</p>
-<p>Total libros: {{ libros.length }}</p>
+  <div class="titulo-card">
+  <h1>📚 Gestión de Libros</h1>
+  </div>
 
-<div class="acciones">
+  <div class="info-panel">
 
-  <button
-  *ngIf="tipoUsuario === 'admin'"
-  (click)="mostrarFormulario = !mostrarFormulario">
+  <div class="info-card">
+    <span class="label">Tipo de usuario</span>
+    <span class="value">{{ tipoUsuario }}</span>
+  </div>
 
-  ➕ Agregar Libro
-
-</button>
-
-  <input
-    type="text"
-    placeholder="Buscar libro..."
-    [(ngModel)]="busqueda"
-  >
+  <div class="info-card">
+    <span class="label">Total libros</span>
+    <span class="value">{{ libros.length }}</span>
+  </div>
 
 </div>
 
-<div *ngIf="mostrarFormulario" class="formulario">
+  <div class="acciones">
 
-  <h3>Nuevo Libro</h3>
-   
-  
+    <button
+      *ngIf="tipoUsuario === 'admin'"
+      (click)="mostrarFormulario = !mostrarFormulario">
 
-  <input
-    type="text"
-    placeholder="Título"
-    [(ngModel)]="nuevoLibro.titulo"
-  >
+      ➕ Agregar Libro
+    </button>
 
-  <input
-    type="text"
-    placeholder="Autor"
-    [(ngModel)]="nuevoLibro.autor"
-  >
+    <input
+      type="text"
+      placeholder="Buscar libro..."
+      [(ngModel)]="busqueda"
+    >
 
-  <input
-    type="text"
-    placeholder="Categoría"
-    [(ngModel)]="nuevoLibro.categoria"
-  >
+  </div>
 
-  <input
-    type="text"
-    placeholder="ISBN"
-    [(ngModel)]="nuevoLibro.isbn"
-  >
+  <div *ngIf="mostrarFormulario" class="formulario">
 
-  <input
-    type="number"
-    placeholder="Existencias"
-    [(ngModel)]="nuevoLibro.existencias"
-  >
+    <h3>Nuevo Libro</h3>
 
-  <button (click)="guardarLibro()">
-    Guardar Libro
-  </button>
+    <input type="text" placeholder="Título" [(ngModel)]="nuevoLibro.titulo">
+    <input type="text" placeholder="Autor" [(ngModel)]="nuevoLibro.autor">
+    <input type="text" placeholder="Categoría" [(ngModel)]="nuevoLibro.categoria">
+    <input type="text" placeholder="ISBN" [(ngModel)]="nuevoLibro.isbn">
+    <input type="number" placeholder="Existencias" [(ngModel)]="nuevoLibro.existencias">
+
+    <button (click)="guardarLibro()">Guardar Libro</button>
+
+  </div>
+
+  <div class="tabla-container">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Autor</th>
+          <th>Categoría</th>
+          <th>ISBN</th>
+          <th>Existencias</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let libro of libros">
+
+          <td>{{ libro.titulo }}</td>
+          <td>{{ libro.autor }}</td>
+          <td>{{ libro.categoria }}</td>
+          <td>{{ libro.isbn }}</td>
+          <td>{{ libro.existencias }}</td>
+
+          <td *ngIf="tipoUsuario === 'admin'">
+
+            <button class="editar" (click)="editarLibro(libro)">
+              ✏️ Editar
+            </button>
+
+            <button class="eliminar" (click)="eliminarLibro(libro)">
+              🗑️ Eliminar
+            </button>
+
+          </td>
+
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
 
 </div>
-
-<table>
-
-  <thead>
-
-    <tr>
-      <th>Título</th>
-      <th>Autor</th>
-      <th>Categoría</th>
-      <th>ISBN</th>
-      <th>Existencias</th>
-      <th>Acciones</th>
-    </tr>
-
-  </thead>
-
-  <tbody>
-
-  <tr *ngFor="let libro of libros">
-
-    <td>{{ libro.titulo }}</td>
-
-    <td>{{ libro.autor }}</td>
-
-    <td>{{ libro.categoria }}</td>
-
-    <td>{{ libro.isbn }}</td>
-
-    <td>{{ libro.existencias }}</td>
-
-    <td *ngIf="tipoUsuario === 'admin'">
-
-      <button (click)="editarLibro(libro)">
-        ✏️ Editar
-      </button>
-
-      <button (click)="eliminarLibro(libro)">
-        🗑️ Eliminar
-      </button>
-
-    </td>
-
-  </tr>
-
-</tbody>
-
-</table>
-
-

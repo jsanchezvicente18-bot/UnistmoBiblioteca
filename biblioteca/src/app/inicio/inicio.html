@@ -1,85 +1,37 @@
-
 <div class="bienvenida">
-   
+
+    <img src="/img/logo.png" alt="Logo de la Universidad" class="logo-biblioteca">
+
     <h1>Biblioteca Universidad del Istmo</h1>
-     <p>Sistema de Gestión Bibliotecaria</p>
-    
-</div>
 
-<div class="titulo-seccion">
-    <h1>Panel Principal</h1>
+    <p>Sistema de Gestión Bibliotecaria</p>
 </div>
-
-<div class="cards">
 
 <div class="cards">
 
     <div class="card">
-        <div class="icono">  📚  </div>
-        <h2>120</h2>
+        <div class="icono">📚</div>
+        <h2>{{ totalLibros }}</h2>
         <p>Total de Libros</p>
     </div>
 
     <div class="card">
-        <div class="icono">  👥  </div>
-        <h2>80</h2>
+        <div class="icono">👥</div>
+        <h2>{{ totalUsuarios }}</h2>
         <p>Usuarios Registrados</p>
     </div>
 
     <div class="card">
-        <div class="icono">  🔄  </div>
-        <h2>25</h2>
+        <div class="icono">🔄</div>
+        <h2>{{ prestamosActivos }}</h2>
         <p>Préstamos Activos</p>
     </div>
 
     <div class="card">
-        <div class="icono">  ✅  </div>
-        <h2>215</h2>
+        <div class="icono">✅</div>
+        <h2>{{ librosDisponibles }}</h2>
         <p>Libros Disponibles</p>
     </div>
 
 </div>
 
-<div
-  class="card"
-  *ngIf="tipoUsuario === 'admin'">
-
-  Registrar Libro
-
-</div>
-
-<div
-  class="card"
-  *ngIf="tipoUsuario === 'admin'">
-
-  Nuevo Usuario
-
-</div>
-
-<div
-  class="card"
-  *ngIf="tipoUsuario === 'admin'">
-
-  Generar Reporte
-
-</div>
-
-<div class="tabla-container">
-
-    <h2>Últimos Préstamos</h2>
-
-    <table>
-
-        <thead>
-            <tr>
-                <th>Alumno</th>
-                <th>Libro</th>
-                <th>Fecha</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-
-
-    </table>
-
-</div>
