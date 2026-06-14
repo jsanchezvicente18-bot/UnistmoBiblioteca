@@ -1,22 +1,104 @@
 <div class="pagina-libros">
 
+  <!-- ENCABEZADO -->
+
   <div class="titulo-card">
-  <h1>📚 Gestión de Libros</h1>
+    <h1>📚 Biblioteca Digital</h1>
   </div>
+
+  <!-- INFORMACIÓN -->
 
   <div class="info-panel">
 
-  <div class="info-card">
-    <span class="label">Tipo de usuario</span>
-    <span class="value">{{ tipoUsuario }}</span>
+    <div class="info-card">
+      <span class="label">Tipo de Usuario</span>
+      <span class="value">{{ tipoUsuario }}</span>
+    </div>
+
+    <div class="info-card">
+      <span class="label">Total Libros</span>
+      <span class="value">{{ libros.length }}</span>
+    </div>
+
   </div>
 
-  <div class="info-card">
-    <span class="label">Total libros</span>
-    <span class="value">{{ libros.length }}</span>
+  <!-- BÚSQUEDA -->
+
+  <div class="busqueda-container">
+
+    <h3>🔎 Búsqueda Avanzada</h3>
+
+    <div class="busqueda-grid">
+
+      <input
+        type="text"
+        placeholder="Buscar por título..."
+        [(ngModel)]="busquedaTitulo">
+
+      <input
+        type="text"
+        placeholder="Buscar por autor..."
+        [(ngModel)]="busquedaAutor">
+
+      <input
+        type="text"
+        placeholder="Buscar por categoría..."
+        [(ngModel)]="busquedaCategoria">
+
+      <input
+        type="text"
+        placeholder="Buscar por ISBN..."
+        [(ngModel)]="busquedaISBN">
+
+    </div>
+
   </div>
 
-</div>
+  <!-- CATEGORÍAS -->
+
+  <div class="categorias">
+
+    <h3>📂 Categorías Destacadas</h3>
+
+    <div class="botones-categorias">
+
+      <button (click)="filtrarCategoria('Programación')">
+        💻 Programación
+      </button>
+
+      <button (click)="filtrarCategoria('Bases de Datos')">
+        🗄️ Bases de Datos
+      </button>
+
+      <button (click)="filtrarCategoria('Redes')">
+        🌐 Redes
+      </button>
+
+      <button (click)="filtrarCategoria('IA')">
+        🤖 IA
+      </button>
+
+      <button (click)="filtrarCategoria('Matemáticas')">
+        📐 Matemáticas
+      </button>
+
+      <button (click)="filtrarCategoria('Literatura')">
+        📖 Literatura
+      </button>
+
+      <button
+        class="limpiar"
+        (click)="limpiarFiltros()">
+
+        🔄 Mostrar Todos
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- BOTÓN AGREGAR -->
 
   <div class="acciones">
 
@@ -25,67 +107,158 @@
       (click)="mostrarFormulario = !mostrarFormulario">
 
       ➕ Agregar Libro
+
     </button>
 
-    <input
-      type="text"
-      placeholder="Buscar libro..."
-      [(ngModel)]="busqueda"
-    >
-
   </div>
+
+  <!-- FORMULARIO -->
 
   <div *ngIf="mostrarFormulario" class="formulario">
 
     <h3>Nuevo Libro</h3>
 
-    <input type="text" placeholder="Título" [(ngModel)]="nuevoLibro.titulo">
-    <input type="text" placeholder="Autor" [(ngModel)]="nuevoLibro.autor">
-    <input type="text" placeholder="Categoría" [(ngModel)]="nuevoLibro.categoria">
-    <input type="text" placeholder="ISBN" [(ngModel)]="nuevoLibro.isbn">
-    <input type="number" placeholder="Existencias" [(ngModel)]="nuevoLibro.existencias">
+    <input
+      type="text"
+      placeholder="Título"
+      [(ngModel)]="nuevoLibro.titulo">
 
-    <button (click)="guardarLibro()">Guardar Libro</button>
+    <input
+      type="text"
+      placeholder="Autor"
+      [(ngModel)]="nuevoLibro.autor">
+
+    <input
+      type="text"
+      placeholder="Categoría"
+      [(ngModel)]="nuevoLibro.categoria">
+
+    <input
+      type="text"
+      placeholder="ISBN"
+      [(ngModel)]="nuevoLibro.isbn">
+
+    <input
+      type="number"
+      placeholder="Existencias"
+      [(ngModel)]="nuevoLibro.existencias">
+
+    <button (click)="guardarLibro()">
+      Guardar Libro
+    </button>
 
   </div>
+
+  <!-- TABLA -->
 
   <div class="tabla-container">
 
     <table>
 
       <thead>
+
         <tr>
           <th>Título</th>
           <th>Autor</th>
           <th>Categoría</th>
           <th>ISBN</th>
           <th>Existencias</th>
+          <th>Estado</th>
           <th>Acciones</th>
         </tr>
+
       </thead>
 
       <tbody>
-        <tr *ngFor="let libro of libros">
+
+        <tr *ngFor="let libro of filtrarLibros()">
 
           <td>{{ libro.titulo }}</td>
+
           <td>{{ libro.autor }}</td>
+
           <td>{{ libro.categoria }}</td>
+
           <td>{{ libro.isbn }}</td>
+
           <td>{{ libro.existencias }}</td>
 
-          <td *ngIf="tipoUsuario === 'admin'">
+          <td>
 
-            <button class="editar" (click)="editarLibro(libro)">
-              ✏️ Editar
+            <span
+              *ngIf="libro.existencias > 0"
+              class="disponible">
+
+              ✅ Disponible
+
+            </span>
+
+            <span
+              *ngIf="libro.existencias <= 0"
+              class="agotado">
+
+              ❌ Agotado
+
+            </span>
+
+          </td>
+
+          <td class="acciones-libro">
+
+            <!-- VER DETALLE -->
+
+            <button
+              class="ver"
+              (click)="verDetalle(libro)">
+
+              👁️ Ver
+
             </button>
 
-            <button class="eliminar" (click)="eliminarLibro(libro)">
-              🗑️ Eliminar
+            <!-- SOLO USUARIOS -->
+
+            <button
+              *ngIf="tipoUsuario !== 'admin'"
+              class="favorito"
+              (click)="agregarFavorito(libro)">
+
+              💖 Favorito
+
+            </button>
+
+            <button
+              *ngIf="tipoUsuario !== 'admin'"
+              class="prestamo"
+              (click)="solicitarPrestamo(libro)">
+
+              📚 Solicitar
+
+            </button>
+
+            <!-- SOLO ADMIN -->
+
+            <button
+              *ngIf="tipoUsuario === 'admin'"
+              class="editar"
+              (click)="editarLibro(libro)">
+
+              ✏️
+
+            </button>
+
+            <button
+              *ngIf="tipoUsuario === 'admin'"
+              class="eliminar"
+              (click)="eliminarLibro(libro)">
+
+              🗑️
+
             </button>
 
           </td>
 
         </tr>
+
       </tbody>
 
     </table>

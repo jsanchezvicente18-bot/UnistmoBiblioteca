@@ -19,6 +19,42 @@ export class Inicio implements OnInit {
   prestamosActivos = 0;
   librosDisponibles = 0;
 
+  nombreUsuario =
+    localStorage.getItem('nombreUsuario') || 'Usuario';
+
+  tipoUsuario =
+    localStorage.getItem('tipoUsuario') || '';
+
+  fechaActual = new Date().toLocaleDateString(
+    'es-MX',
+    {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }
+  );
+
+  totalPrestamos = 0;
+
+  ultimoLibro = 'Sin préstamos';
+
+  misLibros: string[] = [
+    'Sin préstamos registrados'
+  ];
+
+  proximasDevoluciones: string[] = [
+    'No tienes devoluciones pendientes'
+  ];
+
+  librosPopulares: string[] = [
+    'Estructura de Datos',
+    'Introducción a la Informática',
+    'Física para Ciencias e Ingeniería',
+    'Análisis Numérico',
+    'Enciclopedia de la Seguridad Informática'
+  ];
+
   constructor(
     private http: HttpClient,
     private cdr: ChangeDetectorRef
@@ -29,17 +65,7 @@ export class Inicio implements OnInit {
     this.cargarEstadisticas();
 
   }
-nombreUsuario = localStorage.getItem('nombre') || 'Usuario';
 
-fechaActual = new Date().toLocaleDateString(
-  'es-MX',
-  {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  }
-);
   cargarEstadisticas() {
 
     this.http.get<any>(
@@ -51,12 +77,15 @@ fechaActual = new Date().toLocaleDateString(
         console.log('ESTADISTICAS:', data);
 
         this.totalLibros = data.libros || 0;
+
         this.totalUsuarios = data.usuarios || 0;
+
         this.prestamosActivos = data.prestamos || 0;
-        this.librosDisponibles = data.disponibles || 0;
+
+        this.librosDisponibles =
+          data.disponibles || data.libros || 0;
 
         this.cdr.detectChanges();
-
 
       },
 
@@ -72,8 +101,6 @@ fechaActual = new Date().toLocaleDateString(
     });
 
   }
-  totalPrestamos = 0;
-ultimoLibro = 'Sin préstamos';
- 
-};
+
+}
 

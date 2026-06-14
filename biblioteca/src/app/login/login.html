@@ -2,44 +2,97 @@
 
   <div class="login-card">
 
-    <img src="/img/logo2.png" alt="Logo de la Universidad" class="logo-biblioteca">
+```
+<!-- ENCABEZADO -->
 
-    <h1>Biblioteca Universidad del Istmo</h1>
-    <p class="subtitulo">
-      Sistema de Gestión Bibliotecaria
-    </p>
+<img
+  src="/img/logo2.png"
+  alt="Logo de la Biblioteca"
+  class="logo-biblioteca">
 
-    <input
-      type="text"
-      placeholder="Matrícula"
-      [(ngModel)]="matricula"
-       name="matricula"
-    >
+<h1>Biblioteca Digital UNISTMO</h1>
 
-    <input
-       type="password"
-       placeholder="Contraseña"
-      [(ngModel)]="password"
-       name="password"
-    >
+<p class="subtitulo">
+  Sistema de Gestión Bibliotecaria
+</p>
 
-    <button (click)="ingresar()">
-      Iniciar Sesión
-    </button>
+<!-- FORMULARIO -->
 
-    <p class="registro">
-      ¿No tienes cuenta?
-    </p>
+<input
+  type="text"
+  placeholder="Correo electrónico o matrícula"
+  [(ngModel)]="matricula"
+  name="matricula">
 
-    <a routerLink="/registro">
-      Registrarse
-    </a>
+<div class="password-container">
 
-    <p class="recuperar">
-      <a routerLink="/recuperar-password">
-      ¿Olvidaste tu contraseña?
-      </a>
-    </p>
+  <input
+    [type]="mostrarPassword ? 'text' : 'password'"
+    placeholder="Contraseña"
+    [(ngModel)]="password"
+    name="password">
+
+  <button
+    type="button"
+    class="btn-password"
+    (click)="mostrarPassword = !mostrarPassword">
+
+    {{ mostrarPassword ? '🙈' : '👁️' }}
+
+  </button>
+
+</div>
+
+<button
+  class="btn-login"
+  (click)="ingresar()">
+
+  Iniciar Sesión
+
+</button>
+
+<!-- ENLACES -->
+
+<p class="recuperar">
+
+  <a routerLink="/recuperar-password">
+
+     Recuperar contraseña
+
+  </a>
+
+</p>
+
+<p class="registro">
+
+  ¿No tienes cuenta?
+
+  <a routerLink="/registro">
+
+    Crear cuenta
+
+  </a>
+
+</p>
+
+<!-- PIE DE PÁGINA -->
+
+<div class="footer-login">
+
+  <p>
+    📚 Biblioteca Digital UNISTMO
+  </p>
+
+  <p>
+    Versión 1.0
+  </p>
+
+  <p>
+    © 2026 Todos los derechos reservados
+  </p>
+
+</div>
+```
 
   </div>
 

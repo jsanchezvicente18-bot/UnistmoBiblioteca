@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-prestamos',
@@ -16,7 +15,8 @@ export class Prestamos implements OnInit {
   usuarioLogueado = '';
   nombreUsuario = '';
 
-  tipoUsuario = localStorage.getItem('tipoUsuario');
+  tipoUsuario =
+    localStorage.getItem('tipoUsuario');
 
   prestamos: any[] = [];
 
@@ -26,74 +26,103 @@ export class Prestamos implements OnInit {
 
   mostrarFormulario = false;
 
+  prestamosActivos = 0;
+  prestamosVencidos = 0;
+
+  usuarioTop = 'Sin datos';
+  libroTop = 'Sin datos';
+
   nuevoPrestamo = {
     usuario_id: '',
     libro_id: ''
   };
 
-  constructor( private http: HttpClient,
-  private cdr: ChangeDetectorRef) {}
+  constructor(
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef
+  ) {}
 
+  ngOnInit() {
 
-cargarPrestamos() {
+    this.usuarioLogueado =
+      localStorage.getItem('usuarioId') || '';
 
-  if (this.tipoUsuario === 'admin') {
+    this.nombreUsuario =
+      localStorage.getItem('nombreUsuario') || '';
 
-    this.http.get<any[]>(
-      'http://localhost:8000/prestamos-detalle'
-    ).subscribe({
+    this.cargarPrestamos();
 
-      next: (data) => {
+    if (this.tipoUsuario === 'admin') {
+      this.cargarUsuarios();
+    }
 
-        console.log('Préstamos:', data);
+    this.cargarLibros();
+  }
 
-        this.prestamos = [...data];
+  cargarPrestamos() {
 
-        this.cdr.detectChanges();
+    if (this.tipoUsuario === 'admin') {
 
-      },
+      this.http.get<any[]>(
+        'http://localhost:8000/prestamos-detalle'
+      ).subscribe({
 
-      error: (error) => {
+        next: (data) => {
 
-        console.error(
-          'Error al cargar préstamos',
-          error
-        );
+          console.log('Préstamos:', data);
 
-      }
+          this.prestamos = [...data];
 
-    });
+          this.calcularEstadisticas();
 
-  } else {
+          this.cdr.detectChanges();
 
-    this.http.get<any[]>(
-      `http://localhost:8000/prestamos-usuario/${this.usuarioLogueado}`
-    ).subscribe({
+        },
 
-      next: (data) => {
+        error: (error) => {
 
-        console.log('Mis préstamos:', data);
+          console.error(
+            'Error al cargar préstamos',
+            error
+          );
 
-         this.prestamos = [...data];
+        }
 
-this.cdr.detectChanges();
+      });
 
-      },
+    } else {
 
-      error: (error) => {
+      this.http.get<any[]>(
+        `http://localhost:8000/prestamos-usuario/${this.usuarioLogueado}`
+      ).subscribe({
 
-        console.error(
-          'Error al cargar préstamos',
-          error
-        );
+        next: (data) => {
 
-      }
+          console.log('Mis préstamos:', data);
 
-    });
+          this.prestamos = [...data];
+
+          this.calcularEstadisticas();
+
+          this.cdr.detectChanges();
+
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Error al cargar préstamos',
+            error
+          );
+
+        }
+
+      });
+
+    }
 
   }
 
-}
   cargarUsuarios() {
 
     this.http.get<any[]>(
@@ -148,55 +177,73 @@ this.cdr.detectChanges();
 
   }
 
-  ngOnInit() {
-
-  this.usuarioLogueado =
-    localStorage.getItem('usuarioId') || '';
-  this.nombreUsuario =
-    localStorage.getItem('nombreUsuario') || '';
-  this.cargarPrestamos();
-
-if(this.tipoUsuario === 'admin'){
-  this.cargarUsuarios();
-}
-
-this.cargarLibros();
-
-}
-
   guardarPrestamo() {
+
     this.nuevoPrestamo.usuario_id =
-    this.usuarioLogueado;
+      this.usuarioLogueado;
 
-  this.http.post(
-    'http://localhost:8000/prestamos',
-    this.nuevoPrestamo
-  ).subscribe({
+    this.http.post(
+      'http://localhost:8000/prestamos',
+      this.nuevoPrestamo
+    ).subscribe({
 
-    next: () => {
+      next: () => {
 
-      alert('Préstamo creado correctamente');
+        alert('Préstamo creado correctamente');
 
-      this.cargarPrestamos();
+        this.cargarPrestamos();
 
-      this.nuevoPrestamo = {
-        usuario_id: '',
-        libro_id: ''
-      };
+        this.nuevoPrestamo = {
+          usuario_id: '',
+          libro_id: ''
+        };
 
-      this.mostrarFormulario = false;
+        this.mostrarFormulario = false;
 
-    },
+      },
 
-    error: (error) => {
+      error: (error) => {
 
-      console.error(error);
+        console.error(error);
 
-      alert('Error al crear préstamo');
+        alert('Error al crear préstamo');
 
-    }
+      }
 
-  });
+    });
 
-}
+  }
+
+  calcularEstadisticas() {
+
+    this.prestamosActivos = this.prestamos.filter(
+      p => p.estado === 'Activo'
+    ).length;
+
+    this.prestamosVencidos = this.prestamos.filter(
+      p => p.estado === 'Vencido'
+    ).length;
+
+  }
+
+  renovarPrestamo(prestamo: any) {
+
+    alert(
+      'Renovar préstamo de: ' +
+      prestamo.libro
+    );
+
+  }
+
+  verDetalle(prestamo: any) {
+
+    alert(
+      'Libro: ' +
+      prestamo.libro +
+      '\nUsuario: ' +
+      prestamo.usuario
+    );
+
+  }
+
 }

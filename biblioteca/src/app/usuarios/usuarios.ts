@@ -1,127 +1,191 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
-  selector: 'app-usuarios',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './usuarios.html',
-  styleUrl: './usuarios.scss'
+selector: 'app-usuarios',
+standalone: true,
+imports: [CommonModule, FormsModule],
+templateUrl: './usuarios.html',
+styleUrl: './usuarios.scss'
 })
 export class Usuarios implements OnInit {
 
-  tipoUsuario = localStorage.getItem('tipoUsuario');
+tipoUsuario =
+localStorage.getItem('tipoUsuario');
 
-  mostrarFormulario = false;
+nombreUsuario =
+localStorage.getItem('nombreUsuario') || '';
 
-  usuarios: any[] = [];
+matriculaUsuario =
+localStorage.getItem('matriculaUsuario') || '';
 
-  nuevoUsuario = {
-    nombre: '',
-    matricula: '',
-    carrera: '',
-    correo: '',
-    telefono: '',
-    password: '',
-    tipo: 'estudiante'
-  };
+correoUsuario =
+localStorage.getItem('correoUsuario') || '';
 
-  constructor(private http: HttpClient,
-  private cdr: ChangeDetectorRef) {}
+carreraUsuario =
+localStorage.getItem('carreraUsuario') || '';
 
- ngOnInit() {
+mostrarFormulario = false;
 
-  console.log('ENTRÓ A USUARIOS');
+usuarios: any[] = [];
+
+misPrestamos: any[] = [];
+
+historialLibros: string[] = [];
+
+favoritos: string[] = [];
+
+nuevoUsuario = {
+nombre: '',
+matricula: '',
+carrera: '',
+correo: '',
+telefono: '',
+password: '',
+tipo: 'estudiante'
+};
+
+constructor(
+private http: HttpClient,
+private cdr: ChangeDetectorRef
+) {}
+
+ngOnInit() {
+
+
+console.log('ENTRÓ A USUARIOS');
+
+if (this.tipoUsuario === 'admin') {
 
   this.cargarUsuarios();
 
 }
 
-  cargarUsuarios() {
+this.cargarDatosUsuario();
 
-  console.log('Cargando usuarios...');
-
-  this.http.get<any[]>(
-    'http://localhost:8000/usuarios'
-  ).subscribe({
-
-    next: (data) => {
-
-      console.log('Usuarios recibidos:', data);
-
-      this.usuarios = [...data];
-      this.cdr.detectChanges();
-
-      console.log('Total:', this.usuarios.length);
-
-    },
-
-    error: (error) => {
-
-      console.error(
-        'Error al cargar usuarios',
-        error
-      );
-
-    }
-
-  });
 
 }
 
-  guardarUsuario() {
+cargarDatosUsuario() {
 
-    this.http.post(
-      'http://localhost:8000/usuarios',
-      this.nuevoUsuario
-    ).subscribe({
 
-      next: () => {
+this.misPrestamos = [];
 
-        this.cargarUsuarios();
+this.historialLibros = [];
 
-        this.nuevoUsuario = {
-          nombre: '',
-          matricula: '',
-          carrera: '',
-          correo: '',
-          telefono: '',
-          password: '',
-          tipo: 'estudiante'
-        };
+this.favoritos = [];
 
-        this.mostrarFormulario = false;
 
-      },
+}
 
-      error: (error) => {
+cargarUsuarios() {
 
-        console.error(
-          'Error al guardar usuario',
-          error
-        );
 
-      }
+console.log('Cargando usuarios...');
 
-    });
+this.http.get<any[]>(
+  'http://localhost:8000/usuarios'
+).subscribe({
 
-  }
+  next: (data) => {
 
-  eliminarUsuario(usuario: any) {
+    console.log(
+      'Usuarios recibidos:',
+      data
+    );
 
-    this.usuarios = this.usuarios.filter(
-      u => u !== usuario
+    this.usuarios = [...data];
+
+    this.cdr.detectChanges();
+
+    console.log(
+      'Total:',
+      this.usuarios.length
+    );
+
+  },
+
+  error: (error) => {
+
+    console.error(
+      'Error al cargar usuarios',
+      error
     );
 
   }
 
-  editarUsuario(usuario: any) {
+});
 
-    alert('Editar usuario: ' + usuario.nombre);
+
+}
+
+guardarUsuario() {
+
+
+this.http.post(
+  'http://localhost:8000/usuarios',
+  this.nuevoUsuario
+).subscribe({
+
+  next: () => {
+
+    this.cargarUsuarios();
+
+    this.nuevoUsuario = {
+      nombre: '',
+      matricula: '',
+      carrera: '',
+      correo: '',
+      telefono: '',
+      password: '',
+      tipo: 'estudiante'
+    };
+
+    this.mostrarFormulario = false;
+
+  },
+
+  error: (error) => {
+
+    console.error(
+      'Error al guardar usuario',
+      error
+    );
 
   }
+
+});
+
+}
+
+eliminarUsuario(usuario: any) {
+
+this.usuarios =
+  this.usuarios.filter(
+    u => u !== usuario
+  );
+
+}
+
+editarUsuario(usuario: any) {
+
+alert(
+  'Editar usuario: ' +
+  usuario.nombre
+);
+
+}
+
+bloquearUsuario(usuario: any) {
+
+alert(
+  'Usuario bloqueado: ' +
+  usuario.nombre
+);
+
+
+}
 
 }

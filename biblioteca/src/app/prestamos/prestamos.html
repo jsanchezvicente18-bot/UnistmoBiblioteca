@@ -1,105 +1,300 @@
-<button
-  (click)="mostrarFormulario = !mostrarFormulario">
-
-  ➕ Nuevo Préstamo
-</button>
-
 <div class="pagina-prestamos">
-<div *ngIf="mostrarFormulario" class="formulario">
 
-  <h3>Nuevo Préstamo</h3>
+  <div class="titulo-card">
+    <h1>📚 Gestión de Préstamos</h1>
+  </div>
 
-  <div class="usuario-logueado">
-  👤 Usuario:
-  <strong>{{ nombreUsuario }}</strong>
-</div>
 
-<br>
-  <br><br>
 
-  <select [(ngModel)]="nuevoPrestamo.libro_id">
-    <option value="">
-      Selecciona un libro
-    </option>
+  <div
+    class="alerta-card"
+    *ngIf="tipoUsuario !== 'admin'">
 
-    <option
-      *ngFor="let libro of libros"
-      [value]="libro.id">
-      {{ libro.titulo }}
-    </option>
-  </select>
+    <h3>⚠️ Recordatorios</h3>
 
-  <br><br>
+    <p>
+      Tienes libros próximos a vencer.
+    </p>
 
-  <button (click)="guardarPrestamo()">
-    Guardar Préstamo
+  </div>
+
+
+  <div class="resumen-panel">
+
+    <div class="resumen-card">
+      <h2>{{ prestamos.length }}</h2>
+      <p>Préstamos Totales</p>
+    </div>
+
+    <div class="resumen-card">
+      <h2>{{ prestamosActivos }}</h2>
+      <p>Activos</p>
+    </div>
+
+    <div class="resumen-card">
+      <h2>{{ prestamosVencidos }}</h2>
+      <p>Vencidos</p>
+    </div>
+
+  </div>
+
+ 
+
+  <div class="busqueda-card">
+
+    <h3>🔍 Búsqueda de Préstamos</h3>
+
+   
+
+    <div *ngIf="tipoUsuario === 'admin'">
+
+      <input
+        type="text"
+        placeholder="Buscar usuario...">
+
+      <input
+        type="text"
+        placeholder="Buscar libro...">
+
+      <input
+        type="text"
+        placeholder="Buscar matrícula...">
+
+    </div>
+
+    
+
+    <div *ngIf="tipoUsuario !== 'admin'">
+
+      <input
+        type="text"
+        placeholder="Buscar libro...">
+
+    </div>
+
+  </div>
+
+
+  <div
+    class="filtros"
+    *ngIf="tipoUsuario === 'admin'">
+
+    <button>Todos</button>
+
+    <button>🟢 Activos</button>
+
+    <button>🔵 Devueltos</button>
+
+    <button>🔴 Vencidos</button>
+
+  </div>
+
+  <!-- NUEVO PRÉSTAMO SOLO USUARIOS -->
+
+  <button
+    *ngIf="tipoUsuario !== 'admin'"
+    class="btn-nuevo"
+    (click)="mostrarFormulario = !mostrarFormulario">
+
+    ➕ Nuevo Préstamo
+
   </button>
 
-</div>
 
-<table>
+  <div
+    *ngIf="mostrarFormulario && tipoUsuario !== 'admin'"
+    class="formulario">
 
-  <thead>
-    <tr>
-      <th>Usuario</th>
-      <th>Libro</th>
-      <th>Fecha Préstamo</th>
-      <th>Fecha Devolución</th>
-      <th>Tipo Usuario</th>
-    </tr>
-  </thead>
+    <h3>Nuevo Préstamo</h3>
 
-  <tbody>
+    <div class="usuario-logueado">
 
-    <tr *ngFor="let prestamo of prestamos">
+      👤 Usuario:
+      <strong>{{ nombreUsuario }}</strong>
 
-      <td>{{ prestamo.usuario }}</td>
-      <td>{{ prestamo.libro }}</td>
-      <td>{{ prestamo.fecha_prestamo }}</td>
-      <td>{{ prestamo.fecha_devolucion }}</td>
-      <td>{{ prestamo.tipo }}</td>
+    </div>
 
-    </tr>
+    <br>
 
-  </tbody>
+    <select [(ngModel)]="nuevoPrestamo.libro_id">
 
-</table>
+      <option value="">
+        Selecciona un libro
+      </option>
 
-<div class="chart-container">
-  <canvas id="grafica"></canvas>
-</div>
+      <option
+        *ngFor="let libro of libros"
+        [value]="libro.id">
+
+        {{ libro.titulo }}
+
+      </option>
+
+    </select>
+
+    <br><br>
+
+    <button (click)="guardarPrestamo()">
+
+      Guardar Préstamo
+
+    </button>
+
+  </div>
 
 
-</div>
-<div class="card-ultimos-prestamos">
+  <div class="tabla-card">
 
-  <h2>📌 Últimos Préstamos</h2>
+    <table>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Alumno</th>
-        <th>Libro</th>
-        <th>Fecha</th>
-        <th>Estado</th>
-      </tr>
-    </thead>
+      <thead>
 
-    <tbody>
-      <tr *ngFor="let p of prestamos">
+        <tr>
 
-        <td>{{ p.alumno }}</td>
-        <td>{{ p.libro }}</td>
-        <td>{{ p.fecha }}</td>
-        <td>
-          <span [class]="p.estado">
-            {{ p.estado }}
-          </span>
-        </td>
+          <th>Usuario</th>
+          <th>Libro</th>
+          <th>Fecha Préstamo</th>
+          <th>Fecha Devolución</th>
+          <th>Horas Restantes</th>
+          <th>Estado</th>
+          <th>Acciones</th>
 
-      </tr>
-    </tbody>
+        </tr>
 
-  </table>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let prestamo of prestamos">
+
+          <td>{{ prestamo.usuario }}</td>
+
+          <td>{{ prestamo.libro }}</td>
+
+          <td>{{ prestamo.fecha_prestamo }}</td>
+
+          <td>{{ prestamo.fecha_devolucion }}</td>
+
+          <td>{{ prestamo.horasRestantes }}</td>
+
+          <td>
+
+            <span
+              class="activo"
+              *ngIf="prestamo.estado === 'Activo'">
+
+              🟢 Activo
+
+            </span>
+
+            <span
+              class="devuelto"
+              *ngIf="prestamo.estado === 'Devuelto'">
+
+              🔵 Devuelto
+
+            </span>
+
+            <span
+              class="vencido"
+              *ngIf="prestamo.estado === 'Vencido'">
+
+              🔴 Vencido
+
+            </span>
+
+          </td>
+
+          <td>
+
+            <button
+              (click)="verDetalle(prestamo)">
+
+              👁 Ver
+
+            </button>
+
+            <button
+              *ngIf="tipoUsuario !== 'admin'"
+              (click)="renovarPrestamo(prestamo)">
+
+              🔄 Renovar
+
+            </button>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+  <div
+    class="card-ultimos-prestamos"
+    *ngIf="tipoUsuario === 'admin'">
+
+    <h2>📌 Últimos Préstamos</h2>
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>Alumno</th>
+          <th>Libro</th>
+          <th>Fecha</th>
+          <th>Estado</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let p of prestamos">
+
+          <td>{{ p.usuario }}</td>
+
+          <td>{{ p.libro }}</td>
+
+          <td>{{ p.fecha_prestamo }}</td>
+
+          <td>{{ p.estado }}</td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+
+
+  <div
+    class="estadisticas-admin"
+    *ngIf="tipoUsuario === 'admin'">
+
+    <div class="admin-card">
+
+      <h3>🏆 Usuario con más préstamos</h3>
+
+      <p>{{ usuarioTop }}</p>
+
+    </div>
+
+    <div class="admin-card">
+
+      <h3>📚 Libro más solicitado</h3>
+
+      <p>{{ libroTop }}</p>
+
+    </div>
+
+  </div>
 
 </div>

@@ -1,62 +1,200 @@
 <h1>📊 Reportes de Biblioteca</h1>
 
-<div class="cards">
 
-  <div class="card">
-    <div class="icono">📚</div>
-    <h3>Total de Libros</h3>
-    <p>{{ totalLibros }}</p>
+<div *ngIf="tipoUsuario !== 'admin'">
+
+  <div class="cards">
+
+
+<div class="card">
+  <div class="icono">📚</div>
+  <h3>Mis Préstamos Activos</h3>
+  <p>{{ prestamosActivos }}</p>
+</div>
+
+<div class="card">
+  <div class="icono">✅</div>
+  <h3>Libros Devueltos</h3>
+  <p>{{ librosDevueltos }}</p>
+</div>
+
+<div class="card">
+  <div class="icono">⚠️</div>
+  <h3>Préstamos Vencidos</h3>
+  <p>{{ prestamosVencidos }}</p>
+</div>
+
+<div class="card">
+  <div class="icono">⭐</div>
+  <h3>Favoritos</h3>
+  <p>{{ favoritos }}</p>
+</div>
+
+
   </div>
 
-  <div class="card">
-    <div class="icono">👥</div>
-    <h3>Usuarios Registrados</h3>
-    <p>{{ usuariosRegistrados }}</p>
+  <div class="reporte-container">
+
+
+<h2>📖 Mi Historial</h2>
+
+<ul>
+
+  <li *ngFor="let libro of historialLibros">
+
+    {{ libro }}
+
+  </li>
+
+</ul>
+
+
   </div>
 
-  <div class="card">
-    <div class="icono">📖</div>
-    <h3>Préstamos Activos</h3>
-    <p>{{ prestamosActivos }}</p>
-  </div>
+  <div class="reporte-container">
 
-  <div class="card">
-    <div class="icono">✅</div>
-    <h3>Libros Disponibles</h3>
-    <p>{{ librosDisponibles }}</p>
+<h2>📈 Mis Estadísticas</h2>
+
+<ul>
+
+  <li>
+    Total de préstamos realizados:
+    <strong>{{ totalPrestamos }}</strong>
+  </li>
+
+  <li>
+    Libro más solicitado:
+    <strong>{{ libroFavorito }}</strong>
+  </li>
+
+  <li>
+    Último préstamo:
+    <strong>{{ ultimoPrestamo }}</strong>
+  </li>
+
+</ul>
+
+
   </div>
 
 </div>
 
-<div class="reporte-container">
 
-  <h2>📋 Resumen General</h2>
+<div *ngIf="tipoUsuario === 'admin'">
 
-  <ul>
-    <li>
-      📚 Actualmente existen
-      <strong>{{ totalLibros }}</strong>
-      libros registrados.
-    </li>
+  <div class="cards">
 
-    <li>
-      👥 Hay
-      <strong>{{ usuariosRegistrados }}</strong>
-      usuarios registrados.
-    </li>
 
-    <li>
-      📖 Existen
-      <strong>{{ prestamosActivos }}</strong>
-      préstamos activos.
-    </li>
+<div class="card">
+  <div class="icono">📚</div>
+  <h3>Total de Libros</h3>
+  <p>{{ totalLibros }}</p>
+</div>
 
-    <li>
-      ✅ Hay
-      <strong>{{ librosDisponibles }}</strong>
-      libros disponibles para préstamo.
-    </li>
+<div class="card">
+  <div class="icono">👥</div>
+  <h3>Usuarios Registrados</h3>
+  <p>{{ usuariosRegistrados }}</p>
+</div>
 
-  </ul>
+<div class="card">
+  <div class="icono">📖</div>
+  <h3>Préstamos Activos</h3>
+  <p>{{ prestamosActivos }}</p>
+</div>
+
+<div class="card">
+  <div class="icono">⚠️</div>
+  <h3>Préstamos Vencidos</h3>
+  <p>{{ prestamosVencidos }}</p>
+</div>
+
+  </div>
+
+  <div class="reporte-container">
+
+
+<h2> Libros Más Prestados</h2>
+
+<ul>
+
+  <li *ngFor="let libro of librosMasPrestados">
+
+    {{ libro }}
+
+  </li>
+
+</ul>
+
+
+  </div>
+
+  <div class="reporte-container">
+
+<h2>👥 Usuarios Más Activos</h2>
+
+<ul>
+
+  <li *ngFor="let usuario of usuariosActivos">
+
+    {{ usuario }}
+
+  </li>
+
+</ul>
+
+  </div>
+
+  <div class="reporte-container">
+
+<h2> Préstamos por Mes</h2>
+
+<canvas id="graficaPrestamos"></canvas>
+
+  </div>
+
+  <div class="reporte-container">
+
+<h2> Libros por Categoría</h2>
+
+<canvas id="graficaCategorias"></canvas>
+
+  </div>
+
+  <div class="reporte-container">
+
+<h2> Crecimiento de Usuarios</h2>
+
+<canvas id="graficaUsuarios"></canvas>
+
+  </div>
+
+  <div class="reporte-container">
+
+<h2> Actividad Reciente</h2>
+
+<ul>
+
+  <li *ngFor="let actividad of actividadReciente">
+
+    {{ actividad }}
+
+  </li>
+
+</ul>
+
+  </div>
+
+  <div class="exportar">
+
+<button>
+   Exportar PDF
+</button>
+
+<button>
+   Exportar Excel
+</button>
+
+  </div>
 
 </div>

@@ -2,13 +2,140 @@
 
 <div class="config-grid">
 
- 
+<!-- PERFIL DE USUARIO -->
+
+<div class="config-card">
+
+  <h3>👤 Perfil de Usuario</h3>
+
+  <div class="foto-perfil">
+
+    <img
+      [src]="fotoPerfil"
+      alt="Foto de Perfil">
+
+  </div>
+
+  <input
+    type="file"
+    accept="image/*"
+    (change)="seleccionarFoto($event)">
+
+  <br><br>
+
+  <label>Nombre Completo</label>
+  <input
+    type="text"
+    [value]="nombreUsuario"
+    readonly>
+
+  <label>Correo Institucional</label>
+  <input
+    type="email"
+    [value]="correoUsuario"
+    readonly>
+
+  <label>Matrícula</label>
+  <input
+    type="text"
+    [value]="matriculaUsuario"
+    readonly>
+
+  <label>Carrera</label>
+  <input
+    type="text"
+    [value]="carreraUsuario"
+    readonly>
+
+  <label>Fecha de Registro</label>
+  <input
+    type="text"
+    [value]="fechaRegistro"
+    readonly>
+
+</div>
+
+  <!-- SEGURIDAD -->
+
+  <div class="config-card">
+
+    <h3>🔐 Seguridad</h3>
+
+    <label>Contraseña Actual</label>
+    <input
+      type="password"
+      [(ngModel)]="passwordActual">
+
+    <label>Nueva Contraseña</label>
+    <input
+      type="password"
+      [(ngModel)]="nuevaPassword">
+
+    <button (click)="cambiarPassword()">
+      Actualizar Contraseña
+    </button>
+
+    <button class="secundario">
+      👁 Mostrar / Ocultar Contraseña
+    </button>
+
+    <button class="cerrar">
+      🚪 Cerrar sesión en todos los dispositivos
+    </button>
+
+  </div>
+
+  <!-- NOTIFICACIONES -->
+
+  <div class="config-card">
+
+    <h3>🔔 Notificaciones</h3>
+
+    <div class="switch-item">
+      <span>Próximas devoluciones</span>
+      <input type="checkbox" checked>
+    </div>
+
+    <div class="switch-item">
+      <span>Nuevos libros agregados</span>
+      <input type="checkbox" checked>
+    </div>
+
+    <div class="switch-item">
+      <span>Recordatorios de préstamos vencidos</span>
+      <input type="checkbox" checked>
+    </div>
+
+  </div>
+
+  <!-- AYUDA Y SOPORTE -->
+
+  <div class="config-card">
+
+    <h3>🆘 Ayuda y Soporte</h3>
+
+    <button>
+      📖 Manual de Usuario
+    </button>
+
+    <button>
+      📧 Contactar Administrador
+    </button>
+
+    <button>
+      🐞 Reportar Error
+    </button>
+
+  </div>
+
+  <!-- INFORMACIÓN DE LA BIBLIOTECA -->
+
   <div class="config-card">
 
     <h3>🏫 Información de la Biblioteca</h3>
 
     <div class="dato">
-      <label>Nombre de la Biblioteca</label>
+      <label>Biblioteca</label>
       <p>Biblioteca Universidad del Istmo</p>
     </div>
 
@@ -24,54 +151,8 @@
 
   </div>
 
- 
-  <div
-    class="config-card"
-    *ngIf="tipoUsuario === 'admin'">
+  <!-- BASE DE DATOS (SOLO ADMIN) -->
 
-    <h3>👤 Perfil del Administrador</h3>
-
-    <label>Nombre</label>
-    <input
-      type="text"
-      value="Administrador">
-
-    <label>Correo</label>
-    <input
-      type="email"
-      value="admin@unistmo.edu.mx">
-
-    <label>Nueva Contraseña</label>
-    <input
-      type="password">
-
-    <button>
-      Actualizar Perfil
-    </button>
-
-  </div>
-
-  <div class="config-card">
-
-  <h3>🔐 Seguridad</h3>
-
-  <label>Contraseña Actual</label>
-  <input
-    type="password"
-    [(ngModel)]="passwordActual">
-
-  <label>Nueva Contraseña</label>
-  <input
-    type="password"
-    [(ngModel)]="nuevaPassword">
-
-  <button (click)="cambiarPassword()">
-    Actualizar Contraseña
-  </button>
-
-</div>
-
-  
   <div
     class="config-card"
     *ngIf="tipoUsuario === 'admin'">
@@ -81,12 +162,41 @@
     <p>Estado de conexión:</p>
 
     <span class="estado">
-      Conectado
+      ✅ Conectado
     </span>
+
+    <br><br>
 
     <button>
       Verificar Conexión
     </button>
+
+  </div>
+
+  <!-- ACERCA DE -->
+
+  <div class="config-card">
+
+    <h3>ℹ️ Acerca de</h3>
+
+    <p>
+      <strong>Sistema:</strong>
+      Biblioteca UNISTMO
+    </p>
+
+    <p>
+      <strong>Versión:</strong>
+      1.0
+    </p>
+
+    <p>
+      Desarrollado por Ingeniería en Computación
+    </p>
+
+    <p>
+      Jacqueline Sánchez Vicente,
+      Naomi y Dulce
+    </p>
 
   </div>
 

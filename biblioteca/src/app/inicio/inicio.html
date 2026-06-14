@@ -1,17 +1,30 @@
 <div class="bienvenida">
 
-    <img src="/img/logo.png" alt="Logo de la Universidad" class="logo-biblioteca">
+    <img
+        src="/img/logo.png"
+        alt="Logo de la Universidad"
+        class="logo-biblioteca">
 
     <h1>Biblioteca Universidad del Istmo</h1>
 
     <p>Sistema de Gestión Bibliotecaria</p>
+
 </div>
+
+<!-- SALUDO PERSONALIZADO -->
+
 <div class="saludo">
 
-    <h2>👋 Bienvenido, {{ nombreUsuario }}</h2>
+    <h2>
+        👋 Bienvenido, {{ nombreUsuario }}
+    </h2>
 
-    <p>
-        Nos alegra verte nuevamente en la Biblioteca Digital UNISTMO.
+    <p *ngIf="tipoUsuario === 'admin'">
+        Panel Administrativo de la Biblioteca Digital UNISTMO.
+    </p>
+
+    <p *ngIf="tipoUsuario !== 'admin'">
+        Consulta tus préstamos, devoluciones y libros disponibles.
     </p>
 
     <p class="fecha">
@@ -20,57 +33,209 @@
 
 </div>
 
+<!-- BUSCADOR -->
 
+<div class="busqueda">
+
+    <input
+        type="text"
+        placeholder="🔍 Buscar libros, autores o categorías...">
+
+</div>
+
+<!-- ESTADÍSTICAS -->
 
 <div class="cards">
 
     <div class="card">
+
         <div class="icono">📚</div>
+
         <h2>{{ totalLibros }}</h2>
+
         <p>Total de Libros</p>
+
     </div>
 
     <div class="card">
+
         <div class="icono">👥</div>
+
         <h2>{{ totalUsuarios }}</h2>
+
         <p>Usuarios Registrados</p>
+
     </div>
 
     <div class="card">
+
         <div class="icono">🔄</div>
+
         <h2>{{ prestamosActivos }}</h2>
+
         <p>Préstamos Activos</p>
+
     </div>
 
     <div class="card">
+
         <div class="icono">✅</div>
+
         <h2>{{ librosDisponibles }}</h2>
+
         <p>Libros Disponibles</p>
+
     </div>
 
 </div>
 
+<!-- INFORMACIÓN DEL USUARIO -->
+
+<div *ngIf="tipoUsuario !== 'admin'" class="actividad">
+
+    <h3>📖 Mis Préstamos Actuales</h3>
+
+    <ul>
+
+        <li *ngFor="let libro of misLibros">
+
+            📚 {{ libro }}
+
+        </li>
+
+    </ul>
+
+</div>
+
+<div *ngIf="tipoUsuario !== 'admin'" class="actividad">
+
+    <h3>⏰ Próximas Devoluciones</h3>
+
+    <ul>
+
+        <li *ngFor="let devolucion of proximasDevoluciones">
+
+            {{ devolucion }}
+
+        </li>
+
+    </ul>
+
+</div>
+
+<!-- LIBROS MÁS PRESTADOS -->
+
 <div class="actividad">
 
-    <h3>📊 Resumen de actividad</h3>
+    <h3>🔥 Libros Más Prestados</h3>
+
+    <ul>
+
+        <li *ngFor="let libro of librosPopulares">
+
+            📚 {{ libro }}
+
+        </li>
+
+    </ul>
+
+</div>
+
+<!-- CATEGORÍAS -->
+
+<div class="actividad">
+
+    <h3>📂 Categorías Destacadas</h3>
+
+    <div class="categorias-grid">
+
+        <div class="categoria">
+            💻 Programación
+        </div>
+
+        <div class="categoria">
+            🌐 Redes
+        </div>
+
+        <div class="categoria">
+            📐 Matemáticas
+        </div>
+
+        <div class="categoria">
+            ⚡ Electrónica
+        </div>
+
+        <div class="categoria">
+            ⚖️ Derecho
+        </div>
+
+        <div class="categoria">
+            🇬🇧 Inglés
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ACTIVIDAD RECIENTE -->
+
+<div class="actividad">
+
+    <h3>📊 Mi Actividad Reciente</h3>
 
     <div class="resumen">
 
         <div class="dato">
+
             <h4>{{ nombreUsuario }}</h4>
+
             <p>Usuario</p>
+
         </div>
 
         <div class="dato">
+
             <h4>{{ totalPrestamos }}</h4>
-            <p>Préstamos realizados</p>
+
+            <p>Préstamos Realizados</p>
+
         </div>
 
         <div class="dato">
+
             <h4>{{ ultimoLibro }}</h4>
-            <p>Último libro solicitado</p>
+
+            <p>Último Libro Solicitado</p>
+
         </div>
 
     </div>
+
+</div>
+
+<!-- SOLO PARA ADMINISTRADORES -->
+
+<div *ngIf="tipoUsuario === 'admin'" class="actividad">
+
+    <h3>🛡 Resumen Administrativo</h3>
+
+    <ul>
+
+        <li>
+            👥 Usuarios Registrados:
+            {{ totalUsuarios }}
+        </li>
+
+        <li>
+            📚 Libros Disponibles:
+            {{ librosDisponibles }}
+        </li>
+
+        <li>
+            🔄 Préstamos Activos:
+            {{ prestamosActivos }}
+        </li>
+
+    </ul>
 
 </div>

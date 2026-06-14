@@ -5,70 +5,73 @@ import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [FormsModule, RouterLink],
-  templateUrl: './login.html',
-  styleUrl: './login.scss'
+selector: 'app-login',
+standalone: true,
+imports: [FormsModule, RouterLink],
+templateUrl: './login.html',
+styleUrl: './login.scss'
 })
 export class Login {
 
-  matricula = '';
-  password = '';
+matricula = '';
 
-  constructor(
-    private router: Router,
-    private http: HttpClient
-  ) {}
+password = '';
 
-  ingresar() {
+mostrarPassword = false;
 
-    this.http.post<any>(
-      'http://localhost:8000/login',
-      {
-        matricula: this.matricula,
-        password: this.password
-      }
-    ).subscribe({
+constructor(
+private router: Router,
+private http: HttpClient
+) {}
 
-      next: (respuesta) => {
+ingresar() {
+this.http.post<any>(
+  'http://localhost:8000/login',
+  {
+    matricula: this.matricula,
+    password: this.password
+  }
+).subscribe({
 
-        if (!respuesta.success) {
+  next: (respuesta) => {
 
-          alert(respuesta.mensaje);
-          return;
+    if (!respuesta.success) {
 
-        }
+      alert(respuesta.mensaje);
+      return;
 
-        localStorage.setItem(
-          'usuarioId',
-          respuesta.id
-        );
+    }
 
-        localStorage.setItem(
-          'nombreUsuario',
-          respuesta.nombre
-        );
+    localStorage.setItem(
+      'usuarioId',
+      respuesta.id
+    );
 
-        localStorage.setItem(
-          'tipoUsuario',
-          respuesta.tipo
-        );
+    localStorage.setItem(
+      'nombreUsuario',
+      respuesta.nombre
+    );
 
-        this.router.navigate(['/inicio']);
+    localStorage.setItem(
+      'tipoUsuario',
+      respuesta.tipo
+    );
 
-      },
+    this.router.navigate(['/inicio']);
 
-      error: (error) => {
+  },
 
-        console.error(error);
+  error: (error) => {
 
-        alert('Error al iniciar sesión');
+    console.error(error);
 
-      }
-
-    });
+    alert('Error al iniciar sesión');
 
   }
 
+});
+
 }
+
+}
+

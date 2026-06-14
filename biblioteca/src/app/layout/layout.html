@@ -1,54 +1,123 @@
 <div class="layout">
 
+  <!-- SIDEBAR -->
+
   <aside class="sidebar">
 
-    <h2>⚙️ Panel de Control</h2>
+    <div class="perfil">
+
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+        alt="Avatar"
+        class="avatar">
+
+      <h3>{{ nombreUsuario }}</h3>
+
+      <p *ngIf="tipoUsuario === 'admin'">
+        👑 Administrador
+      </p>
+
+      <p *ngIf="tipoUsuario !== 'admin'">
+        🎓 Usuario
+      </p>
+
+    </div>
+
+    <h2>📚 Biblioteca UNISTMO</h2>
 
     <nav>
 
-   <a
-  routerLink="/inicio"
-  routerLinkActive="activo">
-  🏠 Inicio
-</a>
+      <a
+        routerLink="/inicio"
+        routerLinkActive="activo">
+        🏠 Inicio
+      </a>
 
-<a
-  routerLink="/libros"
-  routerLinkActive="activo">
-  📚 Libros
-</a>
+      <a
+        routerLink="/libros"
+        routerLinkActive="activo">
+        📚 Libros
+      </a>
 
-<a
-  routerLink="/prestamos"
-  routerLinkActive="activo">
-  📖 Préstamos
-</a>
+      <a
+        routerLink="/prestamos"
+        routerLinkActive="activo">
+        📖 Préstamos
+      </a>
 
-<a
-  routerLink="/usuarios"
-  routerLinkActive="activo">
-  👥 Usuarios
-</a>
+      <a
+        routerLink="/usuarios"
+        routerLinkActive="activo">
+        👥 Usuarios
+      </a>
 
-<a
-  routerLink="/reportes"
-  routerLinkActive="activo">
-  📊 Reportes
-</a>
+      <a
+        routerLink="/reportes"
+        routerLinkActive="activo">
+        📊 Reportes
+      </a>
 
-<a
-  routerLink="/configuracion"
-  routerLinkActive="activo">
-  ⚙️ Configuración
-</a>
+      <a
+        routerLink="/configuracion"
+        routerLinkActive="activo">
+        ⚙️ Configuración
+      </a>
 
-<a (click)="cerrarSesion()">🚪  Cerrar Sesión</a>
+      <a (click)="cerrarSesion()">
+        🚪 Cerrar Sesión
+      </a>
 
     </nav>
 
   </aside>
 
+  <!-- CONTENIDO -->
+
   <main class="contenido">
+
+    <!-- HEADER SUPERIOR -->
+
+    <div class="topbar">
+
+      <div class="breadcrumb">
+
+        <span>🏠 Inicio</span>
+
+        <span class="separador">›</span>
+
+        <span>{{ paginaActual }}</span>
+
+      </div>
+
+      <div class="acciones-topbar">
+
+        <div class="fecha">
+
+          📅 {{ fechaActual }}
+
+        </div>
+
+        <button
+          class="btn-modo"
+          (click)="toggleDarkMode()">
+
+          🌙
+
+        </button>
+
+        <button class="btn-notificacion">
+
+          🔔
+
+          <span class="badge">
+            {{ totalNotificaciones }}
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
 
     <router-outlet></router-outlet>
 
