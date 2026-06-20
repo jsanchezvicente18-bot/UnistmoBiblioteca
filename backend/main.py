@@ -6,6 +6,8 @@ from models.prestamo import Prestamo
 from models.usuario import Usuario
 from models.libro import Libro
 from models.login import Login
+from models.recuperar import SolicitarRecuperacion, CambiarPassword
+
 
 from database import (
     administradores,
@@ -290,3 +292,42 @@ def login(datos: Login):
         "nombre": usuario["nombre"],
         "tipo": usuario["tipo"]
     }
+
+@app.post("/recuperar-password")
+def recuperar_password(datos: SolicitarRecuperacion):
+
+    usuario = usuarios.find_one({"correo": datos.correo})
+
+    if not usuario:
+        return {
+            "ok": False,
+            "mensaje": "No existe un usuario con ese correo"
+        }
+
+    return {
+        "ok": True,
+        "mensaje": "Usuario encontrado. Puede cambiar su contraseña"
+    }
+
+
+@app.put("/cambiar-password")
+def cambiar_password(datos: CambiarPassword):
+
+    usuario = usuarios.find_one({"correo": datos.correo})
+
+    if not usuario:
+        return {
+            "ok": False,
+            "mensaje": "Usuario no encontrado"
+        }
+
+    usuarios.update_one(
+        {"correo": datos.correo},
+        {"$set": {"password": datos.nueva_password}}
+    )
+
+    return {
+        "ok": True,
+        "mensaje": "Contraseña actualizada correctamente"
+    }
+

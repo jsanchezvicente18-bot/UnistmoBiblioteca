@@ -3,6 +3,13 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
 
   {
+    path: 'recuperar-password',
+    loadComponent: () =>
+      import('./pages/recuperar-password/recuperar-password')
+        .then(m => m.RecuperarPassword)
+  },
+
+  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
@@ -64,6 +71,7 @@ export const routes: Routes = [
       }
 
     ]
+
   }
 
 ];
