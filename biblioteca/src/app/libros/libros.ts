@@ -16,17 +16,8 @@ export class Libros implements OnInit {
   tipoUsuario = localStorage.getItem('tipoUsuario') || '';
   usuarioId = localStorage.getItem('usuarioId') || '';
 
-  constructor(
-    private http: HttpClient,
-    private cdr: ChangeDetectorRef
-  ) {}
-
-  // BUSCADORES
   busquedaTitulo = '';
-  busquedaAutor = '';
-  busquedaCategoria = '';
   busquedaISBN = '';
-
   categoriaSeleccionada = '';
 
   mostrarFormulario = false;
@@ -40,13 +31,23 @@ export class Libros implements OnInit {
   };
 
   libros: any[] = [];
-  librosFiltrados: any[] = [];
-
   favoritos: any[] = [];
 
-  ngOnInit() {
+  categoriasDestacadas: string[] = [
+    'Programación',
+    'Bases de Datos',
+    'Redes',
+    'IA',
+    'Matemáticas',
+    'Literatura'
+  ];
 
-    console.log('TIPO USUARIO:', this.tipoUsuario);
+  constructor(
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit() {
 
     this.cargarLibros();
 
@@ -54,10 +55,7 @@ export class Libros implements OnInit {
       localStorage.getItem('favoritos');
 
     if (favoritosGuardados) {
-
-      this.favoritos =
-        JSON.parse(favoritosGuardados);
-
+      this.favoritos = JSON.parse(favoritosGuardados);
     }
 
   }
@@ -71,8 +69,6 @@ export class Libros implements OnInit {
       next: (data) => {
 
         this.libros = [...data];
-        this.librosFiltrados = [...data];
-
         this.cdr.detectChanges();
 
       },
@@ -87,6 +83,86 @@ export class Libros implements OnInit {
       }
 
     });
+
+  }
+
+  filtrarLibros() {
+
+    return this.libros.filter(libro => {
+
+      const coincideTitulo =
+        !this.busquedaTitulo ||
+        libro.titulo?.toLowerCase()
+        .includes(this.busquedaTitulo.toLowerCase());
+
+      const coincideISBN =
+        !this.busquedaISBN ||
+        libro.isbn?.toString()
+        .includes(this.busquedaISBN);
+
+      const coincideCategoria =
+        !this.categoriaSeleccionada ||
+        libro.categoria?.toLowerCase()
+        .includes(this.categoriaSeleccionada.toLowerCase());
+
+      return (
+        coincideTitulo &&
+        coincideISBN &&
+        coincideCategoria
+      );
+
+    });
+
+  }
+
+  filtrarCategoria(categoria: string) {
+
+    this.categoriaSeleccionada = categoria;
+
+    this.guardarBusquedaCategoria(categoria);
+
+  }
+
+  guardarBusquedaCategoria(categoria: string) {
+
+    const datos =
+      JSON.parse(
+        localStorage.getItem('categoriasBuscadas') || '{}'
+      );
+
+    datos[categoria] = (datos[categoria] || 0) + 1;
+
+    localStorage.setItem(
+      'categoriasBuscadas',
+      JSON.stringify(datos)
+    );
+
+    this.actualizarCategoriasDestacadas();
+
+  }
+
+  actualizarCategoriasDestacadas() {
+
+    const datos =
+      JSON.parse(
+        localStorage.getItem('categoriasBuscadas') || '{}'
+      );
+
+    const categoriasOrdenadas =
+      Object.keys(datos)
+      .sort((a, b) => datos[b] - datos[a]);
+
+    if (categoriasOrdenadas.length > 0) {
+      this.categoriasDestacadas = categoriasOrdenadas;
+    }
+
+  }
+
+  limpiarFiltros() {
+
+    this.busquedaTitulo = '';
+    this.busquedaISBN = '';
+    this.categoriaSeleccionada = '';
 
   }
 
@@ -137,9 +213,7 @@ export class Libros implements OnInit {
     ).subscribe({
 
       next: () => {
-
         this.cargarLibros();
-
       },
 
       error: (error) => {
@@ -164,84 +238,6 @@ export class Libros implements OnInit {
 
   }
 
-  // ==========================
-  // BUSQUEDA GENERAL
-  // ==========================
-
- filtrarLibros() {
-
-  return this.libros.filter(libro => {
-
-    const coincideTitulo =
-      !this.busquedaTitulo ||
-      libro.titulo?.toLowerCase()
-      .includes(this.busquedaTitulo.toLowerCase());
-
-    const coincideAutor =
-      !this.busquedaAutor ||
-      libro.autor?.toLowerCase()
-      .includes(this.busquedaAutor.toLowerCase());
-
-    const coincideCategoria =
-      !this.busquedaCategoria ||
-      libro.categoria?.toLowerCase()
-      .includes(this.busquedaCategoria.toLowerCase());
-
-    const coincideISBN =
-      !this.busquedaISBN ||
-      libro.isbn?.toString()
-      .includes(this.busquedaISBN);
-
-    return (
-      coincideTitulo &&
-      coincideAutor &&
-      coincideCategoria &&
-      coincideISBN
-    );
-
-  });
-
-}
-
-  // ==========================
-  // FILTRAR CATEGORIA
-  // ==========================
-
-  filtrarCategoria(categoria: string) {
-
-    this.categoriaSeleccionada = categoria;
-
-    this.librosFiltrados =
-      this.libros.filter(
-        libro =>
-          libro.categoria?.toLowerCase()
-          .includes(categoria.toLowerCase())
-      );
-
-  }
-
-  // ==========================
-  // LIMPIAR FILTROS
-  // ==========================
-
-  limpiarFiltros() {
-
-    this.busquedaTitulo = '';
-    this.busquedaAutor = '';
-    this.busquedaCategoria = '';
-    this.busquedaISBN = '';
-
-    this.categoriaSeleccionada = '';
-
-    this.librosFiltrados =
-      [...this.libros];
-
-  }
-
-  // ==========================
-  // FAVORITOS
-  // ==========================
-
   agregarFavorito(libro: any) {
 
     const existe =
@@ -251,10 +247,7 @@ export class Libros implements OnInit {
 
     if (existe) {
 
-      alert(
-        'Este libro ya está en favoritos'
-      );
-
+      alert('Este libro ya está en favoritos');
       return;
 
     }
@@ -266,31 +259,10 @@ export class Libros implements OnInit {
       JSON.stringify(this.favoritos)
     );
 
-    alert(
-      'Libro agregado a favoritos'
-    );
+    alert('Libro agregado a favoritos');
 
   }
 
-  // ==========================
-  // DETALLE LIBRO
-  // ==========================
-
-  verDetalle(libro: any) {
-
-    alert(
-      'Título: ' + libro.titulo +
-      '\nAutor: ' + libro.autor +
-      '\nCategoría: ' + libro.categoria +
-      '\nISBN: ' + libro.isbn +
-      '\nExistencias: ' + libro.existencias
-    );
-
-  }
-
-  // ==========================
-  // SOLICITAR PRESTAMO
-  // ==========================
 
   solicitarPrestamo(libro: any) {
 
@@ -304,13 +276,20 @@ export class Libros implements OnInit {
 
     }
 
-    const usuarioId =
-      localStorage.getItem('usuarioId');
+    if (libro.existencias <= 0) {
+
+      alert(
+        'Este libro está agotado'
+      );
+
+      return;
+
+    }
 
     this.http.post(
       'http://localhost:8000/prestamos',
       {
-        usuario_id: usuarioId,
+        usuario_id: this.usuarioId,
         libro_id: libro.id
       }
     ).subscribe({
@@ -336,5 +315,17 @@ export class Libros implements OnInit {
     });
 
   }
+  modalVisible = false;
+libroSeleccionado: any = null;
+
+verDetalle(libro: any) {
+  this.libroSeleccionado = libro;
+  this.modalVisible = true;
+}
+
+cerrarModal() {
+  this.modalVisible = false;
+  this.libroSeleccionado = null;
+}
 
 }

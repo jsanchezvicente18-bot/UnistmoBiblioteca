@@ -2,134 +2,164 @@
 
 <div class="config-grid">
 
-<!-- PERFIL DE USUARIO -->
+  <!-- PERFIL DE USUARIO -->
+  <div class="config-card">
 
-<div class="config-card">
+    <h3>👤 Perfil de Usuario</h3>
 
-  <h3>👤 Perfil de Usuario</h3>
+    <div class="foto-perfil">
+       <img [src]="fotoPerfil" alt="Foto de Perfil">
 
-  <div class="foto-perfil">
+       <label class="btn-foto" for="inputFoto">
+        📷 Cambiar foto
+       </label>
 
-    <img
-      [src]="fotoPerfil"
-      alt="Foto de Perfil">
+  <input id="inputFoto" class="input-foto" type="file" accept="image/*" (change)="seleccionarFoto($event)">
+    </div>
+
+    <br><br>
+
+    <button *ngIf="!editandoPerfil" (click)="editarPerfil()">
+      ✏️ Editar información
+    </button>
+
+    <button *ngIf="editandoPerfil" (click)="guardarPerfil()">
+      💾 Guardar información
+    </button>
+
+    <label>Nombre Completo</label>
+    <input type="text" [(ngModel)]="nombreUsuario" [readonly]="!editandoPerfil">
+
+    <label>Correo Institucional</label>
+    <input type="email" [(ngModel)]="correoUsuario" [readonly]="!editandoPerfil">
+
+    <label>Matrícula</label>
+    <input type="text" [(ngModel)]="matriculaUsuario" readonly>
+
+    <label>Carrera</label>
+    <input type="text" [(ngModel)]="carreraUsuario" [readonly]="!editandoPerfil">
+
+    <label>Fecha de Registro</label>
+    <input type="text" [(ngModel)]="fechaRegistro" readonly>
 
   </div>
 
-  <input
-    type="file"
-    accept="image/*"
-    (change)="seleccionarFoto($event)">
-
-  <br><br>
-
-  <label>Nombre Completo</label>
-  <input
-    type="text"
-    [value]="nombreUsuario"
-    readonly>
-
-  <label>Correo Institucional</label>
-  <input
-    type="email"
-    [value]="correoUsuario"
-    readonly>
-
-  <label>Matrícula</label>
-  <input
-    type="text"
-    [value]="matriculaUsuario"
-    readonly>
-
-  <label>Carrera</label>
-  <input
-    type="text"
-    [value]="carreraUsuario"
-    readonly>
-
-  <label>Fecha de Registro</label>
-  <input
-    type="text"
-    [value]="fechaRegistro"
-    readonly>
-
-</div>
 
   <!-- SEGURIDAD -->
-
   <div class="config-card">
 
     <h3>🔐 Seguridad</h3>
 
-    <label>Contraseña Actual</label>
-    <input
-      type="password"
-      [(ngModel)]="passwordActual">
-
-    <label>Nueva Contraseña</label>
-    <input
-      type="password"
-      [(ngModel)]="nuevaPassword">
-
-    <button (click)="cambiarPassword()">
-      Actualizar Contraseña
+    <button (click)="abrirCambioPassword()">
+      🔐 Actualizar Contraseña
     </button>
 
-    <button class="secundario">
-      👁 Mostrar / Ocultar Contraseña
-    </button>
+    <div *ngIf="mostrarCambioPassword">
 
-    <button class="cerrar">
-      🚪 Cerrar sesión en todos los dispositivos
-    </button>
+      <label>Contraseña Actual</label>
+      <input
+        [type]="mostrarPassword ? 'text' : 'password'"
+        [(ngModel)]="passwordActual">
+
+      <label>Nueva Contraseña</label>
+      <input
+        [type]="mostrarPassword ? 'text' : 'password'"
+        [(ngModel)]="nuevaPassword">
+
+      <button class="secundario" (click)="mostrarPassword = !mostrarPassword">
+        👁 Mostrar / Ocultar Contraseña
+      </button>
+
+      <button (click)="cambiarPassword()">
+        💾 Guardar nueva contraseña
+      </button>
+
+    </div>
 
   </div>
 
-  <!-- NOTIFICACIONES -->
 
+  <!-- NOTIFICACIONES -->
   <div class="config-card">
 
     <h3>🔔 Notificaciones</h3>
 
     <div class="switch-item">
       <span>Próximas devoluciones</span>
-      <input type="checkbox" checked>
+      <input type="checkbox" [(ngModel)]="notiDevoluciones">
     </div>
 
     <div class="switch-item">
       <span>Nuevos libros agregados</span>
-      <input type="checkbox" checked>
+      <input type="checkbox" [(ngModel)]="notiNuevosLibros">
     </div>
 
     <div class="switch-item">
       <span>Recordatorios de préstamos vencidos</span>
-      <input type="checkbox" checked>
+      <input type="checkbox" [(ngModel)]="notiPrestamosVencidos">
+    </div>
+
+    <button (click)="guardarNotificaciones()">
+      💾 Guardar notificaciones
+    </button>
+
+    <h4>Mis notificaciones</h4>
+
+    <p *ngIf="notificaciones.length === 0">
+      No tienes notificaciones.
+    </p>
+
+    <div *ngFor="let n of notificaciones" class="notificacion">
+      <p>{{ n.mensaje }}</p>
+      <small>{{ n.fecha }}</small>
     </div>
 
   </div>
 
-  <!-- AYUDA Y SOPORTE -->
 
+  <!-- AYUDA Y SOPORTE -->
   <div class="config-card">
 
     <h3>🆘 Ayuda y Soporte</h3>
 
-    <button>
+    <button (click)="abrirManual()">
       📖 Manual de Usuario
     </button>
 
-    <button>
+    <button (click)="abrirContactoAdmin()">
       📧 Contactar Administrador
     </button>
 
-    <button>
+    <button (click)="abrirReporteError()">
       🐞 Reportar Error
     </button>
 
+    <div *ngIf="mostrarContactoAdmin">
+      <h4>Contactar Administrador</h4>
+
+      <label>Mensaje</label>
+      <textarea [(ngModel)]="mensajeAdmin"></textarea>
+
+      <button (click)="enviarMensajeAdmin()">
+        Enviar mensaje
+      </button>
+    </div>
+
+    <div *ngIf="mostrarReporteError">
+      <h4>Reportar Error</h4>
+
+      <label>Describe el error</label>
+      <textarea [(ngModel)]="reporteError"></textarea>
+
+      <button (click)="enviarReporteError()">
+        Enviar reporte
+      </button>
+    </div>
+
   </div>
 
-  <!-- INFORMACIÓN DE LA BIBLIOTECA -->
 
+  <!-- INFORMACIÓN DE LA BIBLIOTECA -->
   <div class="config-card">
 
     <h3>🏫 Información de la Biblioteca</h3>
@@ -151,11 +181,9 @@
 
   </div>
 
-  <!-- BASE DE DATOS (SOLO ADMIN) -->
 
-  <div
-    class="config-card"
-    *ngIf="tipoUsuario === 'admin'">
+  <!-- BASE DE DATOS SOLO ADMIN -->
+  <div class="config-card" *ngIf="tipoUsuario === 'admin'">
 
     <h3>💾 Base de Datos</h3>
 
@@ -167,37 +195,58 @@
 
     <br><br>
 
-    <button>
+    <button (click)="verificarConexion()">
       Verificar Conexión
     </button>
 
   </div>
 
-  <!-- ACERCA DE -->
 
+  <!-- ACERCA DE -->
   <div class="config-card">
 
     <h3>ℹ️ Acerca de</h3>
 
-    <p>
-      <strong>Sistema:</strong>
-      Biblioteca UNISTMO
-    </p>
-
-    <p>
-      <strong>Versión:</strong>
-      1.0
-    </p>
-
-    <p>
-      Desarrollado por Ingeniería en Computación
-    </p>
-
-    <p>
-      Jacqueline Sánchez Vicente,
-      Naomi y Dulce
-    </p>
+    <p><strong>Sistema:</strong> Biblioteca UNISTMO</p>
+    <p><strong>Versión:</strong> 1.0</p>
+    <p>Desarrollado por Ingeniería en Computación</p>
+    <p>Jacqueline Sánchez Vicente, Naomi y Dulce</p>
 
   </div>
+
+  <div class="config-card" *ngIf="tipoUsuario === 'admin'">
+
+  <h3>📩 Mensajes al Administrador</h3>
+
+  <button (click)="cargarMensajesAdmin()">
+    Ver mensajes
+  </button>
+
+  <div *ngFor="let m of mensajesAdmin">
+    <p><strong>{{ m.nombre }}</strong></p>
+    <p>{{ m.mensaje }}</p>
+    <small>{{ m.fecha }}</small>
+    <hr>
+  </div>
+
+</div>
+
+<div class="config-card" *ngIf="tipoUsuario === 'admin'">
+
+  <h3>🐞 Reportes de Error</h3>
+
+  <button (click)="cargarReportesError()">
+    Ver reportes
+  </button>
+
+  <div *ngFor="let r of reportesError">
+    <p><strong>{{ r.nombre }}</strong></p>
+    <p>{{ r.error }}</p>
+    <small>{{ r.fecha }}</small>
+    <hr>
+  </div>
+
+</div>
+
 
 </div>

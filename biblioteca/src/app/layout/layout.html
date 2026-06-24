@@ -105,15 +105,31 @@
 
         </button>
 
-        <button class="btn-notificacion">
+        <button class="btn-noti" (click)="abrirNotificaciones()">
+  🔔
+  <span *ngIf="totalNoLeidas > 0">
+    {{ totalNoLeidas }}
+  </span>
+</button>
 
-          🔔
+<div class="panel-notificaciones" *ngIf="mostrarNotificaciones">
 
-          <span class="badge">
-            {{ totalNotificaciones }}
-          </span>
+  <h4>Notificaciones</h4>
 
-        </button>
+  <p *ngIf="notificaciones.length === 0">
+    No tienes notificaciones.
+  </p>
+
+  <div class="notificacion" *ngFor="let n of notificaciones">
+    <p>{{ n.mensaje }}</p>
+    <small>{{ n.fecha }}</small>
+
+     <button *ngIf="!n.leida" (click)="marcarComoLeida(n.id)">
+      Marcar como leída
+    </button>
+  </div>
+
+</div>
 
       </div>
 

@@ -1,241 +1,227 @@
 <div class="bienvenida">
 
-    <img
-        src="/img/logo.png"
-        alt="Logo de la Universidad"
-        class="logo-biblioteca">
+  <img
+    src="/img/logo.png"
+    alt="Logo de la Universidad"
+    class="logo-biblioteca">
 
-    <h1>Biblioteca Universidad del Istmo</h1>
+  <h1>Biblioteca Universidad del Istmo</h1>
 
-    <p>Sistema de Gestión Bibliotecaria</p>
+  <p>Sistema de Gestión Bibliotecaria</p>
 
 </div>
 
-<!-- SALUDO PERSONALIZADO -->
 
 <div class="saludo">
 
-    <h2>
-        👋 Bienvenido, {{ nombreUsuario }}
-    </h2>
+  <h2>
+    👋 Bienvenido, {{ nombreUsuario }}
+  </h2>
 
-    <p *ngIf="tipoUsuario === 'admin'">
-        Panel Administrativo de la Biblioteca Digital UNISTMO.
-    </p>
+  <p *ngIf="tipoUsuario === 'admin'">
+    Panel Administrativo de la Biblioteca Digital UNISTMO.
+  </p>
 
-    <p *ngIf="tipoUsuario !== 'admin'">
-        Consulta tus préstamos, devoluciones y libros disponibles.
-    </p>
+  <p *ngIf="tipoUsuario !== 'admin'">
+    Consulta tus préstamos, devoluciones y libros disponibles.
+  </p>
 
-    <p class="fecha">
-        📅 {{ fechaActual }}
-    </p>
-
-</div>
-
-<!-- BUSCADOR -->
-
-<div class="busqueda">
-
-    <input
-        type="text"
-        placeholder="🔍 Buscar libros, autores o categorías...">
+  <p class="fecha">
+    📅 {{ fechaActual }}
+  </p>
 
 </div>
 
-<!-- ESTADÍSTICAS -->
+
 
 <div class="cards">
 
-    <div class="card">
+  <div class="card">
 
-        <div class="icono">📚</div>
+    <div class="icono">📚</div>
 
-        <h2>{{ totalLibros }}</h2>
+    <h2>{{ totalLibros }}</h2>
 
-        <p>Total de Libros</p>
+    <p>Total de Libros</p>
 
-    </div>
+  </div>
 
-    <div class="card">
 
-        <div class="icono">👥</div>
+  <div class="card" *ngIf="tipoUsuario === 'admin'">
 
-        <h2>{{ totalUsuarios }}</h2>
+    <div class="icono">👥</div>
 
-        <p>Usuarios Registrados</p>
+    <h2>{{ totalUsuarios }}</h2>
 
-    </div>
+    <p>Usuarios Registrados</p>
 
-    <div class="card">
+  </div>
 
-        <div class="icono">🔄</div>
 
-        <h2>{{ prestamosActivos }}</h2>
+  <div class="card">
 
-        <p>Préstamos Activos</p>
+    <div class="icono">🔄</div>
 
-    </div>
+    <h2>{{ prestamosActivos }}</h2>
 
-    <div class="card">
+    <p>Préstamos Activos</p>
 
-        <div class="icono">✅</div>
+  </div>
 
-        <h2>{{ librosDisponibles }}</h2>
 
-        <p>Libros Disponibles</p>
+  <div class="card">
 
-    </div>
+    <div class="icono">✅</div>
+
+    <h2>{{ librosDisponibles }}</h2>
+
+    <p>Libros Disponibles</p>
+
+  </div>
 
 </div>
 
-<!-- INFORMACIÓN DEL USUARIO -->
 
 <div *ngIf="tipoUsuario !== 'admin'" class="actividad">
 
-    <h3>📖 Mis Préstamos Actuales</h3>
+  <h3>📖 Mis Préstamos Actuales</h3>
 
-    <ul>
+  <ul>
 
-        <li *ngFor="let libro of misLibros">
+    <li *ngIf="misLibros.length === 0">
+      Sin préstamos registrados
+    </li>
 
-            📚 {{ libro }}
+    <li *ngFor="let libro of misLibros">
+      📚 {{ libro }}
+    </li>
 
-        </li>
-
-    </ul>
+  </ul>
 
 </div>
+
 
 <div *ngIf="tipoUsuario !== 'admin'" class="actividad">
 
-    <h3>⏰ Próximas Devoluciones</h3>
+  <h3>⏰ Próximas Devoluciones</h3>
 
-    <ul>
+  <ul>
 
-        <li *ngFor="let devolucion of proximasDevoluciones">
+    <li *ngIf="proximasDevoluciones.length === 0">
+      No tienes devoluciones pendientes
+    </li>
 
-            {{ devolucion }}
+    <li *ngFor="let devolucion of proximasDevoluciones">
+      {{ devolucion }}
+    </li>
 
-        </li>
-
-    </ul>
-
-</div>
-
-<!-- LIBROS MÁS PRESTADOS -->
-
-<div class="actividad">
-
-    <h3>🔥 Libros Más Prestados</h3>
-
-    <ul>
-
-        <li *ngFor="let libro of librosPopulares">
-
-            📚 {{ libro }}
-
-        </li>
-
-    </ul>
+  </ul>
 
 </div>
 
-<!-- CATEGORÍAS -->
 
 <div class="actividad">
 
-    <h3>📂 Categorías Destacadas</h3>
+  <h3>🔥 Libros Más Prestados</h3>
 
-    <div class="categorias-grid">
+  <ul>
 
-        <div class="categoria">
-            💻 Programación
-        </div>
+    <li *ngIf="librosPopulares.length === 0">
+      No hay libros prestados todavía
+    </li>
 
-        <div class="categoria">
-            🌐 Redes
-        </div>
+    <li *ngFor="let libro of librosPopulares">
+      📚 {{ libro }}
+    </li>
 
-        <div class="categoria">
-            📐 Matemáticas
-        </div>
+  </ul>
 
-        <div class="categoria">
-            ⚡ Electrónica
-        </div>
+</div>
 
-        <div class="categoria">
-            ⚖️ Derecho
-        </div>
 
-        <div class="categoria">
-            🇬🇧 Inglés
-        </div>
+<div class="actividad">
+
+  <h3>📂 Categorías Destacadas</h3>
+
+  <div
+    class="categorias-grid"
+    *ngIf="categoriasDestacadas.length > 0">
+
+    <button
+      class="categoria"
+      *ngFor="let c of categoriasDestacadas"
+      (click)="buscarPorCategoria(c.categoria)">
+
+      📚 {{ c.categoria }}
+      <small>({{ c.prestamos }} préstamos)</small>
+
+    </button>
+
+  </div>
+
+  <p *ngIf="categoriasDestacadas.length === 0">
+    Aún no hay categorías destacadas.
+  </p>
+
+</div>
+
+
+<div class="actividad">
+
+  <h3>📊 Mi Actividad Reciente</h3>
+
+  <div class="resumen">
+
+    <div class="dato">
+
+      <h4>{{ nombreUsuario }}</h4>
+
+      <p>Usuario</p>
 
     </div>
 
-</div>
+    <div class="dato">
 
-<!-- ACTIVIDAD RECIENTE -->
+      <h4>{{ totalPrestamos }}</h4>
 
-<div class="actividad">
-
-    <h3>📊 Mi Actividad Reciente</h3>
-
-    <div class="resumen">
-
-        <div class="dato">
-
-            <h4>{{ nombreUsuario }}</h4>
-
-            <p>Usuario</p>
-
-        </div>
-
-        <div class="dato">
-
-            <h4>{{ totalPrestamos }}</h4>
-
-            <p>Préstamos Realizados</p>
-
-        </div>
-
-        <div class="dato">
-
-            <h4>{{ ultimoLibro }}</h4>
-
-            <p>Último Libro Solicitado</p>
-
-        </div>
+      <p>Préstamos Realizados</p>
 
     </div>
 
+    <div class="dato">
+
+      <h4>{{ ultimoLibro }}</h4>
+
+      <p>Último Libro Solicitado</p>
+
+    </div>
+
+  </div>
+
 </div>
 
-<!-- SOLO PARA ADMINISTRADORES -->
 
 <div *ngIf="tipoUsuario === 'admin'" class="actividad">
 
-    <h3>🛡 Resumen Administrativo</h3>
+  <h3>🛡 Resumen Administrativo</h3>
 
-    <ul>
+  <ul>
 
-        <li>
-            👥 Usuarios Registrados:
-            {{ totalUsuarios }}
-        </li>
+    <li>
+      👥 Usuarios Registrados:
+      {{ totalUsuarios }}
+    </li>
 
-        <li>
-            📚 Libros Disponibles:
-            {{ librosDisponibles }}
-        </li>
+    <li>
+      📚 Libros Disponibles:
+      {{ librosDisponibles }}
+    </li>
 
-        <li>
-            🔄 Préstamos Activos:
-            {{ prestamosActivos }}
-        </li>
+    <li>
+      🔄 Préstamos Activos:
+      {{ prestamosActivos }}
+    </li>
 
-    </ul>
+  </ul>
 
 </div>

@@ -1,12 +1,8 @@
 <div class="pagina-libros">
 
-  <!-- ENCABEZADO -->
-
   <div class="titulo-card">
     <h1>📚 Biblioteca Digital</h1>
   </div>
-
-  <!-- INFORMACIÓN -->
 
   <div class="info-panel">
 
@@ -22,8 +18,6 @@
 
   </div>
 
-  <!-- BÚSQUEDA -->
-
   <div class="busqueda-container">
 
     <h3>🔎 Búsqueda Avanzada</h3>
@@ -37,16 +31,6 @@
 
       <input
         type="text"
-        placeholder="Buscar por autor..."
-        [(ngModel)]="busquedaAutor">
-
-      <input
-        type="text"
-        placeholder="Buscar por categoría..."
-        [(ngModel)]="busquedaCategoria">
-
-      <input
-        type="text"
         placeholder="Buscar por ISBN..."
         [(ngModel)]="busquedaISBN">
 
@@ -54,65 +38,37 @@
 
   </div>
 
-  <!-- CATEGORÍAS -->
-
   <div class="categorias">
 
-    <h3>📂 Categorías Destacadas</h3>
+    <h3>📂 Categorías Más Buscadas</h3>
 
     <div class="botones-categorias">
 
-      <button (click)="filtrarCategoria('Programación')">
-        💻 Programación
-      </button>
-
-      <button (click)="filtrarCategoria('Bases de Datos')">
-        🗄️ Bases de Datos
-      </button>
-
-      <button (click)="filtrarCategoria('Redes')">
-        🌐 Redes
-      </button>
-
-      <button (click)="filtrarCategoria('IA')">
-        🤖 IA
-      </button>
-
-      <button (click)="filtrarCategoria('Matemáticas')">
-        📐 Matemáticas
-      </button>
-
-      <button (click)="filtrarCategoria('Literatura')">
-        📖 Literatura
+      <button
+        *ngFor="let categoria of categoriasDestacadas"
+        (click)="filtrarCategoria(categoria)">
+        {{ categoria }}
       </button>
 
       <button
         class="limpiar"
         (click)="limpiarFiltros()">
-
-        🔄 Mostrar Todos
-
+        Mostrar Todos
       </button>
 
     </div>
 
   </div>
 
-  <!-- BOTÓN AGREGAR -->
-
   <div class="acciones">
 
     <button
       *ngIf="tipoUsuario === 'admin'"
       (click)="mostrarFormulario = !mostrarFormulario">
-
-      ➕ Agregar Libro
-
+      Agregar Libro
     </button>
 
   </div>
-
-  <!-- FORMULARIO -->
 
   <div *ngIf="mostrarFormulario" class="formulario">
 
@@ -149,14 +105,11 @@
 
   </div>
 
-  <!-- TABLA -->
-
   <div class="tabla-container">
 
     <table>
 
       <thead>
-
         <tr>
           <th>Título</th>
           <th>Autor</th>
@@ -166,7 +119,6 @@
           <th>Estado</th>
           <th>Acciones</th>
         </tr>
-
       </thead>
 
       <tbody>
@@ -181,79 +133,68 @@
 
           <td>{{ libro.isbn }}</td>
 
-          <td>{{ libro.existencias }}</td>
+          <td>
+            <span
+              class="badge-existencias"
+              [class.sin-stock]="libro.existencias <= 0">
+              {{ libro.existencias }} disponibles
+            </span>
+          </td>
 
           <td>
-
             <span
               *ngIf="libro.existencias > 0"
-              class="disponible">
-
-              ✅ Disponible
-
+              class="estado disponible">
+              Disponible
             </span>
 
             <span
               *ngIf="libro.existencias <= 0"
-              class="agotado">
-
-              ❌ Agotado
-
+              class="estado agotado">
+              Agotado
             </span>
-
           </td>
 
-          <td class="acciones-libro">
+          <td>
 
-            <!-- VER DETALLE -->
+            <div class="acciones-libro">
 
-            <button
-              class="ver"
-              (click)="verDetalle(libro)">
+              <button
+                class="btn-ver"
+                (click)="verDetalle(libro)">
+                Ver
+              </button>
 
-              👁️ Ver
+              <button
+                *ngIf="tipoUsuario !== 'admin'"
+                class="btn-favorito"
+                (click)="agregarFavorito(libro)">
+                Favorito
+              </button>
 
-            </button>
+              <button
+                *ngIf="tipoUsuario !== 'admin'"
+                class="btn-solicitar"
+                [disabled]="libro.existencias <= 0"
+                (click)="solicitarPrestamo(libro)">
+                Solicitar
+              </button>
 
-            <!-- SOLO USUARIOS -->
+              <button
+                *ngIf="tipoUsuario === 'admin'"
+                class="btn-editar"
+                (click)="editarLibro(libro)">
+                Editar
+              </button>
 
-            <button
-              *ngIf="tipoUsuario !== 'admin'"
-              class="favorito"
-              (click)="agregarFavorito(libro)">
+              <button
+                *ngIf="tipoUsuario === 'admin'"
+                class="btn-eliminar"
+                (click)="eliminarLibro(libro)">
+                Eliminar
+              </button>
 
-              💖 Favorito
-
-            </button>
-
-            <button
-              *ngIf="tipoUsuario !== 'admin'"
-              class="prestamo"
-              (click)="solicitarPrestamo(libro)">
-
-              📚 Solicitar
-
-            </button>
-
-            <!-- SOLO ADMIN -->
-
-            <button
-              *ngIf="tipoUsuario === 'admin'"
-              class="editar"
-              (click)="editarLibro(libro)">
-
-              ✏️
-
-            </button>
-
-            <button
-              *ngIf="tipoUsuario === 'admin'"
-              class="eliminar"
-              (click)="eliminarLibro(libro)">
-
-              🗑️
-
-            </button>
+            </div>
 
           </td>
 
@@ -262,6 +203,76 @@
       </tbody>
 
     </table>
+
+  </div>
+
+  <div
+    class="modal-fondo"
+    *ngIf="modalVisible">
+
+    <div class="modal-libro">
+
+      <div class="modal-header">
+        <h2>Detalle del libro</h2>
+        <button
+          class="cerrar-modal"
+          (click)="cerrarModal()">
+          ×
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="detalle-item">
+          <span>Título</span>
+          <strong>{{ libroSeleccionado?.titulo }}</strong>
+        </div>
+
+        <div class="detalle-item">
+          <span>Autor</span>
+          <strong>{{ libroSeleccionado?.autor }}</strong>
+        </div>
+
+        <div class="detalle-item">
+          <span>Categoría</span>
+          <strong>{{ libroSeleccionado?.categoria }}</strong>
+        </div>
+
+        <div class="detalle-item">
+          <span>ISBN</span>
+          <strong>{{ libroSeleccionado?.isbn }}</strong>
+        </div>
+
+        <div class="detalle-item">
+          <span>Existencias</span>
+          <strong>{{ libroSeleccionado?.existencias }}</strong>
+        </div>
+
+        <div class="detalle-item">
+          <span>Estado</span>
+
+          <strong
+            class="texto-disponible"
+            *ngIf="libroSeleccionado?.existencias > 0">
+            Disponible
+          </strong>
+
+          <strong
+            class="texto-agotado"
+            *ngIf="libroSeleccionado?.existencias <= 0">
+            Agotado
+          </strong>
+        </div>
+
+      </div>
+
+      <button
+        class="btn-cerrar"
+        (click)="cerrarModal()">
+        Cerrar
+      </button>
+
+    </div>
 
   </div>
 

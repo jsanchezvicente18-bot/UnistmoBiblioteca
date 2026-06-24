@@ -217,3 +217,81 @@ h2 {
   }
 
 }
+
+.btn-noti {
+  position: relative;
+  background: #8b0035;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(139, 0, 53, 0.35);
+}
+
+.btn-noti span {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #ffcc00;
+  color: #5a001f;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px 7px;
+  border-radius: 50%;
+}
+
+.panel-notificaciones {
+  position: absolute;
+  top: 70px;
+  right: 25px;
+  width: 330px;
+  background: #fff7f9;
+  border: 1px solid #c1124a;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(90, 0, 31, 0.25);
+  padding: 18px;
+  z-index: 999;
+}
+
+.panel-notificaciones h4 {
+  margin: 0 0 12px;
+  color: #8b0035;
+  font-size: 18px;
+}
+
+.notificacion {
+  background: white;
+  border-left: 5px solid #b0003a;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+  color: #3b0015;
+  box-shadow: 0 4px 10px rgba(90, 0, 31, 0.12);
+}
+
+.notificacion p {
+  margin: 0 0 6px;
+  font-size: 14px;
+}
+
+.notificacion small {
+  color: #8b0035;
+  font-size: 12px;
+}
+
+.notificacion button {
+  margin-top: 8px;
+  background: #b0003a;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 7px 12px;
+  cursor: pointer;
+}
+
+.notificacion button:hover {
+  background: #7a0028;
+}

@@ -17,6 +17,7 @@ matricula = '';
 
 password = '';
 
+
 mostrarPassword = false;
 
 constructor(
@@ -42,21 +43,16 @@ this.http.post<any>(
 
     }
 
-    localStorage.setItem(
-      'usuarioId',
-      respuesta.id
-    );
+    localStorage.setItem('usuarioId', respuesta.id);
+    localStorage.setItem('nombreUsuario', respuesta.nombre);
+    localStorage.setItem('tipoUsuario', respuesta.tipo);
 
-    localStorage.setItem(
-      'nombreUsuario',
-      respuesta.nombre
-    );
-
-    localStorage.setItem(
-      'tipoUsuario',
-      respuesta.tipo
-    );
-
+    localStorage.setItem('correoUsuario', respuesta.correo || '');
+    localStorage.setItem('matriculaUsuario', respuesta.matricula || '');
+    localStorage.setItem('carreraUsuario', respuesta.carrera || '');
+    localStorage.setItem('fechaRegistro', respuesta.fechaRegistro || '');
+    localStorage.setItem('fotoPerfil', respuesta.fotoPerfil || '/img/user.png');
+    
     this.router.navigate(['/inicio']);
 
   },

@@ -6,18 +6,43 @@ from models.prestamo import Prestamo
 from models.usuario import Usuario
 from models.libro import Libro
 from models.login import Login
-from models.recuperar import SolicitarRecuperacion, CambiarPassword
+from models.recuperar import SolicitarRecuperacion
+from pydantic import BaseModel
 
+from database import (administradores, libros, usuarios, 
+           prestamos, mensajes_admin,reportes_error
+    )
 
-from database import (
-    administradores,
-    libros,
-    usuarios,
-    prestamos
-)
+from database import (administradores, libros, usuarios, prestamos
+    )
+
+from database import (administradores, libros, usuarios,
+    prestamos, notificaciones
+    )
 
 app = FastAPI()
 
+
+class CambiarPassword(BaseModel):
+    passwordActual: str
+    nuevaPassword: str
+
+class ActualizarUsuario(BaseModel):
+    nombre: str
+    correo: str
+    carrera: str
+    fotoPerfil: str = ""
+
+class MensajeAdmin(BaseModel):
+    usuario_id: str
+    nombre: str
+    mensaje: str
+
+
+class ReporteError(BaseModel):
+    usuario_id: str
+    nombre: str
+    error: str
 
 app.add_middleware(
     CORSMiddleware,
@@ -232,6 +257,12 @@ def crear_prestamo(prestamo: Prestamo):
         nuevo_prestamo
     )
 
+    notificaciones.insert_one({
+    "usuario_id": prestamo.usuario_id,
+    "mensaje": "Se registró un préstamo nuevo. Fecha de devolución: " + fecha_devolucion.strftime("%Y-%m-%d"),
+    "fecha": datetime.now().strftime("%Y-%m-%d %H:%M"),
+    "leida": False})
+
     return {
         "success": True,
         "mensaje": "Préstamo creado",
@@ -289,8 +320,13 @@ def login(datos: Login):
     return {
         "success": True,
         "id": str(usuario["_id"]),
-        "nombre": usuario["nombre"],
-        "tipo": usuario["tipo"]
+        "nombre": usuario.get("nombre", ""),
+        "tipo": usuario.get("tipo", ""),
+        "correo": usuario.get("correo", ""),
+        "matricula": usuario.get("matricula", ""),
+        "carrera": usuario.get("carrera", ""),
+        "fechaRegistro": usuario.get("fechaRegistro", ""),
+        "fotoPerfil": usuario.get("fotoPerfil", "")
     }
 
 @app.post("/recuperar-password")
@@ -331,3 +367,170 @@ def cambiar_password(datos: CambiarPassword):
         "mensaje": "Contraseña actualizada correctamente"
     }
 
+@app.put("/usuarios/{usuario_id}")
+def actualizar_usuario(usuario_id: str, datos: ActualizarUsuario):
+
+    usuarios.update_one(
+        {"_id": ObjectId(usuario_id)},
+        {
+            "$set": {
+                "nombre": datos.nombre,
+                "correo": datos.correo,
+                "carrera": datos.carrera,
+                "fotoPerfil": datos.fotoPerfil
+            }
+        }
+    )
+
+    return {"mensaje": "Usuario actualizado correctamente"}
+
+
+@app.put("/usuarios/{usuario_id}/password")
+def cambiar_password(usuario_id: str, datos: CambiarPassword):
+
+    usuario = usuarios.find_one({"_id": ObjectId(usuario_id)})
+
+    if not usuario:
+        return {"error": "Usuario no encontrado"}
+
+    if usuario.get("password") != datos.passwordActual:
+        return {"error": "La contraseña actual no coincide"}
+
+    usuarios.update_one(
+        {"_id": ObjectId(usuario_id)},
+        {
+            "$set": {
+                "password": datos.nuevaPassword
+            }
+        }
+    )
+
+    return {"mensaje": "Contraseña actualizada correctamente"}
+
+@app.post("/contactar-admin")
+def contactar_admin(datos: MensajeAdmin):
+
+    mensajes_admin.insert_one({
+        "usuario_id": datos.usuario_id,
+        "nombre": datos.nombre,
+        "mensaje": datos.mensaje,
+        "fecha": datetime.now().strftime("%Y-%m-%d %H:%M")
+    })
+
+    return {
+        "mensaje": "Mensaje enviado al administrador"
+    }
+
+
+@app.get("/mensajes-admin")
+def obtener_mensajes_admin():
+
+    datos = []
+
+    for mensaje in mensajes_admin.find():
+
+        datos.append({
+            "id": str(mensaje["_id"]),
+            "usuario_id": mensaje.get("usuario_id", ""),
+            "nombre": mensaje.get("nombre", ""),
+            "mensaje": mensaje.get("mensaje", ""),
+            "fecha": mensaje.get("fecha", "")
+        })
+
+    return datos
+
+
+@app.post("/reportar-error")
+def reportar_error(datos: ReporteError):
+
+    reportes_error.insert_one({
+        "usuario_id": datos.usuario_id,
+        "nombre": datos.nombre,
+        "error": datos.error,
+        "fecha": datetime.now().strftime("%Y-%m-%d %H:%M")
+    })
+
+    return {
+        "mensaje": "Reporte enviado correctamente"
+    }
+
+
+@app.get("/reportes-error")
+def obtener_reportes_error():
+
+    datos = []
+
+    for reporte in reportes_error.find():
+
+        datos.append({
+            "id": str(reporte["_id"]),
+            "usuario_id": reporte.get("usuario_id", ""),
+            "nombre": reporte.get("nombre", ""),
+            "error": reporte.get("error", ""),
+            "fecha": reporte.get("fecha", "")
+        })
+
+    return datos
+
+@app.get("/categorias-destacadas")
+def categorias_destacadas():
+
+    conteo = {}
+
+    for prestamo in prestamos.find():
+
+        libro = libros.find_one({
+            "_id": ObjectId(prestamo["libro_id"])
+        })
+
+        if not libro:
+            continue
+
+        categoria = libro.get("categoria", "Sin categoría")
+
+        if categoria not in conteo:
+            conteo[categoria] = 0
+
+        conteo[categoria] += 1
+
+    categorias = []
+
+    for categoria, total in conteo.items():
+        categorias.append({
+            "categoria": categoria,
+            "prestamos": total
+        })
+
+    categorias.sort(
+        key=lambda x: x["prestamos"],
+        reverse=True
+    )
+
+    return categorias[:6]
+
+@app.get("/notificaciones/{usuario_id}")
+def obtener_notificaciones(usuario_id: str):
+
+    datos = []
+
+    for n in notificaciones.find({"usuario_id": usuario_id}):
+
+        datos.append({
+            "id": str(n["_id"]),
+            "mensaje": n.get("mensaje", ""),
+            "fecha": n.get("fecha", ""),
+            "leida": n.get("leida", False)
+        })
+
+    return datos
+
+
+@app.put("/notificaciones/{notificacion_id}/leer")
+def marcar_notificacion_leida(notificacion_id: str):
+
+    notificaciones.update_one(
+        {"_id": ObjectId(notificacion_id)},
+        {"$set": {"leida": True}}
+    )
+
+    return {"mensaje": "Notificación marcada como leída"}

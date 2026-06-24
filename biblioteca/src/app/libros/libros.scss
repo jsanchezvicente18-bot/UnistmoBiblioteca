@@ -189,3 +189,274 @@ tbody tr:hover{
   }
 
 }
+
+.modal-fondo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-libro {
+  background: white;
+  width: 90%;
+  max-width: 430px;
+  padding: 28px;
+  border-radius: 22px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+  animation: aparecer 0.25s ease;
+}
+
+.modal-libro h2 {
+  color: #b30000;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+.modal-libro p {
+  font-size: 15px;
+  margin: 10px 0;
+}
+
+.modal-libro button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 13px;
+  border: none;
+  border-radius: 14px;
+  background: #b30000;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+.acciones-libro {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.acciones-libro button {
+  border: none;
+  padding: 10px 16px;
+  border-radius: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.25s ease;
+  min-width: 105px;
+}
+
+.btn-ver {
+  background: #111827;
+  color: white;
+}
+
+.btn-ver:hover {
+  background: #374151;
+  transform: translateY(-2px);
+}
+
+.btn-favorito {
+  background: #fff1f2;
+  color: #be123c;
+  border: 1px solid #fecdd3 !important;
+}
+
+.btn-favorito:hover {
+  background: #be123c;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-solicitar {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe !important;
+}
+
+.btn-solicitar:hover {
+  background: #1d4ed8;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-solicitar:disabled {
+  background: #e5e7eb;
+  color: #6b7280;
+  border: 1px solid #d1d5db !important;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-editar {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a !important;
+}
+
+.btn-eliminar {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca !important;
+}
+
+.badge-existencias {
+  background: #e8f8ee;
+  color: #16803a;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-weight: 700;
+  display: inline-block;
+  font-size: 13px;
+}
+
+.badge-existencias.sin-stock {
+  background: #fdecec;
+  color: #b30000;
+}
+
+.estado {
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+  display: inline-block;
+  font-size: 13px;
+}
+
+.estado.disponible {
+  background: #e8f8ee;
+  color: #16803a;
+}
+
+.estado.agotado {
+  background: #fdecec;
+  color: #b30000;
+}
+
+.modal-fondo {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.modal-libro {
+  background: white;
+  width: 100%;
+  max-width: 470px;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  animation: aparecer 0.25s ease;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #991b1b;
+  font-size: 24px;
+}
+
+.cerrar-modal {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: #f3f4f6;
+  color: #111827;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detalle-item {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 12px 14px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.detalle-item span {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.detalle-item strong {
+  color: #111827;
+  text-align: right;
+}
+
+.texto-disponible {
+  color: #16803a !important;
+}
+
+.texto-agotado {
+  color: #b30000 !important;
+}
+
+.btn-cerrar {
+  width: 100%;
+  margin-top: 22px;
+  padding: 13px;
+  border: none;
+  border-radius: 14px;
+  background: #991b1b;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-cerrar:hover {
+  background: #7f1d1d;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
