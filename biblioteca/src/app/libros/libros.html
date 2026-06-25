@@ -126,11 +126,8 @@
         <tr *ngFor="let libro of filtrarLibros()">
 
           <td>{{ libro.titulo }}</td>
-
           <td>{{ libro.autor }}</td>
-
           <td>{{ libro.categoria }}</td>
-
           <td>{{ libro.isbn }}</td>
 
           <td>
@@ -168,16 +165,12 @@
               <button
                 *ngIf="tipoUsuario !== 'admin'"
                 class="btn-favorito"
+                [class.favorito-activo]="esFavorito(libro)"
+                [disabled]="esFavorito(libro)"
                 (click)="agregarFavorito(libro)">
-                Favorito
-              </button>
 
-              <button
-                *ngIf="tipoUsuario !== 'admin'"
-                class="btn-solicitar"
-                [disabled]="libro.existencias <= 0"
-                (click)="solicitarPrestamo(libro)">
-                Solicitar
+                {{ esFavorito(libro) ? 'En favoritos' : 'Favorito' }}
+
               </button>
 
               <button
@@ -214,6 +207,7 @@
 
       <div class="modal-header">
         <h2>Detalle del libro</h2>
+
         <button
           class="cerrar-modal"
           (click)="cerrarModal()">
