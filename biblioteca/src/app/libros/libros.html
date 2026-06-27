@@ -126,8 +126,11 @@
         <tr *ngFor="let libro of filtrarLibros()">
 
           <td>{{ libro.titulo }}</td>
+
           <td>{{ libro.autor }}</td>
+
           <td>{{ libro.categoria }}</td>
+
           <td>{{ libro.isbn }}</td>
 
           <td>
@@ -139,6 +142,7 @@
           </td>
 
           <td>
+
             <span
               *ngIf="libro.existencias > 0"
               class="estado disponible">
@@ -150,6 +154,7 @@
               class="estado agotado">
               Agotado
             </span>
+
           </td>
 
           <td>
@@ -206,6 +211,7 @@
     <div class="modal-libro">
 
       <div class="modal-header">
+
         <h2>Detalle del libro</h2>
 
         <button
@@ -213,6 +219,7 @@
           (click)="cerrarModal()">
           ×
         </button>
+
       </div>
 
       <div class="modal-body">
@@ -243,6 +250,7 @@
         </div>
 
         <div class="detalle-item">
+
           <span>Estado</span>
 
           <strong
@@ -256,6 +264,7 @@
             *ngIf="libroSeleccionado?.existencias <= 0">
             Agotado
           </strong>
+
         </div>
 
       </div>

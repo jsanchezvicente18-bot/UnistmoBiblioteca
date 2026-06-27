@@ -182,12 +182,12 @@
     *ngIf="tipoUsuario === 'admin'">
 
     <div class="admin-card">
-      <h3>🏆 Usuario con más préstamos</h3>
+      <h3>Usuario con más préstamos</h3>
       <p>{{ usuarioTop }}</p>
     </div>
 
     <div class="admin-card">
-      <h3>📚 Libro más solicitado</h3>
+      <h3>Libro más solicitado</h3>
       <p>{{ libroTop }}</p>
     </div>
 
@@ -196,6 +196,7 @@
 </div>
 
 
+<!-- MODAL VER DETALLE -->
 <div class="modal-fondo" *ngIf="mostrarDetalle">
 
   <div class="modal-card">
@@ -241,6 +242,7 @@
 </div>
 
 
+<!-- MODAL RENOVAR -->
 <div class="modal-fondo" *ngIf="mostrarRenovar">
 
   <div class="modal-card">

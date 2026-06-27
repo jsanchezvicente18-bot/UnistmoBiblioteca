@@ -127,7 +127,7 @@
 
 <div class="titulo-card">
 
-  <h2>🛠 Gestión de Usuarios</h2>
+  <h2>Gestión de Usuarios</h2>
 
 </div>
 
@@ -196,12 +196,22 @@
     </option>
 
   </select>
+  
+<div class="botones-formulario">
 
-  <button (click)="guardarUsuario()">
-
+  <button
+    class="btn-guardar"
+    (click)="guardarUsuario()">
     Guardar Usuario
-
   </button>
+
+  <button
+    class="btn-cancelar"
+    (click)="mostrarFormulario = false">
+    Cerrar
+  </button>
+
+</div>
 
 </div>
 
@@ -243,7 +253,7 @@
           class="editar"
           (click)="editarUsuario(usuario)">
 
-          ✏️
+          Editar
 
         </button>
 
@@ -251,7 +261,7 @@
           class="eliminar"
           (click)="eliminarUsuario(usuario)">
 
-          🗑️
+          Eliminar
 
         </button>
 
@@ -259,7 +269,7 @@
           class="bloquear"
           (click)="bloquearUsuario(usuario)">
 
-          🚫
+          Bloquear 
 
         </button>
 

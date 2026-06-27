@@ -7,17 +7,17 @@
 
 
 .titulo-card{
-    background:white;
+    background:rgb(103, 5, 5);
     border-radius:20px;
     padding:25px;
     margin-bottom:25px;
     text-align:center;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    box-shadow:0 5px 15px rgb(255, 253, 253);
 }
 
 .titulo-card h1{
     margin:0;
-    color:#7F1734;
+    color:#ffffff;
     font-size:42px;
 }
 
@@ -31,7 +31,7 @@
 }
 
 .perfil-card h2{
-    color:#7F1734;
+    color:#000000;
     margin-bottom:20px;
 }
 
@@ -43,26 +43,26 @@
 }
 
 .perfil-info p{
-    background:#F5EBE0;
+    background:#cecdcc;
     padding:15px;
     border-radius:12px;
     margin:0;
     font-size:15px;
 }
 
-/* SECCIONES */
+/* SECCIONES */ 
 
 .seccion{
     background:white;
     border-radius:20px;
     padding:25px;
     margin-bottom:25px;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    box-shadow:0 5px 15px rgb(0, 0, 0);
 }
 
 .seccion h2{
     margin-top:0;
-    color:#7F1734;
+    color:#ffffff;
 }
 
 
@@ -114,11 +114,9 @@ ul li{
 }
 
 ul li:hover{
-    background:#E3D5CA;
+    background:#afaeae;
     transform:translateX(5px);
 }
-
-
 
 .acciones{
     display:flex;
@@ -138,7 +136,7 @@ ul li:hover{
 }
 
 .acciones button:hover{
-    background:#A53860;
+    background:#7e002e;
 }
 
 .formulario{
@@ -146,7 +144,7 @@ ul li:hover{
     padding:25px;
     border-radius:20px;
     margin-bottom:25px;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    box-shadow:0 5px 15px rgb(0, 0, 0);
 }
 
 .formulario input,
@@ -208,4 +206,28 @@ ul li:hover{
         overflow-x:auto;
     }
 
+}
+.botones-formulario{
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn-guardar{
+  background: #a50000;
+  color: white;
+}
+
+.btn-guardar:hover{
+  background: #870000;
+}
+
+.btn-cancelar{
+  background: #6b7280;
+  color: white;
+}
+
+.btn-cancelar:hover{
+  background: #4b5563;
 }

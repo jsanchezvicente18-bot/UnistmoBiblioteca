@@ -21,7 +21,7 @@
   [(ngModel)]="matricula"
   name="matricula">
 
-<div class="password-container">
+  <div class="password-container">
 
   <input
     [type]="mostrarPassword ? 'text' : 'password'"
@@ -39,7 +39,6 @@
   </button>
 
 </div>
-
 <button
   class="btn-login"
   (click)="ingresar()">
@@ -71,26 +70,21 @@
 
 </p>
 
-<a class="link-recuperar" routerLink="/recuperar-password">
-  Recuperar contraseña
-</a>
+<div class="ayuda-login">
 
-<button routerLink="/manual-usuario">
-  Manual de usuario
-</button>
+  <a routerLink="/manual-usuario">
+    📖 Manual de usuario
+  </a>
 
-<button routerLink="/contactar-admin">
-  Contactar con admin
-</button>
+  <a routerLink="/contactar-admin">
+    📧 Contactar administrador
+  </a>
 
-<button routerLink="/mandar-reporte">
-  Mandar reporte
-</button>
+  <a routerLink="/reportar-error">
+    🚨 Reportar error
+  </a>
 
-<p class="registro">
-  ¿No tienes cuenta?
-  <a routerLink="/registro">Crear cuenta</a>
-</p>
+</div>
 
 <div class="footer-login">
 

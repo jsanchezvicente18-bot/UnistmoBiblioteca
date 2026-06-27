@@ -18,10 +18,8 @@
     text-align: center;
     position: relative;
 }
-
-.logo{
-    width: 180px;
-    max-width: 100%;
+.logo-biblioteca{
+    width: 250px;      
     height: auto;
     display: block;
     margin: 0 auto 20px auto;
@@ -82,7 +80,7 @@ button:hover{
 .registro{
     margin-top: 25px;
     margin-bottom: 8px;
-    color: #6b7280;
+    color: #000000;
 }
 
 .recuperar{
@@ -130,4 +128,41 @@ a:hover{
 .ayuda-login a:hover{
   color: #7a0000;
   text-decoration: underline;
+}
+
+.password-container{
+    position: relative;
+    width: 100%;
+}
+
+.password-container input{
+    padding-right: 50px;
+    margin-bottom: 18px;
+}
+
+/* Botón del ojo */
+.btn-password{
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+
+    width: auto;
+    padding: 0;
+    margin: 0;
+
+    background: transparent;
+    border: none;
+    box-shadow: none;
+
+    color: #8a8a8a;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.btn-password:hover{
+    background: transparent;
+    transform: translateY(-50%);
+    box-shadow: none;
+    color: #555;
 }
