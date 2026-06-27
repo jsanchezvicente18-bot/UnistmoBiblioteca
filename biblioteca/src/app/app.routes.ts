@@ -68,10 +68,30 @@ export const routes: Routes = [
         path: 'configuracion',
         loadComponent: () =>
           import('./configuracion/configuracion').then(m => m.Configuracion)
+      },
+
+      {
+        path: 'manual-usuario',
+        loadComponent: () =>
+          import('./pages/manual-usuario/manual-usuario')
+            .then(m => m.ManualUsuario)
+      },
+
+      {
+        path: 'contactar-admin',
+        loadComponent: () =>
+          import('./pages/contactar-admin/contactar-admin')
+            .then(m => m.ContactarAdmin)
+      },
+
+      {
+        path: 'mandar-reporte',
+        loadComponent: () =>
+          import('./pages/mandar-reporte/mandar-reporte')
+            .then(m => m.MandarReporte)
       }
 
     ]
-
   }
 
 ];
