@@ -2,105 +2,173 @@
 
   <div class="login-card">
 
+    <img
+      src="/img/logo2.png"
+      alt="Logo de la Biblioteca"
+      class="logo-biblioteca">
 
-<img
-  src="/img/logo2.png"
-  alt="Logo de la Biblioteca"
-  class="logo-biblioteca">
+    <h1>Biblioteca Digital UNISTMO</h1>
 
-<h1>Biblioteca Digital UNISTMO</h1>
+    <p class="subtitulo">
+      Sistema de Gestión Bibliotecaria
+    </p>
 
-<p class="subtitulo">
-  Sistema de Gestión Bibliotecaria
-</p>
+    <input
+      type="text"
+      placeholder="Correo electrónico o matrícula"
+      [(ngModel)]="matricula"
+      name="matricula">
 
+    <div class="password-container">
 
-<input
-  type="text"
-  placeholder="Correo electrónico o matrícula"
-  [(ngModel)]="matricula"
-  name="matricula">
+      <input
+        [type]="mostrarPassword ? 'text' : 'password'"
+        placeholder="Contraseña"
+        [(ngModel)]="password"
+        name="password">
 
-  <div class="password-container">
+      <button
+        type="button"
+        class="btn-password"
+        (click)="mostrarPassword = !mostrarPassword">
 
-  <input
-    [type]="mostrarPassword ? 'text' : 'password'"
-    placeholder="Contraseña"
-    [(ngModel)]="password"
-    name="password">
+        {{ mostrarPassword ? '🙈' : '👁️' }}
 
-  <button
-    type="button"
-    class="btn-password"
-    (click)="mostrarPassword = !mostrarPassword">
+      </button>
 
-    {{ mostrarPassword ? '🙈' : '👁️' }}
+    </div>
 
-  </button>
+    <button
+      type="button"
+      class="btn-login"
+      (click)="ingresar()">
+
+      Iniciar Sesión
+
+    </button>
+
+    <p class="recuperar">
+
+      <a routerLink="/recuperar-password">
+
+        Recuperar contraseña
+
+      </a>
+
+    </p>
+
+    <p class="registro">
+
+      ¿No tienes cuenta?
+
+      <a routerLink="/registro">
+
+        Crear cuenta
+
+      </a>
+
+    </p>
+
+    <div class="ayuda-login">
+
+      <a routerLink="/manual-usuario">
+        📖 Manual de usuario
+      </a>
+
+      <a
+        href="javascript:void(0)"
+        (click)="abrirModalContacto()">
+        📧 Contactar administrador
+      </a>
+
+      <a routerLink="/mandar-reporte">
+        🚨 Reportar error
+      </a>
+
+    </div>
+
+    <div class="footer-login">
+
+      <p>📚 Biblioteca Digital UNISTMO</p>
+
+      <p>Versión 1.0</p>
+
+      <p>© 2026 Todos los derechos reservados</p>
+
+    </div>
+
+  </div>
 
 </div>
-<button
-  class="btn-login"
-  (click)="ingresar()">
-
-  Iniciar Sesión
-
-</button>
 
 
-<p class="recuperar">
+<div
+  class="modal-fondo"
+  *ngIf="mostrarModalContacto">
 
-  <a routerLink="/recuperar-password">
+  <div class="modal-contacto">
 
-     Recuperar contraseña
+    <div class="modal-header">
 
-  </a>
+      <h2>📧 Contactar Administrador</h2>
 
-</p>
+      <button
+        type="button"
+        class="cerrar-modal"
+        (click)="cerrarModalContacto()">
+        ✕
+      </button>
 
-<p class="registro">
+    </div>
 
-  ¿No tienes cuenta?
+    <div class="modal-body">
 
-  <a routerLink="/registro">
+      <p>
+        Si tienes algún problema con el sistema, puedes comunicarte con el administrador mediante los siguientes medios:
+      </p>
 
-    Crear cuenta
+      <div class="dato">
 
-  </a>
+        <strong>👤 Administrador</strong>
 
-</p>
+        <span>Biblioteca Digital UNISTMO</span>
 
-<div class="ayuda-login">
+      </div>
 
-  <a routerLink="/manual-usuario">
-    📖 Manual de usuario
-  </a>
+      <div class="dato">
 
-  <a routerLink="/contactar-admin">
-    📧 Contactar administrador
-  </a>
+        <strong>📧 Correo</strong>
 
-  <a routerLink="/reportar-error">
-    🚨 Reportar error
-  </a>
+        <span>admin@unistmo.edu.mx</span>
 
-</div>
+      </div>
 
-<div class="footer-login">
+      <div class="dato">
 
-  <p>
-    📚 Biblioteca Digital UNISTMO
-  </p>
+        <strong>📱 Teléfono</strong>
 
-  <p>
-    Versión 1.0
-  </p>
+        <span>971 000 0000</span>
 
-  <p>
-    © 2026 Todos los derechos reservados
-  </p>
+      </div>
 
-</div>
+      <div class="dato">
+
+        <strong>🕒 Horario de atención</strong>
+
+        <span>Lunes a Viernes de 8:00 a 16:00 hrs.</span>
+
+      </div>
+
+    </div>
+
+    <button
+      type="button"
+      class="btn-cerrar"
+      (click)="cerrarModalContacto()">
+
+      Cerrar
+
+    </button>
 
   </div>
 

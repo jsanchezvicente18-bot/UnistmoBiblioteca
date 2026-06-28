@@ -4,188 +4,191 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-selector: 'app-usuarios',
-standalone: true,
-imports: [CommonModule, FormsModule],
-templateUrl: './usuarios.html',
-styleUrl: './usuarios.scss'
+  selector: 'app-usuarios',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './usuarios.html',
+  styleUrl: './usuarios.scss'
 })
 export class Usuarios implements OnInit {
 
-tipoUsuario =
-localStorage.getItem('tipoUsuario');
+  tipoUsuario = localStorage.getItem('tipoUsuario') || '';
 
-nombreUsuario =
-localStorage.getItem('nombreUsuario') || '';
+  usuarioId = localStorage.getItem('usuarioId') || '';
+  nombreUsuario = localStorage.getItem('nombreUsuario') || '';
+  matriculaUsuario = localStorage.getItem('matriculaUsuario') || '';
+  correoUsuario = localStorage.getItem('correoUsuario') || '';
+  carreraUsuario = localStorage.getItem('carreraUsuario') || '';
 
-matriculaUsuario =
-localStorage.getItem('matriculaUsuario') || '';
+  mostrarFormulario = false;
 
-correoUsuario =
-localStorage.getItem('correoUsuario') || '';
+  usuarios: any[] = [];
+  misPrestamos: any[] = [];
+  historialLibros: any[] = [];
+  favoritos: any[] = [];
 
-carreraUsuario =
-localStorage.getItem('carreraUsuario') || '';
+  nuevoUsuario = {
+    nombre: '',
+    matricula: '',
+    carrera: '',
+    correo: '',
+    telefono: '',
+    password: '',
+    tipo: 'estudiante'
+  };
 
-mostrarFormulario = false;
+  constructor(
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-usuarios: any[] = [];
+  ngOnInit() {
 
-misPrestamos: any[] = [];
-
-historialLibros: string[] = [];
-
-favoritos: string[] = [];
-
-nuevoUsuario = {
-nombre: '',
-matricula: '',
-carrera: '',
-correo: '',
-telefono: '',
-password: '',
-tipo: 'estudiante'
-};
-
-constructor(
-private http: HttpClient,
-private cdr: ChangeDetectorRef
-) {}
-
-ngOnInit() {
-
-
-console.log('ENTRÓ A USUARIOS');
-
-if (this.tipoUsuario === 'admin') {
-
-  this.cargarUsuarios();
-
-}
-
-this.cargarDatosUsuario();
-
-
-}
-
-cargarDatosUsuario() {
-
-
-this.misPrestamos = [];
-
-this.historialLibros = [];
-
-this.favoritos = [];
-
-
-}
-
-cargarUsuarios() {
-
-
-console.log('Cargando usuarios...');
-
-this.http.get<any[]>(
-  'http://localhost:8000/usuarios'
-).subscribe({
-
-  next: (data) => {
-
-    console.log(
-      'Usuarios recibidos:',
-      data
-    );
-
-    this.usuarios = [...data];
-
-    this.cdr.detectChanges();
-
-    console.log(
-      'Total:',
-      this.usuarios.length
-    );
-
-  },
-
-  error: (error) => {
-
-    console.error(
-      'Error al cargar usuarios',
-      error
-    );
+    if (this.tipoUsuario === 'admin') {
+      this.cargarUsuarios();
+    } else {
+      this.cargarDatosUsuario();
+    }
 
   }
 
-});
+  cargarDatosUsuario() {
+    this.cargarMisPrestamos();
+    this.cargarFavoritos();
+  }
 
+  cargarMisPrestamos() {
 
-}
+    if (!this.usuarioId) {
+      this.misPrestamos = [];
+      this.historialLibros = [];
+      return;
+    }
 
-guardarUsuario() {
+    this.http.get<any[]>(
+      `http://localhost:8000/prestamos-usuario/${this.usuarioId}`
+    ).subscribe({
+      next: (data) => {
 
+        console.log('Préstamos usuario:', data);
 
-this.http.post(
-  'http://localhost:8000/usuarios',
-  this.nuevoUsuario
-).subscribe({
+        this.misPrestamos = data || [];
 
-  next: () => {
+        this.historialLibros = this.misPrestamos.map(p => ({
+          titulo: p.libro || p.titulo || 'Sin título',
+          autor: p.autor || 'No disponible',
+          categoria: p.categoria || 'No disponible',
+          isbn: p.isbn || 'No disponible'
+        }));
 
-    this.cargarUsuarios();
+        this.cdr.detectChanges();
 
-    this.nuevoUsuario = {
-      nombre: '',
-      matricula: '',
-      carrera: '',
-      correo: '',
-      telefono: '',
-      password: '',
-      tipo: 'estudiante'
-    };
+      },
+      error: (error) => {
 
-    this.mostrarFormulario = false;
+        console.error('Error al cargar préstamos del usuario:', error);
 
-  },
+        this.misPrestamos = [];
+        this.historialLibros = [];
 
-  error: (error) => {
-
-    console.error(
-      'Error al guardar usuario',
-      error
-    );
+      }
+    });
 
   }
 
-});
+  cargarFavoritos() {
 
-}
+    if (!this.usuarioId) {
+      this.favoritos = [];
+      return;
+    }
 
-eliminarUsuario(usuario: any) {
+    this.http.get<any[]>(
+      `http://localhost:8000/favoritos/${this.usuarioId}`
+    ).subscribe({
+      next: (data) => {
 
-this.usuarios =
-  this.usuarios.filter(
-    u => u !== usuario
-  );
+        console.log('Favoritos usuario:', data);
 
-}
+        this.favoritos = data || [];
 
-editarUsuario(usuario: any) {
+        this.cdr.detectChanges();
 
-alert(
-  'Editar usuario: ' +
-  usuario.nombre
-);
+      },
+      error: (error) => {
 
-}
+        console.error('Error al cargar favoritos del usuario:', error);
 
-bloquearUsuario(usuario: any) {
+        this.favoritos = [];
 
-alert(
-  'Usuario bloqueado: ' +
-  usuario.nombre
-);
+      }
+    });
 
+  }
 
-}
+  cargarUsuarios() {
+
+    this.http.get<any[]>(
+      'http://localhost:8000/usuarios'
+    ).subscribe({
+      next: (data) => {
+
+        this.usuarios = [...data];
+
+        this.cdr.detectChanges();
+
+      },
+      error: (error) => {
+
+        console.error('Error al cargar usuarios', error);
+
+      }
+    });
+
+  }
+
+  guardarUsuario() {
+
+    this.http.post(
+      'http://localhost:8000/usuarios',
+      this.nuevoUsuario
+    ).subscribe({
+      next: () => {
+
+        this.cargarUsuarios();
+
+        this.nuevoUsuario = {
+          nombre: '',
+          matricula: '',
+          carrera: '',
+          correo: '',
+          telefono: '',
+          password: '',
+          tipo: 'estudiante'
+        };
+
+        this.mostrarFormulario = false;
+
+      },
+      error: (error) => {
+
+        console.error('Error al guardar usuario', error);
+
+      }
+    });
+
+  }
+
+  eliminarUsuario(usuario: any) {
+    this.usuarios = this.usuarios.filter(u => u !== usuario);
+  }
+
+  editarUsuario(usuario: any) {
+    alert('Editar usuario: ' + usuario.nombre);
+  }
+
+  bloquearUsuario(usuario: any) {
+    alert('Usuario bloqueado: ' + usuario.nombre);
+  }
 
 }

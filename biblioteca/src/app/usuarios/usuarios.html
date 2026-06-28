@@ -4,282 +4,272 @@
     <h1>👥 Usuarios</h1>
   </div>
 
-
   <div class="perfil-card">
 
-<h2>👤 Mi Perfil</h2>
+    <h2>👤 Mi Perfil</h2>
 
-<div class="perfil-info">
+    <div class="perfil-info">
 
-  <p>
-    <strong>Nombre:</strong>
-    {{ nombreUsuario }}
-  </p>
+      <p><strong>Nombre:</strong> {{ nombreUsuario }}</p>
+      <p><strong>Matrícula:</strong> {{ matriculaUsuario }}</p>
+      <p><strong>Correo:</strong> {{ correoUsuario }}</p>
+      <p><strong>Carrera:</strong> {{ carreraUsuario }}</p>
+      <p><strong>Tipo:</strong> {{ tipoUsuario }}</p>
 
-  <p>
-    <strong>Matrícula:</strong>
-    {{ matriculaUsuario }}
-  </p>
-
-  <p>
-    <strong>Correo:</strong>
-    {{ correoUsuario }}
-  </p>
-
-  <p>
-    <strong>Carrera:</strong>
-    {{ carreraUsuario }}
-  </p>
-
-  <p>
-    <strong>Tipo:</strong>
-    {{ tipoUsuario }}
-  </p>
-
-</div>
-
+    </div>
 
   </div>
 
   <div *ngIf="tipoUsuario !== 'admin'">
 
+    <div class="seccion">
 
+      <h2>📚 Mis libros solicitados</h2>
 
-<div class="seccion">
+      <table>
 
-  <h2>📚 Mis Préstamos</h2>
+        <thead>
+          <tr>
+            <th>Libro</th>
+            <th>Autor</th>
+            <th>Categoría</th>
+            <th>Fecha Préstamo</th>
+            <th>Fecha Devolución</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
 
-  <table>
+        <tbody>
 
-    <thead>
+          <tr *ngIf="misPrestamos.length === 0">
+            <td colspan="6">
+              Aún no tienes libros solicitados.
+            </td>
+          </tr>
 
-      <tr>
-        <th>Libro</th>
-        <th>Fecha Préstamo</th>
-        <th>Fecha Devolución</th>
-        <th>Estado</th>
-      </tr>
+          <tr *ngFor="let prestamo of misPrestamos">
 
-    </thead>
+            <td>{{ prestamo.libro || prestamo.titulo }}</td>
+            <td>{{ prestamo.autor || 'No disponible' }}</td>
+            <td>{{ prestamo.categoria || 'No disponible' }}</td>
+            <td>{{ prestamo.fechaPrestamo || prestamo.fecha_prestamo }}</td>
+            <td>{{ prestamo.fechaDevolucion || prestamo.fecha_devolucion }}</td>
+            <td>{{ prestamo.estado || 'Activo' }}</td>
 
-    <tbody>
+          </tr>
 
-      <tr *ngFor="let prestamo of misPrestamos">
+        </tbody>
 
-        <td>{{ prestamo.libro }}</td>
+      </table>
 
-        <td>{{ prestamo.fechaPrestamo }}</td>
+    </div>
 
-        <td>{{ prestamo.fechaDevolucion }}</td>
+    <div class="seccion">
 
-        <td>{{ prestamo.estado }}</td>
+      <h2>📖 Mi historial de libros</h2>
 
-      </tr>
+      <div
+        class="sin-datos"
+        *ngIf="historialLibros.length === 0">
+        No tienes historial de libros.
+      </div>
 
-    </tbody>
+      <div class="cards-libros">
 
-  </table>
+        <div
+          class="libro-card"
+          *ngFor="let libro of historialLibros">
 
-</div>
+          <h3>{{ libro.titulo || libro }}</h3>
 
+          <p *ngIf="libro.autor">
+            <strong>Autor:</strong> {{ libro.autor }}
+          </p>
 
+          <p *ngIf="libro.categoria">
+            <strong>Categoría:</strong> {{ libro.categoria }}
+          </p>
 
-<div class="seccion">
+          <p *ngIf="libro.isbn">
+            <strong>ISBN:</strong> {{ libro.isbn }}
+          </p>
 
-  <h2>📖 Mi Historial</h2>
+        </div>
 
-  <ul>
+      </div>
 
-    <li *ngFor="let libro of historialLibros">
+    </div>
 
-      {{ libro }}
+    <div class="seccion">
 
-    </li>
+      <h2>❤️ Mis libros favoritos</h2>
 
-  </ul>
+      <div
+        class="sin-datos"
+        *ngIf="favoritos.length === 0">
+        Aún no tienes libros favoritos.
+      </div>
 
-</div>
+      <div class="cards-libros">
 
+        <div
+          class="libro-card favorito"
+          *ngFor="let favorito of favoritos">
 
+          <h3>{{ favorito.titulo || favorito }}</h3>
 
-<div class="seccion">
+          <p *ngIf="favorito.autor">
+            <strong>Autor:</strong> {{ favorito.autor }}
+          </p>
 
-  <h2>❤️ Mis Favoritos</h2>
+          <p *ngIf="favorito.categoria">
+            <strong>Categoría:</strong> {{ favorito.categoria }}
+          </p>
 
-  <ul>
+          <p *ngIf="favorito.isbn">
+            <strong>ISBN:</strong> {{ favorito.isbn }}
+          </p>
 
-    <li *ngFor="let favorito of favoritos">
+          <p *ngIf="favorito.editorial">
+            <strong>Editorial:</strong> {{ favorito.editorial }}
+          </p>
 
-      {{ favorito }}
+        </div>
 
-    </li>
+      </div>
 
-  </ul>
-
-</div>
-
+    </div>
 
   </div>
 
-  
-
   <div *ngIf="tipoUsuario === 'admin'">
 
-<div class="titulo-card">
+    <div class="titulo-card">
+      <h2>Gestión de Usuarios</h2>
+    </div>
 
-  <h2>Gestión de Usuarios</h2>
+    <div class="acciones">
 
-</div>
+      <button (click)="mostrarFormulario = !mostrarFormulario">
+        Agregar Usuario
+      </button>
 
-<div class="acciones">
+      <input
+        type="text"
+        placeholder="Buscar usuario...">
 
-  <button
-    (click)="mostrarFormulario = !mostrarFormulario">
+    </div>
 
-     Agregar Usuario
+    <div
+      *ngIf="mostrarFormulario"
+      class="formulario">
 
-  </button>
+      <input
+        type="text"
+        placeholder="Nombre"
+        [(ngModel)]="nuevoUsuario.nombre">
 
-  <input
-    type="text"
-    placeholder="Buscar usuario...">
+      <input
+        type="text"
+        placeholder="Matrícula"
+        [(ngModel)]="nuevoUsuario.matricula">
 
-</div>
+      <input
+        type="text"
+        placeholder="Carrera"
+        [(ngModel)]="nuevoUsuario.carrera">
 
+      <input
+        type="email"
+        placeholder="Correo"
+        [(ngModel)]="nuevoUsuario.correo">
 
-<div
-  *ngIf="mostrarFormulario"
-  class="formulario">
+      <input
+        type="text"
+        placeholder="Teléfono"
+        [(ngModel)]="nuevoUsuario.telefono">
 
-  <input
-    type="text"
-    placeholder="Nombre"
-    [(ngModel)]="nuevoUsuario.nombre">
+      <input
+        type="password"
+        placeholder="Contraseña"
+        [(ngModel)]="nuevoUsuario.password">
 
-  <input
-    type="text"
-    placeholder="Matrícula"
-    [(ngModel)]="nuevoUsuario.matricula">
+      <select [(ngModel)]="nuevoUsuario.tipo">
 
-  <input
-    type="text"
-    placeholder="Carrera"
-    [(ngModel)]="nuevoUsuario.carrera">
+        <option value="admin">Administrador</option>
+        <option value="profesor">Profesor</option>
+        <option value="estudiante">Estudiante</option>
 
-  <input
-    type="email"
-    placeholder="Correo"
-    [(ngModel)]="nuevoUsuario.correo">
+      </select>
 
-  <input
-    type="text"
-    placeholder="Teléfono"
-    [(ngModel)]="nuevoUsuario.telefono">
-
-  <input
-    type="password"
-    placeholder="Contraseña"
-    [(ngModel)]="nuevoUsuario.password">
-
-  <select [(ngModel)]="nuevoUsuario.tipo">
-
-    <option value="admin">
-      Administrador
-    </option>
-
-    <option value="profesor">
-      Profesor
-    </option>
-
-    <option value="estudiante">
-      Estudiante
-    </option>
-
-  </select>
-  
-<div class="botones-formulario">
-
-  <button
-    class="btn-guardar"
-    (click)="guardarUsuario()">
-    Guardar Usuario
-  </button>
-
-  <button
-    class="btn-cancelar"
-    (click)="mostrarFormulario = false">
-    Cerrar
-  </button>
-
-</div>
-
-</div>
-
-
-<table>
-
-  <thead>
-
-    <tr>
-
-      <th>Nombre</th>
-      <th>Matrícula</th>
-      <th>Carrera</th>
-      <th>Correo</th>
-      <th>Tipo</th>
-      <th>Acciones</th>
-
-    </tr>
-
-  </thead>
-
-  <tbody>
-
-    <tr *ngFor="let usuario of usuarios">
-
-      <td>{{ usuario.nombre }}</td>
-
-      <td>{{ usuario.matricula }}</td>
-
-      <td>{{ usuario.carrera }}</td>
-
-      <td>{{ usuario.correo }}</td>
-
-      <td>{{ usuario.tipo }}</td>
-
-      <td>
+      <div class="botones-formulario">
 
         <button
-          class="editar"
-          (click)="editarUsuario(usuario)">
-
-          Editar
-
+          class="btn-guardar"
+          (click)="guardarUsuario()">
+          Guardar Usuario
         </button>
 
         <button
-          class="eliminar"
-          (click)="eliminarUsuario(usuario)">
-
-          Eliminar
-
+          class="btn-cancelar"
+          (click)="mostrarFormulario = false">
+          Cerrar
         </button>
 
-        <button
-          class="bloquear"
-          (click)="bloquearUsuario(usuario)">
+      </div>
 
-          Bloquear 
+    </div>
 
-        </button>
+    <table>
 
-      </td>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Matrícula</th>
+          <th>Carrera</th>
+          <th>Correo</th>
+          <th>Tipo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
 
-    </tr>
+      <tbody>
 
-  </tbody>
+        <tr *ngFor="let usuario of usuarios">
 
-</table>
+          <td>{{ usuario.nombre }}</td>
+          <td>{{ usuario.matricula }}</td>
+          <td>{{ usuario.carrera }}</td>
+          <td>{{ usuario.correo }}</td>
+          <td>{{ usuario.tipo }}</td>
+
+          <td>
+
+            <button
+              class="editar"
+              (click)="editarUsuario(usuario)">
+              Editar
+            </button>
+
+            <button
+              class="eliminar"
+              (click)="eliminarUsuario(usuario)">
+              Eliminar
+            </button>
+
+            <button
+              class="bloquear"
+              (click)="bloquearUsuario(usuario)">
+              Bloquear
+            </button>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
 
   </div>
 

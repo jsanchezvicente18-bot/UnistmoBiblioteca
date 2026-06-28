@@ -1,73 +1,76 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @Component({
-selector: 'app-login',
-standalone: true,
-imports: [FormsModule, RouterLink],
-templateUrl: './login.html',
-styleUrl: './login.scss'
+  selector: 'app-login',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterLink],
+  templateUrl: './login.html',
+  styleUrl: './login.scss'
 })
 export class Login {
 
-matricula = '';
+  matricula = '';
+  password = '';
+  mostrarPassword = false;
 
-password = '';
+  mostrarModalContacto = false;
 
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
-mostrarPassword = false;
-
-constructor(
-private router: Router,
-private http: HttpClient
-) {}
-
-ingresar() {
-this.http.post<any>(
-  'http://localhost:8000/login',
-  {
-    matricula: this.matricula,
-    password: this.password
+  abrirModalContacto() {
+    this.mostrarModalContacto = true;
   }
-).subscribe({
 
-  next: (respuesta) => {
+  cerrarModalContacto() {
+    this.mostrarModalContacto = false;
+  }
 
-    if (!respuesta.success) {
+  ingresar() {
 
-      alert(respuesta.mensaje);
+    if (!this.matricula.trim() || !this.password.trim()) {
+      alert('Ingresa matrícula/correo y contraseña');
       return;
-
     }
 
-    localStorage.setItem('usuarioId', respuesta.id);
-    localStorage.setItem('nombreUsuario', respuesta.nombre);
-    localStorage.setItem('tipoUsuario', respuesta.tipo);
+    this.http.post<any>(
+      'http://localhost:8000/login',
+      {
+        matricula: this.matricula.trim(),
+        password: this.password.trim()
+      }
+    ).subscribe({
+      next: (respuesta) => {
 
-    localStorage.setItem('correoUsuario', respuesta.correo || '');
-    localStorage.setItem('matriculaUsuario', respuesta.matricula || '');
-    localStorage.setItem('carreraUsuario', respuesta.carrera || '');
-    localStorage.setItem('fechaRegistro', respuesta.fechaRegistro || '');
-    localStorage.setItem('fotoPerfil', respuesta.fotoPerfil || '/img/user.png');
-    
-    this.router.navigate(['/inicio']);
+        if (respuesta.success !== true) {
+          alert(respuesta.mensaje || 'Matrícula o contraseña incorrectas');
+          return;
+        }
 
-  },
+        localStorage.setItem('usuarioId', respuesta.id || '');
+        localStorage.setItem('nombreUsuario', respuesta.nombre || '');
+        localStorage.setItem('tipoUsuario', respuesta.tipo || '');
+        localStorage.setItem('correoUsuario', respuesta.correo || '');
+        localStorage.setItem('matriculaUsuario', respuesta.matricula || '');
+        localStorage.setItem('carreraUsuario', respuesta.carrera || '');
+        localStorage.setItem('fechaRegistro', respuesta.fechaRegistro || '');
+        localStorage.setItem('fotoPerfil', respuesta.fotoPerfil || '/img/user.png');
 
-  error: (error) => {
+        this.router.navigate(['/inicio']);
+      },
 
-    console.error(error);
-
-    alert('Error al iniciar sesión');
+      error: (error) => {
+        console.error(error);
+        alert('Error al iniciar sesión. Revisa que el backend esté encendido.');
+      }
+    });
 
   }
 
-});
-
 }
-
-}
-

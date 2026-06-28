@@ -3,13 +3,6 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
 
   {
-    path: 'recuperar-password',
-    loadComponent: () =>
-      import('./pages/recuperar-password/recuperar-password')
-        .then(m => m.RecuperarPassword)
-  },
-
-  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
@@ -25,6 +18,34 @@ export const routes: Routes = [
     path: 'registro',
     loadComponent: () =>
       import('./registro/registro').then(m => m.Registro)
+  },
+
+  {
+    path: 'recuperar-password',
+    loadComponent: () =>
+      import('./pages/recuperar-password/recuperar-password')
+        .then(m => m.RecuperarPassword)
+  },
+
+  {
+    path: 'manual-usuario',
+    loadComponent: () =>
+      import('./pages/manual-usuario/manual-usuario')
+        .then(m => m.ManualUsuario)
+  },
+
+  {
+    path: 'contactar-admin',
+    loadComponent: () =>
+      import('./pages/contactar-admin/contactar-admin')
+        .then(m => m.ContactarAdmin)
+  },
+
+  {
+    path: 'mandar-reporte',
+    loadComponent: () =>
+      import('./pages/mandar-reporte/mandar-reporte')
+        .then(m => m.MandarReporte)
   },
 
   {
@@ -68,30 +89,14 @@ export const routes: Routes = [
         path: 'configuracion',
         loadComponent: () =>
           import('./configuracion/configuracion').then(m => m.Configuracion)
-      },
-
-      {
-        path: 'manual-usuario',
-        loadComponent: () =>
-          import('./pages/manual-usuario/manual-usuario')
-            .then(m => m.ManualUsuario)
-      },
-
-      {
-        path: 'contactar-admin',
-        loadComponent: () =>
-          import('./pages/contactar-admin/contactar-admin')
-            .then(m => m.ContactarAdmin)
-      },
-
-      {
-        path: 'mandar-reporte',
-        loadComponent: () =>
-          import('./pages/mandar-reporte/mandar-reporte')
-            .then(m => m.MandarReporte)
       }
 
     ]
+  },
+
+  {
+    path: '**',
+    redirectTo: 'login'
   }
 
 ];

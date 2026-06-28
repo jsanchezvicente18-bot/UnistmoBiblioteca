@@ -14,7 +14,7 @@ export class Prestamos implements OnInit {
 
   usuarioLogueado = '';
   nombreUsuario = '';
-  tipoUsuario = localStorage.getItem('tipoUsuario');
+  tipoUsuario = localStorage.getItem('tipoUsuario') || '';
 
   busqueda = '';
 
@@ -147,23 +147,52 @@ export class Prestamos implements OnInit {
     return this.prestamos.filter(p => this.obtenerEstado(p) === 'Vencido').length;
   }
 
+  get prestamosDevueltos() {
+    return this.prestamos.filter(p => this.obtenerEstado(p) === 'Devuelto').length;
+  }
+
   horasRestantes(prestamo: any) {
-    if (!prestamo || !prestamo.fecha_devolucion) return 0;
+    if (!prestamo || this.obtenerEstadoDirecto(prestamo) === 'Devuelto') {
+      return 0;
+    }
+
+    if (!prestamo.fecha_devolucion) {
+      return 0;
+    }
 
     const ahora = new Date();
-
-    const devolucion = new Date(
-      prestamo.fecha_devolucion + 'T23:59:59'
-    );
-
+    const devolucion = new Date(prestamo.fecha_devolucion + 'T23:59:59');
     const diferencia = devolucion.getTime() - ahora.getTime();
-
     const horas = Math.ceil(diferencia / (1000 * 60 * 60));
 
     return horas > 0 ? horas : 0;
   }
 
+  obtenerEstadoDirecto(prestamo: any) {
+    const estado = (prestamo?.estado || '').toString().toLowerCase();
+
+    if (estado.includes('devuelto')) {
+      return 'Devuelto';
+    }
+
+    return '';
+  }
+
   obtenerEstado(prestamo: any) {
+    if (!prestamo) {
+      return 'Activo';
+    }
+
+    const estado = (prestamo.estado || '').toString().toLowerCase();
+
+    if (estado.includes('devuelto')) {
+      return 'Devuelto';
+    }
+
+    if (estado.includes('vencido')) {
+      return 'Vencido';
+    }
+
     const horas = this.horasRestantes(prestamo);
 
     if (horas <= 0) {
@@ -171,6 +200,36 @@ export class Prestamos implements OnInit {
     }
 
     return 'Activo';
+  }
+
+  marcarDevuelto(prestamo: any) {
+    if (!prestamo?.id) {
+      alert('No se encontró el ID del préstamo');
+      return;
+    }
+
+    if (!confirm('¿Confirmar que el alumno devolvió este libro?')) {
+      return;
+    }
+
+    this.http.put(
+      `http://localhost:8000/prestamos/${prestamo.id}/devolver`,
+      {}
+    ).subscribe({
+      next: (res: any) => {
+        if (res.success === false) {
+          alert(res.mensaje || 'No se pudo marcar como devuelto');
+          return;
+        }
+
+        alert('Libro marcado como devuelto');
+        this.cargarPrestamos();
+      },
+      error: (error) => {
+        console.error(error);
+        alert('Error al marcar como devuelto');
+      }
+    });
   }
 
   verDetalle(prestamo: any) {

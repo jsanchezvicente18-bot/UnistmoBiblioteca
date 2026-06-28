@@ -28,18 +28,27 @@ export class Registro {
 
   registrar() {
 
+    // Validar teléfono
     if (!/^[0-9]{10}$/.test(this.nuevoUsuario.telefono)) {
-
       alert('El teléfono debe tener exactamente 10 dígitos');
       return;
-
     }
 
+    // Validar matrícula
     if (!/^[0-9]+$/.test(this.nuevoUsuario.matricula)) {
-
       alert('La matrícula solo debe contener números');
       return;
+    }
 
+    // Validar contraseña
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#_\-])[A-Za-z\d@$!%*?&.#_\-]{8,}$/;
+
+    if (!passwordRegex.test(this.nuevoUsuario.password)) {
+      alert(
+        'La contraseña debe tener mínimo 8 caracteres, una letra mayúscula, un número y un símbolo.'
+      );
+      return;
     }
 
     this.http.post(

@@ -166,3 +166,75 @@ a:hover{
     box-shadow: none;
     color: #555;
 }
+
+.modal-fondo{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-contacto{
+  width: 430px;
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0,0,0,.25);
+}
+
+.modal-header{
+  background: #a00000;
+  color: white;
+  padding: 18px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cerrar-modal{
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.modal-body{
+  padding: 25px;
+}
+
+.modal-body p{
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.dato{
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.dato strong{
+  display: block;
+  color: #a00000;
+  margin-bottom: 5px;
+}
+
+.btn-cerrar{
+  width: calc(100% - 40px);
+  margin: 0 20px 20px;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #a00000;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-cerrar:hover{
+  background: #860000;
+}

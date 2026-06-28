@@ -26,6 +26,11 @@
       <p>Vencidos</p>
     </div>
 
+    <div class="resumen-card">
+      <h2>{{ prestamosDevueltos }}</h2>
+      <p>Devueltos</p>
+    </div>
+
   </div>
 
   <div class="busqueda-card">
@@ -69,7 +74,7 @@
 
     <br><br>
 
-    <button (click)="guardarPrestamo()">
+    <button type="button" (click)="guardarPrestamo()">
       Guardar Préstamo
     </button>
 
@@ -94,30 +99,32 @@
       <tbody>
 
         <tr *ngIf="prestamosFiltrados.length === 0">
-          <td colspan="7">
-            No se encontraron préstamos.
-          </td>
+          <td colspan="7">No se encontraron préstamos.</td>
         </tr>
 
         <tr *ngFor="let prestamo of prestamosFiltrados">
 
           <td>{{ prestamo.usuario }}</td>
-
           <td>{{ prestamo.libro }}</td>
-
           <td>{{ prestamo.fecha_prestamo }}</td>
-
           <td>{{ prestamo.fecha_devolucion }}</td>
 
           <td>
-            {{ horasRestantes(prestamo) }} horas
+            <span *ngIf="obtenerEstado(prestamo) !== 'Devuelto'">
+              {{ horasRestantes(prestamo) }} horas
+            </span>
+
+            <span *ngIf="obtenerEstado(prestamo) === 'Devuelto'">
+              —
+            </span>
           </td>
 
           <td>
             <span
               class="estado"
               [class.activo]="obtenerEstado(prestamo) === 'Activo'"
-              [class.vencido]="obtenerEstado(prestamo) === 'Vencido'">
+              [class.vencido]="obtenerEstado(prestamo) === 'Vencido'"
+              [class.devuelto]="obtenerEstado(prestamo) === 'Devuelto'">
               {{ obtenerEstado(prestamo) }}
             </span>
           </td>
@@ -125,16 +132,26 @@
           <td class="acciones">
 
             <button
+              type="button"
               class="btn-ver"
               (click)="verDetalle(prestamo)">
               👁 Ver
             </button>
 
             <button
+              type="button"
               class="btn-renovar"
               *ngIf="tipoUsuario !== 'admin' && obtenerEstado(prestamo) === 'Activo'"
               (click)="renovarPrestamo(prestamo)">
               🔄 Renovar
+            </button>
+
+            <button
+              type="button"
+              class="btn-devuelto"
+              *ngIf="tipoUsuario === 'admin' && obtenerEstado(prestamo) !== 'Devuelto'"
+              (click)="marcarDevuelto(prestamo)">
+              ✅ Marcar devuelto
             </button>
 
           </td>
@@ -195,37 +212,25 @@
 
 </div>
 
-
-<!-- MODAL VER DETALLE -->
 <div class="modal-fondo" *ngIf="mostrarDetalle">
 
   <div class="modal-card">
 
     <h2>📖 Detalle del Préstamo</h2>
 
-    <p>
-      <strong>Libro:</strong>
-      {{ prestamoSeleccionado.libro }}
-    </p>
+    <p><strong>Libro:</strong> {{ prestamoSeleccionado.libro }}</p>
+    <p><strong>Usuario:</strong> {{ prestamoSeleccionado.usuario }}</p>
+    <p><strong>Fecha de préstamo:</strong> {{ prestamoSeleccionado.fecha_prestamo }}</p>
+    <p><strong>Fecha de devolución:</strong> {{ prestamoSeleccionado.fecha_devolucion }}</p>
 
-    <p>
-      <strong>Usuario:</strong>
-      {{ prestamoSeleccionado.usuario }}
-    </p>
-
-    <p>
-      <strong>Fecha de préstamo:</strong>
-      {{ prestamoSeleccionado.fecha_prestamo }}
-    </p>
-
-    <p>
-      <strong>Fecha de devolución:</strong>
-      {{ prestamoSeleccionado.fecha_devolucion }}
-    </p>
-
-    <p>
+    <p *ngIf="obtenerEstado(prestamoSeleccionado) !== 'Devuelto'">
       <strong>Horas restantes:</strong>
       {{ horasRestantes(prestamoSeleccionado) }} horas
+    </p>
+
+    <p *ngIf="obtenerEstado(prestamoSeleccionado) === 'Devuelto'">
+      <strong>Fecha devuelto:</strong>
+      {{ prestamoSeleccionado.fecha_devolucion_real || 'Registrado como devuelto' }}
     </p>
 
     <p>
@@ -233,7 +238,7 @@
       {{ obtenerEstado(prestamoSeleccionado) }}
     </p>
 
-    <button (click)="cerrarDetalle()">
+    <button type="button" (click)="cerrarDetalle()">
       Cerrar
     </button>
 
@@ -241,8 +246,6 @@
 
 </div>
 
-
-<!-- MODAL RENOVAR -->
 <div class="modal-fondo" *ngIf="mostrarRenovar">
 
   <div class="modal-card">
@@ -260,11 +263,11 @@
       <strong>{{ prestamoRenovar.fecha_devolucion }}</strong>
     </p>
 
-    <button (click)="confirmarRenovar()">
+    <button type="button" (click)="confirmarRenovar()">
       Confirmar renovación
     </button>
 
-    <button class="cancelar" (click)="cerrarRenovar()">
+    <button type="button" class="cancelar" (click)="cerrarRenovar()">
       Cancelar
     </button>
 
