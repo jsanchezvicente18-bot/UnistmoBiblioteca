@@ -210,4 +210,228 @@ Date:   Sat Jun 27 15:57:52 2026 -0600
 [32m+[m[32m    <select>[m
 [32m+[m[32m      <option>Problema con libros</option>[m
 [32m+[m[32m      <option>Problema con préstamos</option>[m
-[32m+[m[32m      <option>Problema con usuarios</option
+[32m+[m[32m      <option>Problema con usuarios</option>[m
+[32m+[m[32m      <option>Error del sistema</option>[m
+[32m+[m[32m      <option>Otro</option>[m
+[32m+[m[32m    </select>[m
+[32m+[m
+[32m+[m[32m    <label>Descripción:</label>[m
+[32m+[m[32m    <textarea placeholder="Describe el problema o reporte"></textarea>[m
+[32m+[m
+[32m+[m[32m    <button type="submit">Enviar reporte</button>[m
+[32m+[m[32m  </form>[m
+[32m+[m[32m</div>[m
+\ No newline at end of file[m
+[1mdiff --git a/biblioteca/src/app/pages/mandar-reporte/mandar-reporte.scss b/biblioteca/src/app/pages/mandar-reporte/mandar-reporte.scss[m
+[1mnew file mode 100644[m
+[1mindex 0000000..102aacf[m
+[1m--- /dev/null[m
+[1m+++ b/biblioteca/src/app/pages/mandar-reporte/mandar-reporte.scss[m
+[36m@@ -0,0 +1,47 @@[m
+[32m+[m[32m.form-container,[m
+[32m+[m[32m.manual-container {[m
+[32m+[m[32m  max-width: 600px;[m
+[32m+[m[32m  margin: 30px auto;[m
+[32m+[m[32m  background: white;[m
+[32m+[m[32m  padding: 25px;[m
+[32m+[m[32m  border-radius: 14px;[m
+[32m+[m[32m  box-shadow: 0 4px 12px rgba(0,0,0,0.1);[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mh2 {[m
+[32m+[m[32m  margin-bottom: 15px;[m
+[32m+[m[32m  color: #1f3b57;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mlabel {[m
+[32m+[m[32m  display: block;[m
+[32m+[m[32m  margin-top: 12px;[m
+[32m+[m[32m  font-weight: 600;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32minput,[m
+[32m+[m[32mtextarea,[m
+[32m+[m[32mselect {[m
+[32m+[m[32m  width: 100%;[m
+[32m+[m[32m  padding: 10px;[m
+[32m+[m[32m  margin-top: 6px;[m
+[32m+[m[32m  border-radius: 8px;[m
+[32m+[m[32m  border: 1px solid #ccc;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mtextarea {[m
+[32m+[m[32m  min-height: 120px;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mbutton,[m
+[32m+[m[32m.btn {[m
+[32m+[m[32m  display: inline-block;[m
+[32m+[m[32m  margin-top: 18px;[m
+[32m+[m[32m  padding: 10px 18px;[m
+[32m+[m[32m  background: #1f3b57;[m
+[32m+[m[32m  color: white;[m
+[32m+[m[32m  border: none;[m
+[32m+[m[32m  border-radius: 8px;[m
+[32m+[m[32m  text-decoration: none;[m
+[32m+[m[32m  cursor: pointer;[m
+[32m+[m[32m}[m
+\ No newline at end of file[m
+[1mdiff --git a/biblioteca/src/app/pages/mandar-reporte/mandar-reporte.spec.ts b/biblioteca/src/app/pages/mandar-reporte/mandar-reporte.spec.ts[m
+[1mnew file mode 100644[m
+[1mindex 0000000..54d9e9d[m
+[1m--- /dev/null[m
+[1m+++ b/biblioteca/src/app/pages/mandar-reporte/mandar-reporte.spec.ts[m
+[36m@@ -0,0 +1,22 @@[m
+[32m+[m[32mimport { ComponentFixture, TestBed } from '@angular/core/testing';[m
+[32m+[m
+[32m+[m[32mimport { MandarReporte } from './mandar-reporte';[m
+[32m+[m
+[32m+[m[32mdescribe('MandarReporte', () => {[m
+[32m+[m[32m  let component: MandarReporte;[m
+[32m+[m[32m  let fixture: ComponentFixture<MandarReporte>;[m
+[32m+[m
+[32m+[m[32m  beforeEach(async () => {[m
+[32m+[m[32m    await TestBed.configureTestingModule({[m
+[32m+[m[32m      imports: [MandarReporte],[m
+[32m+[m[32m    }).compileComponents();[m
+[32m+[m
+[32m+[m[32m    fixture = TestBed.createComponent(MandarReporte);[m
+[32m+[m[32m    component = fixture.componentInstance;[m
+[32m+[m[32m    await fixture.whenStable();[m
+[32m+[m[32m  });[m
+[32m+[m
+[32m+[m[32m  it('should create', () => {[m
+[32m+[m[32m    expect(component).toBeTruthy();[m
+[32m+[m[32m  });[m
+[32m+[m[32m});[m
+[1mdiff --git a/biblioteca/src/app/pages/mandar-reporte/mandar-reporte.ts b/biblioteca/src/app/pages/mandar-reporte/mandar-reporte.ts[m
+[1mnew file mode 100644[m
+[1mindex 0000000..87aa439[m
+[1m--- /dev/null[m
+[1m+++ b/biblioteca/src/app/pages/mandar-reporte/mandar-reporte.ts[m
+[36m@@ -0,0 +1,9 @@[m
+[32m+[m[32mimport { Component } from '@angular/core';[m
+[32m+[m
+[32m+[m[32m@Component({[m
+[32m+[m[32m  selector: 'app-mandar-reporte',[m
+[32m+[m[32m  imports: [],[m
+[32m+[m[32m  templateUrl: './mandar-reporte.html',[m
+[32m+[m[32m  styleUrl: './mandar-reporte.scss',[m
+[32m+[m[32m})[m
+[32m+[m[32mexport class MandarReporte {}[m
+[1mdiff --git a/biblioteca/src/app/pages/manual-usuario/manual-usuario.html b/biblioteca/src/app/pages/manual-usuario/manual-usuario.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..6e17ec0[m
+[1m--- /dev/null[m
+[1m+++ b/biblioteca/src/app/pages/manual-usuario/manual-usuario.html[m
+[36m@@ -0,0 +1,9 @@[m
+[32m+[m[32m<div class="manual-container">[m
+[32m+[m[32m  <h2>Manual de usuario</h2>[m
+[32m+[m
+[32m+[m[32m  <p>Consulta el manual del sistema en formato PDF.</p>[m
+[32m+[m
+[32m+[m[32m  <a href="assets/manual-usuario.pdf" target="_blank" class="btn">[m
+[32m+[m[32m    Abrir manual de usuario[m
+[32m+[m[32m  </a>[m
+[32m+[m[32m</div>[m
+\ No newline at end of file[m
+[1mdiff --git a/biblioteca/src/app/pages/manual-usuario/manual-usuario.scss b/biblioteca/src/app/pages/manual-usuario/manual-usuario.scss[m
+[1mnew file mode 100644[m
+[1mindex 0000000..102aacf[m
+[1m--- /dev/null[m
+[1m+++ b/biblioteca/src/app/pages/manual-usuario/manual-usuario.scss[m
+[36m@@ -0,0 +1,47 @@[m
+[32m+[m[32m.form-container,[m
+[32m+[m[32m.manual-container {[m
+[32m+[m[32m  max-width: 600px;[m
+[32m+[m[32m  margin: 30px auto;[m
+[32m+[m[32m  background: white;[m
+[32m+[m[32m  padding: 25px;[m
+[32m+[m[32m  border-radius: 14px;[m
+[32m+[m[32m  box-shadow: 0 4px 12px rgba(0,0,0,0.1);[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mh2 {[m
+[32m+[m[32m  margin-bottom: 15px;[m
+[32m+[m[32m  color: #1f3b57;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mlabel {[m
+[32m+[m[32m  display: block;[m
+[32m+[m[32m  margin-top: 12px;[m
+[32m+[m[32m  font-weight: 600;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32minput,[m
+[32m+[m[32mtextarea,[m
+[32m+[m[32mselect {[m
+[32m+[m[32m  width: 100%;[m
+[32m+[m[32m  padding: 10px;[m
+[32m+[m[32m  margin-top: 6px;[m
+[32m+[m[32m  border-radius: 8px;[m
+[32m+[m[32m  border: 1px solid #ccc;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mtextarea {[m
+[32m+[m[32m  min-height: 120px;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mbutton,[m
+[32m+[m[32m.btn {[m
+[32m+[m[32m  display: inline-block;[m
+[32m+[m[32m  margin-top: 18px;[m
+[32m+[m[32m  padding: 10px 18px;[m
+[32m+[m[32m  background: #1f3b57;[m
+[32m+[m[32m  color: white;[m
+[32m+[m[32m  border: none;[m
+[32m+[m[32m  border-radius: 8px;[m
+[32m+[m[32m  text-decoration: none;[m
+[32m+[m[32m  cursor: pointer;[m
+[32m+[m[32m}[m
+\ No newline at end of file[m
+[1mdiff --git a/biblioteca/src/app/pages/manual-usuario/manual-usuario.spec.ts b/biblioteca/src/app/pages/manual-usuario/manual-usuario.spec.ts[m
+[1mnew file mode 100644[m
+[1mindex 0000000..cf9f7f6[m
+[1m--- /dev/null[m
+[1m+++ b/biblioteca/src/app/pages/manual-usuario/manual-usuario.spec.ts[m
+[36m@@ -0,0 +1,22 @@[m
+[32m+[m[32mimport { ComponentFixture, TestBed } from '@angular/core/testing';[m
+[32m+[m
+[32m+[m[32mimport { ManualUsuario } from './manual-usuario';[m
+[32m+[m
+[32m+[m[32mdescribe('ManualUsuario', () => {[m
+[32m+[m[32m  let component: ManualUsuario;[m
+[32m+[m[32m  let fixture: ComponentFixture<ManualUsuario>;[m
+[32m+[m
+[32m+[m[32m  beforeEach(async () => {[m
+[32m+[m[32m    await TestBed.configureTestingModule({[m
+[32m+[m[32m      imports: [ManualUsuario],[m
+[32m+[m[32m    }).compileComponents();[m
+[32m+[m
+[32m+[m[32m    fixture = TestBed.createComponent(ManualUsuario);[m
+[32m+[m[32m    component = fixture.componentInstance;[m
+[32m+[m[32m    await fixture.whenStable();[m
+[32m+[m[32m  });[m
+[32m+[m
+[32m+[m[32m  it('should create', () => {[m
+[32m+[m[32m    expect(component).toBeTruthy();[m
+[32m+[m[32m  });[m
+[32m+[m[32m});[m
+[1mdiff --git a/biblioteca/src/app/pages/manual-usuario/manual-usuario.ts b/biblioteca/src/app/pages/manual-usuario/manual-usuario.ts[m
+[1mnew file mode 100644[m
+[1mindex 0000000..1503270[m
+[1m--- /dev/null[m
+[1m+++ b/biblioteca/src/app/pages/manual-usuario/manual-usuario.ts[m
+[36m@@ -0,0 +1,9 @@[m
+[32m+[m[32mimport { Component } from '@angular/core';[m
+[32m+[m
+[32m+[m[32m@Component({[m
+[32m+[m[32m  selector: 'app-manual-usuario',[m
+[32m+[m[32m  imports: [],[m
+[32m+[m[32m  templateUrl: './manual-usuario.html',[m
+[32m+[m[32m  styleUrl: './manual-usuario.scss',[m
+[32m+[m[32m})[m
+[32m+[m[32mexport class ManualUsuario {}[m
+[1mdiff --git a/biblioteca/src/assets/manual-usuario.pdf b/biblioteca/src/assets/manual-usuario.pdf[m
+[1mdeleted file mode 100644[m
+[1mindex e69de29..0000000[m
