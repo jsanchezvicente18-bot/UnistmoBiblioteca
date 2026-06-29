@@ -1,0 +1,213 @@
+[33mcommit 89739129e469c2042336ab43cf6f55f125eef0bc[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Jaqeuline <jsanchezvicente18>
+Date:   Sat Jun 27 15:57:52 2026 -0600
+
+    Cambios en todo x parte de Jaki
+
+[1mdiff --git a/biblioteca/src/app/app.routes.ts b/biblioteca/src/app/app.routes.ts[m
+[1mindex 1d17792..09a27fd 100644[m
+[1m--- a/biblioteca/src/app/app.routes.ts[m
+[1m+++ b/biblioteca/src/app/app.routes.ts[m
+[36m@@ -68,10 +68,30 @@[m [mexport const routes: Routes = [[m
+         path: 'configuracion',[m
+         loadComponent: () =>[m
+           import('./configuracion/configuracion').then(m => m.Configuracion)[m
+[32m+[m[32m      },[m
+[32m+[m
+[32m+[m[32m      {[m
+[32m+[m[32m        path: 'manual-usuario',[m
+[32m+[m[32m        loadComponent: () =>[m
+[32m+[m[32m          import('./pages/manual-usuario/manual-usuario')[m
+[32m+[m[32m            .then(m => m.ManualUsuario)[m
+[32m+[m[32m      },[m
+[32m+[m
+[32m+[m[32m      {[m
+[32m+[m[32m        path: 'contactar-admin',[m
+[32m+[m[32m        loadComponent: () =>[m
+[32m+[m[32m          import('./pages/contactar-admin/contactar-admin')[m
+[32m+[m[32m            .then(m => m.ContactarAdmin)[m
+[32m+[m[32m      },[m
+[32m+[m
+[32m+[m[32m      {[m
+[32m+[m[32m        path: 'mandar-reporte',[m
+[32m+[m[32m        loadComponent: () =>[m
+[32m+[m[32m          import('./pages/mandar-reporte/mandar-reporte')[m
+[32m+[m[32m            .then(m => m.MandarReporte)[m
+       }[m
+ [m
+     ][m
+[31m-[m
+   }[m
+ [m
+ ];[m
+\ No newline at end of file[m
+[1mdiff --git a/biblioteca/src/app/login/login.html b/biblioteca/src/app/login/login.html[m
+[1mindex fa198b4..e1698d9 100644[m
+[1m--- a/biblioteca/src/app/login/login.html[m
+[1m+++ b/biblioteca/src/app/login/login.html[m
+[36m@@ -75,21 +75,17 @@[m
+   Recuperar contraseña[m
+ </a>[m
+ [m
+[31m-<div class="ayuda-login">[m
+[31m-[m
+[31m-  <a routerLink="/manual-usuario">[m
+[31m-    📖 Manual de usuario[m
+[31m-  </a>[m
+[31m-[m
+[31m-  <a routerLink="/contactar-admin">[m
+[31m-    📧 Contactar administrador[m
+[31m-  </a>[m
+[32m+[m[32m<button routerLink="/manual-usuario">[m
+[32m+[m[32m  Manual de usuario[m
+[32m+[m[32m</button>[m
+ [m
+[31m-  <a routerLink="/reportar-error">[m
+[31m-    🐞 Reportar error[m
+[31m-  </a>[m
+[32m+[m[32m<button routerLink="/contactar-admin">[m
+[32m+[m[32m  Contactar con admin[m
+[32m+[m[32m</button>[m
+ [m
+[31m-</div>[m
+[32m+[m[32m<button routerLink="/mandar-reporte">[m
+[32m+[m[32m  Mandar reporte[m
+[32m+[m[32m</button>[m
+ [m
+ <p class="registro">[m
+   ¿No tienes cuenta?[m
+[1mdiff --git a/biblioteca/src/app/pages/contactar-admin/contactar-admin.html b/biblioteca/src/app/pages/contactar-admin/contactar-admin.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..0a9d051[m
+[1m--- /dev/null[m
+[1m+++ b/biblioteca/src/app/pages/contactar-admin/contactar-admin.html[m
+[36m@@ -0,0 +1,16 @@[m
+[32m+[m[32m<div class="form-container">[m
+[32m+[m[32m  <h2>Contactar con administrador</h2>[m
+[32m+[m
+[32m+[m[32m  <form>[m
+[32m+[m[32m    <label>Nombre:</label>[m
+[32m+[m[32m    <input type="text" placeholder="Escribe tu nombre">[m
+[32m+[m
+[32m+[m[32m    <label>Correo:</label>[m
+[32m+[m[32m    <input type="email" placeholder="Escribe tu correo">[m
+[32m+[m
+[32m+[m[32m    <label>Mensaje:</label>[m
+[32m+[m[32m    <textarea placeholder="Escribe tu mensaje"></textarea>[m
+[32m+[m
+[32m+[m[32m    <button type="submit">Enviar mensaje</button>[m
+[32m+[m[32m  </form>[m
+[32m+[m[32m</div>[m
+\ No newline at end of file[m
+[1mdiff --git a/biblioteca/src/app/pages/contactar-admin/contactar-admin.scss b/biblioteca/src/app/pages/contactar-admin/contactar-admin.scss[m
+[1mnew file mode 100644[m
+[1mindex 0000000..102aacf[m
+[1m--- /dev/null[m
+[1m+++ b/biblioteca/src/app/pages/contactar-admin/contactar-admin.scss[m
+[36m@@ -0,0 +1,47 @@[m
+[32m+[m[32m.form-container,[m
+[32m+[m[32m.manual-container {[m
+[32m+[m[32m  max-width: 600px;[m
+[32m+[m[32m  margin: 30px auto;[m
+[32m+[m[32m  background: white;[m
+[32m+[m[32m  padding: 25px;[m
+[32m+[m[32m  border-radius: 14px;[m
+[32m+[m[32m  box-shadow: 0 4px 12px rgba(0,0,0,0.1);[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mh2 {[m
+[32m+[m[32m  margin-bottom: 15px;[m
+[32m+[m[32m  color: #1f3b57;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mlabel {[m
+[32m+[m[32m  display: block;[m
+[32m+[m[32m  margin-top: 12px;[m
+[32m+[m[32m  font-weight: 600;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32minput,[m
+[32m+[m[32mtextarea,[m
+[32m+[m[32mselect {[m
+[32m+[m[32m  width: 100%;[m
+[32m+[m[32m  padding: 10px;[m
+[32m+[m[32m  margin-top: 6px;[m
+[32m+[m[32m  border-radius: 8px;[m
+[32m+[m[32m  border: 1px solid #ccc;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mtextarea {[m
+[32m+[m[32m  min-height: 120px;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mbutton,[m
+[32m+[m[32m.btn {[m
+[32m+[m[32m  display: inline-block;[m
+[32m+[m[32m  margin-top: 18px;[m
+[32m+[m[32m  padding: 10px 18px;[m
+[32m+[m[32m  background: #1f3b57;[m
+[32m+[m[32m  color: white;[m
+[32m+[m[32m  border: none;[m
+[32m+[m[32m  border-radius: 8px;[m
+[32m+[m[32m  text-decoration: none;[m
+[32m+[m[32m  cursor: pointer;[m
+[32m+[m[32m}[m
+\ No newline at end of file[m
+[1mdiff --git a/biblioteca/src/app/pages/contactar-admin/contactar-admin.spec.ts b/biblioteca/src/app/pages/contactar-admin/contactar-admin.spec.ts[m
+[1mnew file mode 100644[m
+[1mindex 0000000..7f12f4e[m
+[1m--- /dev/null[m
+[1m+++ b/biblioteca/src/app/pages/contactar-admin/contactar-admin.spec.ts[m
+[36m@@ -0,0 +1,22 @@[m
+[32m+[m[32mimport { ComponentFixture, TestBed } from '@angular/core/testing';[m
+[32m+[m
+[32m+[m[32mimport { ContactarAdmin } from './contactar-admin';[m
+[32m+[m
+[32m+[m[32mdescribe('ContactarAdmin', () => {[m
+[32m+[m[32m  let component: ContactarAdmin;[m
+[32m+[m[32m  let fixture: ComponentFixture<ContactarAdmin>;[m
+[32m+[m
+[32m+[m[32m  beforeEach(async () => {[m
+[32m+[m[32m    await TestBed.configureTestingModule({[m
+[32m+[m[32m      imports: [ContactarAdmin],[m
+[32m+[m[32m    }).compileComponents();[m
+[32m+[m
+[32m+[m[32m    fixture = TestBed.createComponent(ContactarAdmin);[m
+[32m+[m[32m    component = fixture.componentInstance;[m
+[32m+[m[32m    await fixture.whenStable();[m
+[32m+[m[32m  });[m
+[32m+[m
+[32m+[m[32m  it('should create', () => {[m
+[32m+[m[32m    expect(component).toBeTruthy();[m
+[32m+[m[32m  });[m
+[32m+[m[32m});[m
+[1mdiff --git a/biblioteca/src/app/pages/contactar-admin/contactar-admin.ts b/biblioteca/src/app/pages/contactar-admin/contactar-admin.ts[m
+[1mnew file mode 100644[m
+[1mindex 0000000..9788cd7[m
+[1m--- /dev/null[m
+[1m+++ b/biblioteca/src/app/pages/contactar-admin/contactar-admin.ts[m
+[36m@@ -0,0 +1,9 @@[m
+[32m+[m[32mimport { Component } from '@angular/core';[m
+[32m+[m
+[32m+[m[32m@Component({[m
+[32m+[m[32m  selector: 'app-contactar-admin',[m
+[32m+[m[32m  imports: [],[m
+[32m+[m[32m  templateUrl: './contactar-admin.html',[m
+[32m+[m[32m  styleUrl: './contactar-admin.scss',[m
+[32m+[m[32m})[m
+[32m+[m[32mexport class ContactarAdmin {}[m
+[1mdiff --git a/biblioteca/src/app/pages/mandar-reporte/mandar-reporte.html b/biblioteca/src/app/pages/mandar-reporte/mandar-reporte.html[m
+[1mnew file mode 100644[m
+[1mindex 0000000..1aa35cd[m
+[1m--- /dev/null[m
+[1m+++ b/biblioteca/src/app/pages/mandar-reporte/mandar-reporte.html[m
+[36m@@ -0,0 +1,19 @@[m
+[32m+[m[32m<div class="form-container">[m
+[32m+[m[32m  <h2>Mandar reporte</h2>[m
+[32m+[m
+[32m+[m[32m  <form>[m
+[32m+[m[32m    <label>Tipo de problema:</label>[m
+[32m+[m[32m    <select>[m
+[32m+[m[32m      <option>Problema con libros</option>[m
+[32m+[m[32m      <option>Problema con préstamos</option>[m
+[32m+[m[32m      <option>Problema con usuarios</option
